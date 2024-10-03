@@ -2,13 +2,12 @@
 @section('title', 'Welcome')
 
 @section('content')
-    <div>
-        Test
+    <div id="test" class="text-xl">
+        Category
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('div').textContent = 'Hello';
-        });
-    </script>
+        const fontFamily = window.getComputedStyle(document.getElementById('test')).fontFamily;
+        console.log('Current Font:', fontFamily);
+</script>
 @endsection
