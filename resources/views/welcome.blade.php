@@ -5,4 +5,10 @@
     <div>
         Test
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('div').textContent = 'Hello';
+        });
+    </script>
 @endsection
