@@ -17,7 +17,7 @@
         @endforeach
     </div>
     <!-- Slider controls -->
-    <button type="button" class="hidden group-hover:flex absolute top-0 start-0 z-30 items-center justify-center h-full bg-gray-900/20 px-2 cursor-pointer group focus:outline-none" data-carousel-prev>
+    <button type="button" class="opacity-0 group-hover:opacity-100 transition-opacity flex absolute top-0 start-0 z-30 items-center justify-center h-full bg-gray-900/20 px-2 cursor-pointer group focus:outline-none" data-carousel-prev>
         <span class="inline-flex items-center justify-center w-10 h-10">
             <svg class="w-4 h-4 text-gray-200 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
@@ -25,7 +25,7 @@
             <span class="sr-only">Previous</span>
         </span>
     </button>
-    <button type="button" class="hidden group-hover:flex absolute top-0 end-0 z-30 items-center justify-center h-full bg-gray-900/20 px-2 cursor-pointer group focus:outline-none" data-carousel-next>
+    <button type="button" class="opacity-0 group-hover:opacity-100 transition-opacity flex absolute top-0 end-0 z-30 items-center justify-center h-full bg-gray-900/20 px-2 cursor-pointer group focus:outline-none" data-carousel-next>
         <span class="inline-flex items-center justify-center w-10 h-10">
             <svg class="w-4 h-4 text-gray-200 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
