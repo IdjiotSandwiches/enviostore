@@ -12,15 +12,16 @@
     <!-- Carousel wrapper -->
     <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
         @foreach ($pathList as $path)
-            <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <div class="hidden duration-1000 ease-in-out" data-carousel-item>
                 <img src="{{ asset($path) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                <div class="bottom-0 w-full h-1/4 absolute bg-gradient-to-t from-black/80 to-black/0"></div>
             </div>
         @endforeach
     </div>
     <!-- Slider indicators -->
-    <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+    <div class="absolute z-30 hidden md:flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
         @foreach ($pathList as $key => $path)
-            <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide {{ $key }}" data-carousel-slide-to="{{ $key }}"></button>
+            <button type="button" class="w-16 h-0.5 aria-[current=true]:bg-white" aria-current="true" aria-label="Slide {{ $key }}" data-carousel-slide-to="{{ $key }}"></button>
         @endforeach
     </div>
     <!-- Slider controls -->
