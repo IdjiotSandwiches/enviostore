@@ -1,8 +1,12 @@
 <a href="#" class="group max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <div>
-        <img class="rounded-t-lg h-60" src="{{ asset('img/0.png') }}" alt="" />
+        <img class="rounded-t-lg h-60 select-none" src="{{ asset('img/0.png') }}" alt="" />
     </div>
-    <div class="group-hover:bg-gray-100 transition-colors">
+    <div
+        class="w-full group-hover:bg-gray-100 transition-colors "
+        data-twe-ripple-init
+        data-twe-ripple-color="rgb(156 163 175)"
+    >
         <div class="p-4">
             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Barang Eco Friendly 1</h5>
             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Rp 5.000</p>
