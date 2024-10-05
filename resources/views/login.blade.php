@@ -2,5 +2,5 @@
 @section('title', 'Login')
 
 @section('content')
-
+    <p>Login</p>
 @endsection
