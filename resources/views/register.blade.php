@@ -28,7 +28,7 @@
         </div>
         <div class="flex flex-col">
             <label for="password">Password</label>
-            <input type="password" name="password" id="password-confirmation">
+            <input type="password" name="password" id="password">
             @error('password')
                 <p class="text-red-500">{{ $message }}</p>
             @enderror

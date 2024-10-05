@@ -20,7 +20,10 @@ Route::get('/', function () {
 });
 
 Route::middleware(['guest:web'])->group(function () {
-    Route::get('/login', [LoginController::class, 'index'])->name('login');
+    Route::controller(LoginController::class)->group(function () {
+        Route::get('/login', 'index')->name('login');
+        Route::post('/login', 'login')->name('attemptLogin');
+    });
 
     Route::controller(RegisterController::class)->group(function () {
         Route::get('/register', 'index')->name('register');
