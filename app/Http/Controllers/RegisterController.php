@@ -42,7 +42,7 @@ class RegisterController extends Controller implements StatusInterface
             DB::commit();
             $response = [
                 'status' => self::STATUS_SUCCESS,
-                'message' => 'Account successfully created',
+                'message' => 'Account successfully created.',
             ];
         } catch (\Exception $e) {
             DB::rollBack();
