@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\RegisterRequest;
 
 class RegisterController extends Controller
@@ -21,9 +23,21 @@ class RegisterController extends Controller
         $validated = $registerRequest->validated();
 
         try {
+            DB::beginTransaction();
 
+            $user = new User();
+            $user->uuid = Str::uuid();
+            $user->name = ucwords($validated['name']);
+            $user->email = $validated['email'];
+            $user->password = $validated['password'];
+            $user->save();
+
+            DB::commit();
+            $response = [
+
+            ];
         } catch (\Exception $e) {
-
+            DB::rollBack();
         }
     }
 }
