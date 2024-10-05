@@ -7,6 +7,10 @@ use App\Http\Requests\RegisterRequest;
 
 class RegisterController extends Controller
 {
+    /**
+     * Return Register View
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function index()
     {
         return view('register');
@@ -15,6 +19,11 @@ class RegisterController extends Controller
     public function register(RegisterRequest $registerRequest)
     {
         $validated = $registerRequest->validated();
-        dd($validated);
+
+        try {
+
+        } catch (\Exception $e) {
+
+        }
     }
 }
