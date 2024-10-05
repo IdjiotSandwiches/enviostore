@@ -21,5 +21,9 @@ Route::get('/', function () {
 
 Route::middleware(['guest:web'])->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
-    Route::get('/register', [RegisterController::class, 'index'])->name('register');
+
+    Route::controller(RegisterController::class)->group(function () {
+        Route::get('/register', 'index')->name('register');
+        Route::post('/register', 'register')->name('attemptRegister');
+    });
 });
