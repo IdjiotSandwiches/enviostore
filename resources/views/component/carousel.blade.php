@@ -1,36 +1,45 @@
 @props(['imgPaths'])
 
-<div id="default-carousel" class="group relative w-full" data-carousel="slide">
-    <!-- Carousel wrapper -->
-    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-        @foreach ($imgPaths as $path)
-            <div class="hidden duration-1000 ease-in-out" data-carousel-item>
-                <img src="{{ asset($path) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                <div class="bottom-0 w-full h-1/4 absolute bg-gradient-to-t from-black/80 to-black/0"></div>
-            </div>
+<div class="glide group">
+    <div class="glide__track" data-glide-el="track">
+        <ul class="glide__slides">
+            @foreach ($imgPaths as $path)
+                <li class="glide__slide">
+                    <img src="{{ asset($path) }}" class="w-full h-96 object-cover select-none pointer-events-none" alt="...">
+                </li>
+            @endforeach
+        </ul>
+    </div>
+    <div class="bottom-0 w-full h-1/5 absolute bg-gradient-to-t from-black/80 to-black/0"></div>
+    <div class="glide__arrows opacity-0 group-hover:opacity-100 transition-opacity" data-glide-el="controls">
+        <button class="glide__arrow glide__arrow--left h-full bg-black/30 border-none shadow-none left-0" data-glide-dir="<">
+            <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
+            </svg>
+        </button>
+        <button class="glide__arrow glide__arrow--right h-full bg-black/30 border-none shadow-none right-0" data-glide-dir=">">
+            <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+            </svg>
+        </button>
+    </div>
+    <div class="glide__bullets bottom-3" data-glide-el="controls[nav]">
+        @foreach ($imgPaths as $key => $value)
+            <button class="glide__bullet h-0.5 border-none w-16 rounded-none" data-glide-dir="{{ "={$key}" }}"></button>
         @endforeach
     </div>
-    <!-- Slider indicators -->
-    <div class="absolute z-30 hidden md:flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
-        @foreach ($imgPaths as $key => $path)
-            <button type="button" class="w-16 h-0.5 aria-[current=true]:bg-white" aria-current="true" aria-label="Slide {{ $key }}" data-carousel-slide-to="{{ $key }}"></button>
-        @endforeach
-    </div>
-    <!-- Slider controls -->
-    <button type="button" class="opacity-0 group-hover:opacity-100 transition-opacity flex absolute top-0 start-0 z-30 items-center justify-center h-full bg-gray-900/20 px-2 cursor-pointer group focus:outline-none" data-carousel-prev>
-        <span class="inline-flex items-center justify-center w-10 h-10">
-            <svg class="w-4 h-4 text-gray-200 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-            </svg>
-            <span class="sr-only">Previous</span>
-        </span>
-    </button>
-    <button type="button" class="opacity-0 group-hover:opacity-100 transition-opacity flex absolute top-0 end-0 z-30 items-center justify-center h-full bg-gray-900/20 px-2 cursor-pointer group focus:outline-none" data-carousel-next>
-        <span class="inline-flex items-center justify-center w-10 h-10">
-            <svg class="w-4 h-4 text-gray-200 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-            </svg>
-            <span class="sr-only">Next</span>
-        </span>
-    </button>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const options = {
+            type: 'carousel',
+            startAt: 0,
+            autoplay: 3000,
+            animationDuration: 1000,
+            hoverpause: true,
+        };
+
+        new Glide('.glide', options).mount({ Controls, Breakpoints, Swipe, Autoplay });
+    });
+</script>
