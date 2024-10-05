@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::middleware(['guest:web'])->group(function () {
+    Route::get('/login', [LoginController::class, 'login'])->name('login');
+});
