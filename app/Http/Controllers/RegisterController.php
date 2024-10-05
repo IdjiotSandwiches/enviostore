@@ -20,6 +20,11 @@ class RegisterController extends Controller implements StatusInterface
         return view('register');
     }
 
+    /**
+     * Register Attempt
+     * @param \App\Http\Requests\RegisterRequest $registerRequest
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function register(RegisterRequest $registerRequest)
     {
         $validated = $registerRequest->validated();
