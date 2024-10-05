@@ -7,6 +7,7 @@ use App\Models\ErrorLog;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\StatusInterface;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 
 class RegisterController extends Controller implements StatusInterface
@@ -36,7 +37,9 @@ class RegisterController extends Controller implements StatusInterface
             $user->uuid = Str::uuid();
             $user->name = ucwords($validated['name']);
             $user->email = $validated['email'];
-            $user->password = $validated['password'];
+            $user->password = Hash::make($validated['password']);
+            $user->phone_number = $validated['phone_number'];
+            $user->user_type = 0;
             $user->save();
 
             DB::commit();
@@ -49,6 +52,7 @@ class RegisterController extends Controller implements StatusInterface
 
             $errorLog = new ErrorLog();
             $errorLog->error = $e->getMessage();
+            $errorLog->save();
 
             $response = [
                 'status' => self::STATUS_ERROR,

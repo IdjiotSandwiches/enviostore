@@ -16,12 +16,10 @@ return new class extends Migration
             $table->uuid('uuid');
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone_number');
             $table->text('address')->nullable();
             $table->boolean('user_type');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

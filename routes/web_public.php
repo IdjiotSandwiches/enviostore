@@ -17,7 +17,7 @@ use App\Http\Controllers\RegisterController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::middleware(['guest:web'])->group(function () {
     Route::controller(LoginController::class)->group(function () {
