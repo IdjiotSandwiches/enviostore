@@ -76,6 +76,11 @@ class LoginController extends Controller implements StatusInterface
             ->with($response);
     }
 
+    /**
+     * Logout
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function logout(Request $request)
     {
         Auth::logout();
