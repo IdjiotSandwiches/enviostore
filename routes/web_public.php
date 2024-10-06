@@ -30,3 +30,7 @@ Route::middleware(['guest:web'])->group(function () {
         Route::post('/register', 'register')->name('attemptRegister');
     });
 });
+
+Route::middleware(['auth:web'])->group(function () {
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+});

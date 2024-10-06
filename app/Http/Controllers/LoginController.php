@@ -9,6 +9,7 @@ use App\Http\Requests\LoginRequest;
 use App\Interfaces\StatusInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Request;
 
 class LoginController extends Controller implements StatusInterface
 {
@@ -69,6 +70,21 @@ class LoginController extends Controller implements StatusInterface
         $response = [
             'status' => self::STATUS_SUCCESS,
             'message' => 'Logged In.'
+        ];
+
+        return redirect()->route('home')
+            ->with($response);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        $response = [
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Logged Out.'
         ];
 
         return redirect()->route('home')
