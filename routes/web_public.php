@@ -36,13 +36,9 @@ Route::middleware(['auth:web,admin'])->group(function () {
 });
 
 Route::middleware(['auth:web'])->group(function () {
-    Route::get('/auth', function () {
-        return view('auth');
-    });
+
 });
 
 Route::middleware(['seller'])->group(function () {
-    Route::get('/seller', function () {
-        return view('seller');
-    });
+
 });
