@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone_number');
             $table->text('address')->nullable();
-            $table->boolean('user_type');
+            $table->boolean('user_type')->default(0);
             $table->timestamps();
         });
     }

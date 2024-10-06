@@ -39,7 +39,6 @@ class RegisterController extends Controller implements StatusInterface
             $user->email = $validated['email'];
             $user->password = Hash::make($validated['password']);
             $user->phone_number = $validated['phone_number'];
-            $user->user_type = 0;
             $user->save();
 
             DB::commit();
