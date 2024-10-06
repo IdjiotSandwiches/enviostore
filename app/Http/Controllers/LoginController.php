@@ -37,7 +37,7 @@ class LoginController extends Controller implements StatusInterface
             $user = User::where('email', $validated['email'])->first();
 
             if ($user && Hash::check($validated['password'], $user->password)) {
-                $isSeller = $user->user_type ? 'seller' : 'web';
+                // $isSeller = $user->user_type ? 'seller' : 'web';
             }
             else {
                 DB::rollBack();
@@ -65,7 +65,7 @@ class LoginController extends Controller implements StatusInterface
             return back()->with($response);
         }
 
-        Auth::guard($isSeller)->login($user);
+        Auth::guard('web')->login($user);
         $loginRequest->session()->regenerate();
         $response = [
             'status' => self::STATUS_SUCCESS,

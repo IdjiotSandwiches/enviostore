@@ -40,6 +40,10 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * Return user type
+     * @return bool
+     */
     public function isSeller()
     {
         return $this->user_type;

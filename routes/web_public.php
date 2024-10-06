@@ -31,6 +31,6 @@ Route::middleware(['guest:web'])->group(function () {
     });
 });
 
-Route::middleware(['auth:web'])->group(function () {
+Route::middleware(['auth:web', 'seller'])->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });
