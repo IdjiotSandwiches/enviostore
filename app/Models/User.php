@@ -39,4 +39,9 @@ class User extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    public function isSeller()
+    {
+        return $this->user_type;
+    }
 }
