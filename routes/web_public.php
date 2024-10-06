@@ -15,12 +15,11 @@ use App\Http\Controllers\RegisterController;
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
 
 Route::middleware(['guest:web'])->group(function () {
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('home');
-
     Route::controller(LoginController::class)->group(function () {
         Route::get('/login', 'index')->name('login');
         Route::post('/login', 'login')->name('attemptLogin');
@@ -32,6 +31,12 @@ Route::middleware(['guest:web'])->group(function () {
     });
 });
 
-Route::middleware(['auth:web', 'seller'])->group(function () {
+Route::middleware(['auth:web,admin'])->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+});
+
+Route::middleware(['seller'])->group(function () {
+    Route::get('/seller', function () {
+        return view('test-seller');
+    });
 });
