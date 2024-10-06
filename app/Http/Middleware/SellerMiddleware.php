@@ -21,6 +21,7 @@ class SellerMiddleware
             return $next($request);
         }
 
-        return redirect(RouteServiceProvider::HOME);
+        // Fix this with return 404 view
+        return back();
     }
 }

@@ -14,3 +14,7 @@ use App\Http\Controllers\RegisterController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/admin', function () {
+    return view('admin');
+})->name('adminHome');

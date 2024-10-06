@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::middleware(['guest:web'])->group(function () {
+Route::middleware(['guest:web,admin'])->group(function () {
     Route::controller(LoginController::class)->group(function () {
         Route::get('/login', 'index')->name('login');
         Route::post('/login', 'login')->name('attemptLogin');
@@ -35,8 +35,14 @@ Route::middleware(['auth:web,admin'])->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
+Route::middleware(['auth:web'])->group(function () {
+    Route::get('/auth', function () {
+        return view('auth');
+    });
+});
+
 Route::middleware(['seller'])->group(function () {
     Route::get('/seller', function () {
-        return view('test-seller');
+        return view('seller');
     });
 });

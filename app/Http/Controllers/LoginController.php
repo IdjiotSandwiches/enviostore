@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Admin;
 use App\Models\ErrorLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,10 +35,11 @@ class LoginController extends Controller implements StatusInterface
         try {
             DB::beginTransaction();
 
-            $user = User::where('email', $validated['email'])->first();
+            $user = User::where('email', $validated['email'])->first() ??
+                Admin::where('email', $validated['email'])->first();
 
             if ($user && Hash::check($validated['password'], $user->password)) {
-                // $isSeller = $user->user_type ? 'seller' : 'web';
+                $isAdmin = $user instanceof Admin ? 'admin' : 'web';
             }
             else {
                 DB::rollBack();
@@ -65,15 +67,14 @@ class LoginController extends Controller implements StatusInterface
             return back()->with($response);
         }
 
-        Auth::guard('web')->login($user);
+        Auth::guard($isAdmin)->login($user);
         $loginRequest->session()->regenerate();
         $response = [
             'status' => self::STATUS_SUCCESS,
             'message' => 'Logged In.'
         ];
 
-        return redirect()->route('home')
-            ->with($response);
+        return back()->with($response);
     }
 
     /**
