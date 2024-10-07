@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\EmailVerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,25 +37,11 @@ Route::middleware(['auth:web,admin'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/email/verify', function () {
-        if (Auth::user()->hasVerifiedEmail()) {
-            return redirect()->route('home');
-        }
-
-        return view('auth.verify-email');
-    })->name('verification.notice');
-
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        $request->fulfill();
-
-        return redirect()->route('home');
-    })->middleware(['signed'])->name('verification.verify');
-
-    Route::post('/email/verification-notification', function (Request $request) {
-        $request->user()->sendEmailVerificationNotification();
-
-        return back()->with('message', 'Verification link sent!');
-    })->middleware(['throttle:6,1'])->name('verification.send');
+    Route::controller(EmailVerificationController::class)->group(function () {
+        Route::get('/email/verify', 'verificationNotice')->name('verification.notice');
+        Route::get('/email/verify/{id}/{hash}', 'verifyEmail')->middleware(['signed'])->name('verification.verify');
+        Route::post('/email/verification-notification', 'resendVerification')->middleware(['throttle:6,1'])->name('verification.send');
+    });
 });
 
 
