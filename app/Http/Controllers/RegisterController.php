@@ -26,7 +26,7 @@ class RegisterController extends Controller implements StatusInterface
     /**
      * Register Attempt
      * @param \App\Http\Requests\RegisterRequest $registerRequest
-     * @return \Illuminate\Http\RedirectResponse
+     * @return mixed|\Illuminate\Http\RedirectResponse
      */
     public function register(RegisterRequest $registerRequest)
     {
