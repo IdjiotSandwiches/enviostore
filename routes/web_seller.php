@@ -12,7 +12,3 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "seller" middleware group. Make something great!
 |
 */
-
-Route::get('/seller', function () {
-    return view('seller');
-});

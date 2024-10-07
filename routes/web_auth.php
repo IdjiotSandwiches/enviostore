@@ -12,7 +12,3 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "auth" middleware group. Make something great!
 |
 */
-
-Route::get('/auth', function () {
-    return view('auth');
-});
