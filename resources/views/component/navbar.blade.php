@@ -1,7 +1,7 @@
 <nav class="bg-white border-gray-200 dark:bg-gray-900">
     <div class="max-w-screen-xl flex items-center justify-between mx-auto p-4 gap-4">
         <a href="/" class="hidden lg:flex items-center space-x-3 rtl:space-x-reverse">
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white italic">EnvioStore</span>
+            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white italic">EnviroStore</span>
         </a>
         <div class="flex md:order-1 w-full md:w-8/12 lg:w-7/12 items-center justify-center gap-4">
             <div class="hidden lg:block text-sm pointer-events-none">Category</div>
