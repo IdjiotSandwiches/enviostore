@@ -29,7 +29,7 @@
 
             <!-- Search Bar -->
             <div class="hidden md:block relative md:w-full">
-                @include('component.navbar')
+                @include('component.search-bar')
             </div>
             <!-- Shopping Category -->
             <a href="/" class="hidden lg:block">
@@ -93,18 +93,21 @@
     </div>
 </nav> -->
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchIcon = document.querySelector('#search-icon');
-        const backBtn = document.querySelector('#back-btn');
-        const searchBar = document.querySelector('#search-bar');
+@section('extra-js')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchIcon = document.querySelector('#search-icon');
+            const backBtn = document.querySelector('#back-btn');
+            const searchBar = document.querySelector('#search-bar');
 
-        searchIcon.addEventListener('click', function() {
-            searchBar.classList.toggle('hidden')
-        })
+            searchIcon.addEventListener('click', function() {
+                searchBar.classList.toggle('hidden')
+            })
 
-        backBtn.addEventListener('click', function() {
-            searchBar.classList.toggle('hidden')
-        })
-    });
-</script>
+            backBtn.addEventListener('click', function() {
+                searchBar.classList.toggle('hidden')
+            })
+        });
+    </script>
+@endsection
+
