@@ -7,8 +7,10 @@ use App\Models\ErrorLog;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\StatusInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller implements StatusInterface
 {
@@ -61,7 +63,9 @@ class RegisterController extends Controller implements StatusInterface
             return back()->with($response);
         }
 
-        return redirect()->route('login')
-            ->with($response);
+        event(new Registered($user));
+        Auth::login($user);
+
+        return redirect()->route('verification.notice');
     }
 }
