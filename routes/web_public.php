@@ -34,11 +34,3 @@ Route::middleware(['guest:web,admin'])->group(function () {
 Route::middleware(['auth:web,admin'])->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });
-
-Route::middleware(['auth:web'])->group(function () {
-
-});
-
-Route::middleware(['seller'])->group(function () {
-
-});

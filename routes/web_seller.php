@@ -4,15 +4,15 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Admin Routes
+| Seller Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register admin routes for your application. These
+| Here is where you can register seller routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "admin" middleware group. Make something great!
+| be assigned to the "seller" middleware group. Make something great!
 |
 */
 
-Route::get('/admin', function () {
-    return view('admin');
-})->name('adminHome');
+Route::get('/seller', function () {
+    return view('seller');
+});
