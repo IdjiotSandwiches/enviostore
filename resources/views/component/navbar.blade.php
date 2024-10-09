@@ -42,8 +42,8 @@
         <div class="items-center justify-between md:flex w-auto md:order-2">
             @auth
                 <!-- User Icon -->
-                <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start" class="w-10 h-10 rounded-full cursor-pointer" src="/docs/images/people/profile-picture-5.jpg" alt="User dropdown">
-                <div id="userDropdown" class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
+                <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start" class="hidden lg:block w-10 h-10 rounded-full cursor-pointer" src="/docs/images/people/profile-picture-5.jpg" alt="User dropdown">
+                <div id="userDropdown" class="hidden z-10 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
                     <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
                         <div>Bonnie Green</div>
                         <div class="font-medium truncate">name@flowbite.com</div>
@@ -73,7 +73,7 @@
         </div>
     </div>
 </nav>
-<nav class="bg-gray-50 dark:bg-gray-700 overflow-auto">
+<nav class="bg-gray-50 dark:bg-gray-700 shadow-sm overflow-auto">
     <div class="max-w-screen-xl px-4 py-3 mx-auto">
         <div class="flex items-center">
             <ul class="flex text-nowrap flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm md:text-md">
