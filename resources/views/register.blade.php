@@ -42,11 +42,13 @@
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
         </div>
-        <div class="flex items-center mb-4">
-            <input id="checkbox" type="checkbox" name="terms_and_condition" class="w-4 h-4 text-button bg-gray-100 border-gray-300 rounded focus:ring-button/15 dark:focus:ring-button dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" required />
-            <label for="checkbox" class="ms-2 text-sm font-medium text-font_primary dark:text-font_primary">
-                Agree to the <a href="#" class="text-font_secondary dark:text-font_secondary hover:text-font_primary hover:underline">terms and condition</a>
-            </label>
+        <div>
+            <div class="flex items-center">
+                <input id="checkbox" type="checkbox" name="terms_and_condition" class="w-4 h-4 text-button bg-gray-100 border-gray-300 rounded focus:ring-button/15 dark:focus:ring-button dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" required />
+                <label for="checkbox" class="ms-2 text-sm font-medium text-font_primary dark:text-font_primary">
+                    Agree to the <a href="#" class="text-font_secondary dark:text-font_secondary hover:text-font_primary hover:underline">terms and condition</a>
+                </label>
+            </div>
             @error('terms_and_condition')
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
