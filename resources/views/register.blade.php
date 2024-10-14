@@ -9,35 +9,50 @@
         <h5 class="text-3xl text-center font-bold text-gray-900 dark:text-white">Sign Up</h5>
         <div>
             <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-            <input type="text" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="username" value="{{ old('username') }}" required />
+            <input type="text" name="username" id="username" @class([
+                "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white",
+                "border-red-500" => $errors->has('username'),
+            ]) placeholder="username" value="{{ old('username') }}" required />
             @error('username')
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
         </div>
         <div>
             <label for="phone_number" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
-            <input type="tel" name="phone_number" id="phone-number" minlength="8" maxlength="12" pattern="[0-9]{8,12}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="0123456789" value="{{ old('phone_number') }}" required />
+            <input type="tel" name="phone_number" id="phone-number" minlength="8" maxlength="12" pattern="[0-9]{8,12}" @class([
+                "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white",
+                "border-red-500" => $errors->has('phone_number')
+            ]) placeholder="0123456789" value="{{ old('phone_number') }}" required />
             @error('phone_number')
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
         </div>
         <div>
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-            <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="user@email.com" value="{{ old('email') }}" required />
+            <input type="email" name="email" id="email" @class([
+                "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white",
+                "border-red-500" => $errors->has('email')
+            ]) placeholder="user@email.com" value="{{ old('email') }}" required />
             @error('email')
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
         </div>
         <div>
             <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-            <input type="password" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+            <input type="password" name="password" id="password" @class([
+                "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white",
+                "border-red-500" => $errors->has('password')
+            ]) required />
             @error('password')
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
         </div>
         <div>
             <label for="password_confirmation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password Confirmation</label>
-            <input type="password" name="password_confirmation" id="password-confirmation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+            <input type="password" name="password_confirmation" id="password-confirmation" @class([
+                "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white",
+                "border-red-500" => $errors->has('password_confirmation')
+            ]) required />
             @error('password_confirmation')
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
