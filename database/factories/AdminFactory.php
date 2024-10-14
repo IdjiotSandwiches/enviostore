@@ -20,7 +20,7 @@ class AdminFactory extends Factory
     {
         return [
             'uuid' => Str::uuid(),
-            'name' => 'admin',
+            'username' => 'admin',
             'email' => 'admin@email.com',
             'password' => Hash::make('123456'),
         ];

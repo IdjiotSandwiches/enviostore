@@ -37,7 +37,7 @@ class RegisterController extends Controller implements StatusInterface
 
             $user = new User();
             $user->uuid = Str::uuid();
-            $user->name = ucwords($validated['name']);
+            $user->username = ucwords($validated['username']);
             $user->email = $validated['email'];
             $user->password = Hash::make($validated['password']);
             $user->phone_number = $validated['phone_number'];
