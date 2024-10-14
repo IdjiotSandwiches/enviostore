@@ -30,12 +30,12 @@
         <div class="flex items-center mb-4">
             <input id="checkbox" type="checkbox" value="" class="w-4 h-4 text-button bg-gray-100 border-gray-300 rounded focus:ring-button/15 dark:focus:ring-button dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" required>
             <label for="checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                Agree to the <a href="#" class="underline">terms and condition</a>
+                Agree to the <a href="#" class="text-font_secondary dark:text-font_secondary hover:text-font_primary hover:underline">terms and condition</a>
             </label>
         </div>
         <button type="submit" class="w-full text-white bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-button dark:hover:bg-button/80 dark:focus:ring-button/15">Sign Up</button>
         <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-            Already have an account? <a href="{{ route('login') }}" class="text-blue-700 hover:underline dark:text-blue-500">Login</a>
+            Already have an account? <a href="{{ route('login') }}" class="text-font_secondary hover:text-font_primary hover:underline dark:text-font_secondary">Login</a>
         </div>
     </form>
 </div>

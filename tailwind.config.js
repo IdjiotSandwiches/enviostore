@@ -13,10 +13,11 @@ export default {
     },
     colors: {
         'primary': '#ffffff',
-        'secondary': '#2c2c2c',
         'accent': '#6f6f6f',
         'background': '#F8F8F8',
-        'button': '#000000'
+        'button': '#000000',
+        'font_primary': '#2c2c2c',
+        'font_secondary': '#6f6f6f',
     },
     extend: {},
   },
