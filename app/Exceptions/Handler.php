@@ -29,7 +29,7 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (NotFoundHttpException $e, $request) {
-            return response()->view('error.404', [], 404);
+            return response()->view('errors.404', [], 404);
         });
     }
 }
