@@ -7,6 +7,10 @@ export default {
     "./node_modules/flowbite/**/*.js",
   ],
   theme: {
+    fontFamily: {
+        'primary': ['Roboto', 'sans-serif'],
+        'secondary': ['Georgia', 'sans-serif'],
+    },
     extend: {},
   },
   plugins: [
