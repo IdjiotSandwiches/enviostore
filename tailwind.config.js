@@ -11,6 +11,12 @@ export default {
         'primary': ['Roboto', 'sans-serif'],
         'secondary': ['Georgia', 'sans-serif'],
     },
+    colors: {
+        'primary': '',
+        'secondary': '',
+        'background': '#F8F8F8',
+        'button': '#000000'
+    },
     extend: {},
   },
   plugins: [
