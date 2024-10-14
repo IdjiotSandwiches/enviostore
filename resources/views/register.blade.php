@@ -14,7 +14,7 @@
                 "border-red-500" => $errors->has('username'),
             ]) placeholder="username" value="{{ old('username') }}" required />
             @error('username')
-                <p class="text-red-500">{{ $message }}</p>
+                <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror
         </div>
         <div>
@@ -24,7 +24,7 @@
                 "border-red-500" => $errors->has('phone_number')
             ]) placeholder="0123456789" value="{{ old('phone_number') }}" required />
             @error('phone_number')
-                <p class="text-red-500">{{ $message }}</p>
+                <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror
         </div>
         <div>
@@ -34,7 +34,7 @@
                 "border-red-500" => $errors->has('email')
             ]) placeholder="user@email.com" value="{{ old('email') }}" required />
             @error('email')
-                <p class="text-red-500">{{ $message }}</p>
+                <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror
         </div>
         <div>
@@ -44,7 +44,7 @@
                 "border-red-500" => $errors->has('password')
             ]) required />
             @error('password')
-                <p class="text-red-500">{{ $message }}</p>
+                <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror
         </div>
         <div>
@@ -54,7 +54,7 @@
                 "border-red-500" => $errors->has('password_confirmation')
             ]) required />
             @error('password_confirmation')
-                <p class="text-red-500">{{ $message }}</p>
+                <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror
         </div>
         <div>
@@ -65,7 +65,7 @@
                 </label>
             </div>
             @error('terms_and_condition')
-                <p class="text-red-500">{{ $message }}</p>
+                <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror
         </div>
         <button type="submit" class="w-full text-white bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-button dark:hover:bg-button/80 dark:focus:ring-button/15">Sign Up</button>
