@@ -21,7 +21,6 @@ class SellerMiddleware
             return $next($request);
         }
 
-        // Fix this with return 404 view
-        return back();
+        abort(404);
     }
 }
