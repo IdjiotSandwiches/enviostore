@@ -1,4 +1,4 @@
-@extends('layout.auth-layout')
+@extends('layout.form-layout')
 @section('title', 'Login')
 
 @section('form')
