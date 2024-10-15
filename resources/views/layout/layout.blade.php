@@ -6,5 +6,6 @@
     @yield('content')
 
     @yield('extra-js')
+    @include('component.footer.footer')
 </body>
 </html>
