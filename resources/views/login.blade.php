@@ -12,7 +12,7 @@
             <input type="email" name="email" id="email" @class([
                 "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white",
                 "border-red-500" => $errors->has('email')
-            ]) placeholder="user@email.com" required />
+            ]) placeholder="user@email.com" value="{{ old('email') }}" required />
             @error('email')
                 <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror
