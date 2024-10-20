@@ -1,10 +1,10 @@
 <footer class="bg-white dark:bg-gray-900">
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-        <div class="flex flex-col md:flex-row md:justify-between">
+        <div class="flex flex-col md:flex-row md:justify-between md:gap-10">
             <div class="mb-6 md:mb-0">
-                <a href="#" class="flex items-center">
+                <a href="#" class="flex items-center">  
                     {{-- Logo --}}
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white italic md:pl-5">EnvioStore</span>
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white italic">EnvioStore</span>
                 </a>
             </div>
             {{-- Content --}}
