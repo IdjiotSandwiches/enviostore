@@ -43,6 +43,8 @@ $imgPaths = [
         <div class="p-4 md:p-0 flex flex-col justify-between">
             <div class="grid gap-4">
                 <h2 class="font-bold text-2xl md:text-4xl">Product Eco Friendly</h2>
+                <p>212 have brought this product</p>
+                <p>25 Reviews</p>
                 <h3 class="font-bold text-xl md:text-3xl">Rp 5.000</h3>
             </div>
             <div class="grid gap-4">
