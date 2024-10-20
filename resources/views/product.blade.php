@@ -22,13 +22,13 @@ $imgPaths = [
                     @endforeach
                 </ul>
             </div>
-            <div class="glide__arrows absolute w-full flex justify-between h-80 lg:h-[24rem] top-0 opacity-0 group-hover:opacity-100 transition-opacity" data-glide-el="controls">
-                <button class="glide__arrow glide__arrow--left h-full bg-black/30 border-none shadow-none left-0" data-glide-dir="<">
+            <div class="glide__arrows opacity-0 group-hover:opacity-100 transition-opacity" data-glide-el="controls">
+                <button class="glide__arrow glide__arrow--left md:top-40 lg:top-48 h-80 lg:h-[24rem] bg-black/30 border-none shadow-none left-0" data-glide-dir="<">
                     <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
                     </svg>
                 </button>
-                <button class="glide__arrow glide__arrow--right h-full bg-black/30 border-none shadow-none right-0" data-glide-dir=">">
+                <button class="glide__arrow glide__arrow--right md:top-40 lg:top-48 h-80 lg:h-[24rem] bg-black/30 border-none shadow-none right-0" data-glide-dir=">">
                     <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
                     </svg>
@@ -40,7 +40,7 @@ $imgPaths = [
                 @endforeach
             </div>
         </div>
-        <!-- <div class="p-4 md:p-0 flex flex-col justify-between">
+        <div class="p-4 md:p-0 flex flex-col justify-between">
             <div class="grid gap-4">
                 <h2 class="font-bold text-2xl md:text-4xl">Product Eco Friendly</h2>
                 <h3 class="font-bold text-xl md:text-3xl">Rp 5.000</h3>
@@ -67,7 +67,7 @@ $imgPaths = [
                     <a href="#" class="text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-lg px-4 md:px-5 py-1.5 md:py-2 dark:bg-button dark:hover:bg-button/80 dark:focus:ring-button/15 text-nowrap">Buy</a>
                 </div>
             </div>
-        </div> -->
+        </div>
     </section>
     <section>
 
@@ -81,8 +81,7 @@ $imgPaths = [
         const options = {
             type: 'carousel',
             startAt: 0,
-            animationDuration: 1000,
-            gap: 0,
+            animationDuration: 500,
         };
 
         new Glide('.glide', options).mount({ Controls, Breakpoints, Swipe });
