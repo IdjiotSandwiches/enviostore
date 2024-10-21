@@ -1,4 +1,4 @@
-<div class="w-full max-w-72 bg-white border border-gray-200 rounded-lg shadow">
+<div class="w-full max-w-xl bg-white border border-gray-200 rounded-lg shadow">
     <a href="#">
         <img class="rounded-t-lg" src="{{ asset('img/1.png') }}" alt="product image" />
     </a>
