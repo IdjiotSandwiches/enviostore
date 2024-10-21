@@ -102,7 +102,7 @@ $imgPaths = [
         const options = {
             type: 'carousel',
             startAt: 0,
-            animationDuration: 500,
+            animationDuration: 350,
         };
 
         new Glide('.glide', options).mount({ Controls, Breakpoints, Swipe });
