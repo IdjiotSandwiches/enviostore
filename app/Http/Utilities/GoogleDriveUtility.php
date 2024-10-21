@@ -68,4 +68,35 @@ class GoogleDriveUtility implements StatusInterface
         return response($img, 200)
             ->header('Content-Type', 'image/jpeg');
     }
+
+    public function deleteImage($imgPath)
+    {
+        try {
+            DB::beginTransaction();
+
+            $this->storage->delete($imgPath);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+
+            $response = [
+                'status' => self::STATUS_ERROR,
+                'message' => 'Image deletion failed!',
+            ];
+
+            return back()->with($response);
+        }
+
+        $response = [
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Image deleted successfully!',
+        ];
+
+        return $response;
+    }
 }
