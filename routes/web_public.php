@@ -30,6 +30,10 @@ Route::middleware(['guest:web,admin'])->group(function () {
         Route::get('/register', 'index')->name('register');
         Route::post('/register', 'register')->name('attemptRegister');
     });
+
+    Route::get('/product', function () {
+        return view('product');
+    });
 });
 
 Route::middleware(['auth:web,admin'])->group(function () {
