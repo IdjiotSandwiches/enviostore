@@ -21,7 +21,7 @@ class GoogleDriveUtility implements StatusInterface
     }
 
     /**
-     * Summary of storeProductImage
+     * Summary of storeImage
      * @param string $imgName
      * @param array|UploadedFile|null $img
      * @return string[]|\Illuminate\Http\RedirectResponse
@@ -58,7 +58,7 @@ class GoogleDriveUtility implements StatusInterface
     }
 
     /**
-     * Summary of getProductImage
+     * Summary of getImage
      * @param string $imgPath
      * @return string
      */
