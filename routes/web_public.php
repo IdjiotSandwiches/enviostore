@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GoogleDriveController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -19,6 +20,10 @@ use App\Http\Controllers\EmailVerificationController;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+Route::controller(GoogleDriveController::class)->group(function () {
+    Route::get('/get-file', 'getFile')->name('getFile');
+});
 
 Route::middleware(['guest:web,admin'])->group(function () {
     Route::controller(LoginController::class)->group(function () {
