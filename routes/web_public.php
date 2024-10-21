@@ -22,6 +22,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::controller(GoogleDriveController::class)->group(function () {
+    Route::post('/store-file', 'storeFile')->name('storeFile');
     Route::get('/get-file', 'getFile')->name('getFile');
 });
 
