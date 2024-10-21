@@ -69,6 +69,11 @@ class GoogleDriveUtility implements StatusInterface
             ->header('Content-Type', 'image/jpeg');
     }
 
+    /**
+     * Summary of deleteImage
+     * @param string $imgPath
+     * @return string[]|\Illuminate\Http\RedirectResponse
+     */
     public function deleteImage($imgPath)
     {
         try {
