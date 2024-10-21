@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class GoogleDriveUtility implements StatusInterface
 {
+    // Mungkin nanti pake has($path) buat cek file.
     private $storage;
 
     /**
