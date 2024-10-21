@@ -24,6 +24,7 @@ Route::get('/', function () {
 Route::controller(GoogleDriveController::class)->group(function () {
     Route::post('/store-file', 'storeFile')->name('storeFile');
     Route::get('/get-file', 'getFile')->name('getFile');
+    Route::get('/test', 'index')->name('testDrive');
 });
 
 Route::middleware(['guest:web,admin'])->group(function () {

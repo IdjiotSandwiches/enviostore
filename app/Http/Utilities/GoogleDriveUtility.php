@@ -3,18 +3,35 @@
 namespace App\Http\Utilities;
 
 use App\Models\ErrorLog;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\StatusInterface;
 use Illuminate\Support\Facades\Storage;
 
 class GoogleDriveUtility implements StatusInterface
 {
-    public function storeProductImage($imgName, $img)
+    private $storage;
+
+    /**
+     * Summary of __construct
+     */
+    public function __construct()
+    {
+        $this->storage = Storage::disk('google');
+    }
+
+    /**
+     * Summary of storeProductImage
+     * @param string $imgName
+     * @param array|UploadedFile|null $img
+     * @return string[]|\Illuminate\Http\RedirectResponse
+     */
+    public function storeImage($imgName, $img)
     {
         try {
             DB::beginTransaction();
 
-            Storage::disk('google')->write($imgName, file_get_contents($img));
+            $this->storage->write($imgName, file_get_contents($img));
 
             DB::commit();
         } catch (\Exception $e) {
@@ -40,8 +57,15 @@ class GoogleDriveUtility implements StatusInterface
         return $response;
     }
 
-    public function getProductImage()
+    /**
+     * Summary of getProductImage
+     * @param string $imgPath
+     * @return string
+     */
+    public function getImage($imgPath)
     {
-
+        $img = $this->storage->read($imgPath);
+        return response($img, 200)
+            ->header('Content-Type', 'image/jpeg');
     }
 }
