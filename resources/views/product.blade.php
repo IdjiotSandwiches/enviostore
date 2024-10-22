@@ -10,7 +10,7 @@ $imgPaths = [
 @endphp
 
 @section('content')
-<section class="max-w-screen-xl md:px-4 py-8 md:mx-auto">
+<section class="max-w-screen-xl md:px-4 md:py-8 md:mx-auto">
     <section class="md:grid md:grid-cols-2 gap-4">
         <div class="glide group w-full md:w-80 lg:w-[24rem] xl:w-[30rem] md:h-[26rem] lg:h-[30rem] xl:h-[36rem]">
             <div class="glide__track" data-glide-el="track">
