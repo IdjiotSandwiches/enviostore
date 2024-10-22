@@ -76,7 +76,7 @@ $imgPaths = [
             </div>
         </div>
     </section>
-    <section class="p-4 md:p-0">
+    <section class="p-4 md:p-0 md:pt-10">
         <div id="accordion-collapse" data-accordion="collapse" data-active-classes="text-font_primary" data-inactive-classes="text-font_primary">
             <h2 id="accordion-collapse-heading-1">
                 <button type="button" class="flex items-center justify-between w-full p-5 font-bold rtl:text-right border border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-body-1" aria-expanded="false" aria-controls="accordion-collapse-body-1">
