@@ -17,7 +17,7 @@ $imgPaths = [
                 <ul class="glide__slides">
                     @foreach ($imgPaths as $path)
                         <li class="glide__slide">
-                            <img src="{{ asset($path) }}" class="aspect-square object-cover select-none pointer-events-none md:rounded-md" alt="...">
+                            <img src="{{ asset($path) }}" class="aspect-square object-contain select-none pointer-events-none md:rounded-md" alt="...">
                         </li>
                     @endforeach
                 </ul>
@@ -36,7 +36,7 @@ $imgPaths = [
             </div>
             <div class="glide__bullets w-full bottom-0 gap-4 overflow-auto hidden md:flex" data-glide-el="controls[nav]">
                 @foreach ($imgPaths as $key => $value)
-                    <img class="glide__bullet h-20 w-20 p-0 m-0 object-cover border-none rounded-md" src="{{ $value }}" data-glide-dir="{{ "={$key}" }}" />
+                    <img class="glide__bullet h-20 w-20 p-0 m-0 object-contain border-none rounded-md" src="{{ $value }}" data-glide-dir="{{ "={$key}" }}" />
                 @endforeach
             </div>
         </div>
