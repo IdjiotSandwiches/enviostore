@@ -2,7 +2,17 @@
 @section('title', 'Welcome')
 
 @section('content')
-{{-- @include('component.carousel') --}}
+    @php
+        $imagePaths=[
+            '/img/0.png',
+            '/img/1.png',
+            '/img/2.png',
+            '/img/3.png',
+            '/img/4.png',
+        ];
+    @endphp
+
+@include('component.carousel', ['imgPaths' => $imagePaths])
 <h1 class="flex justify-center p-9 text-5xl font-secondary">
     Category 
 </h1>
