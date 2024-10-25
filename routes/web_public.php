@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\GoogleDriveController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\GoogleDriveController;
 use App\Http\Controllers\EmailVerificationController;
 
 /*
@@ -21,6 +22,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::controller(ProductController::class)->group(function () {
+    Route::get('/product/{id}', 'index')->name('getProduct');
+});
+
 Route::controller(GoogleDriveController::class)->group(function () {
     Route::post('/store-file', 'storeFile')->name('storeFile');
     Route::get('/get-file', 'getFile')->name('getFile');
@@ -36,10 +41,6 @@ Route::middleware(['guest:web,admin'])->group(function () {
     Route::controller(RegisterController::class)->group(function () {
         Route::get('/register', 'index')->name('register');
         Route::post('/register', 'register')->name('attemptRegister');
-    });
-
-    Route::get('/product', function () {
-        return view('product');
     });
 });
 
