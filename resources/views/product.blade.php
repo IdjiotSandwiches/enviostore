@@ -17,7 +17,7 @@ $imgPaths = [
                 <ul class="glide__slides">
                     @foreach ($productImgs as $img)
                         <li class="glide__slide">
-                            <img src="{{ $img }}" class="aspect-square object-contain select-none pointer-events-none md:rounded-md" alt="...">
+                            <img src="{{ $img }}" class="w-full h-full aspect-square object-contain select-none pointer-events-none md:rounded-md" alt="...">
                         </li>
                     @endforeach
                 </ul>
