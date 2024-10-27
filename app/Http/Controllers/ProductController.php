@@ -11,13 +11,22 @@ class ProductController extends Controller
 {
     private $googleDriveUtility;
 
+    /**
+     * Summary of __construct
+     */
     public function __construct()
     {
         $this->googleDriveUtility = new GoogleDriveUtility();
     }
 
+    /**
+     * Summary of index
+     * @param string $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function index($id)
     {
+        $id = base64_decode($id);
         $product = Product::find($id);
         $productImgUrls = ProductImage::where('product_id', $id)->pluck('url');
         $productImgs = [];
