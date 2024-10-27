@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
-use App\Http\Utilities\GoogleDriveUtility;
+use App\Utilities\GoogleDriveUtility;
 
 class ProductController extends Controller
 {
@@ -29,6 +29,7 @@ class ProductController extends Controller
         // Still on work, need to be discuss
         $id = base64_decode($id);
         $id = explode("_", $id)[1];
+        // --
         $product = Product::find($id);
         $productImgUrls = ProductImage::where('product_id', $id)->pluck('url');
         $productImgs = [];
