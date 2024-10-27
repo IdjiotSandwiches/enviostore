@@ -64,6 +64,9 @@ $imgPaths = [
                         </button>
                     </div>
                 </div>
+                <div class="text-right block font-medium text-accent dark:text-white">
+                    Stocks: {{ $product->stocks }}
+                </div>
                 <div class="grid gap-4">
                     <a href="#" class="flex items-center justify-center gap-2 text-center py-2 px-5 text-lg font-medium text-gray-900 focus:outline-none rounded-lg border border-button hover:bg-accent/10 hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15 dark:focus:ring-button/15 dark:text-button dark:border-button dark:hover:text-white dark:hover:bg-accent/10 text-nowrap">
                         <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
