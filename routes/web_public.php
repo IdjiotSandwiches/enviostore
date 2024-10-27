@@ -26,12 +26,6 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/product/{id}', 'index')->name('getProduct');
 });
 
-Route::controller(GoogleDriveController::class)->group(function () {
-    Route::post('/store-file', 'storeFile')->name('storeFile');
-    Route::get('/get-file', 'getFile')->name('getFile');
-    Route::get('/test', 'index')->name('testDrive');
-});
-
 Route::middleware(['guest:web,admin'])->group(function () {
     Route::controller(LoginController::class)->group(function () {
         Route::get('/login', 'index')->name('login');
