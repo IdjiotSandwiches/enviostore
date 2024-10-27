@@ -1,14 +1,6 @@
 @extends('layout.layout')
 @section('title', 'Product')
 
-@php
-$imgPaths = [
-    'img/0.png',
-    'img/1.png',
-    'img/2.png',
-];
-@endphp
-
 @section('content')
 <section class="max-w-screen-xl md:px-4 md:py-8 md:mx-auto">
     <section class="md:grid md:grid-cols-2 gap-4">
