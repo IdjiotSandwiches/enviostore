@@ -27,9 +27,8 @@ class ProductController extends Controller
     public function index($id)
     {
         // Still on work, need to be discuss
-        $id = base64_decode($id);
-        $id = explode("_", $id)[1];
-        // --
+        // $id = base64_decode($id);
+        // $id = explode("_", $id)[1];
         $product = Product::find($id);
         $productImgUrls = ProductImage::where('product_id', $id)->pluck('url');
         $productImgs = [];
