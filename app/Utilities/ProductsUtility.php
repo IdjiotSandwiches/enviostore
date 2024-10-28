@@ -19,13 +19,15 @@ class ProductsUtility
     /**
      * Summary of getProducts
      * @param \App\Models\Product $products
-     * @param mixed $category
-     * @return mixed
+     * @param string $category
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getProducts($products, $category = null)
     {
-        $products = $products->where('category_id', $category)
-            ->paginate(2, ['*'], 'products')
+        $products = $products->when($category, function ($query) use ($category) {
+            return $query->where('category_id', $category);
+        })
+            ->paginate(20, ['*'], 'products')
             ->through(function ($product) {
                 $name = $product->name;
                 $price = $product->price;

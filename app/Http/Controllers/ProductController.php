@@ -29,7 +29,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = new Product;
-        $products = $this->productsUtility();
+        $products = $this->productsUtility->getProducts($products);
 
         return view('products', compact('products'));
     }
