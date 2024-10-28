@@ -2,10 +2,11 @@
 
 namespace App\Utilities;
 
-use App\Models\ProductImage;
 use App\Interfaces\SortDirectionInterface;
+use App\Models\ProductImage;
+use App\Interfaces\SortInterface;
 
-class ProductsUtility implements SortDirectionInterface
+class ProductsUtility implements SortInterface, SortDirectionInterface
 {
     private $googleDriveUtility;
 
@@ -22,15 +23,22 @@ class ProductsUtility implements SortDirectionInterface
      * @param \App\Models\Product $products
      * @param string $category
      * @param string $column
-     * @param string $sortDirection
+     * @param int $sort
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getProducts($products, $category = null, $column = 'created_at', $sortDirection = self::ASCENDING)
+    public function getProducts($products, $category = null, $sort = self::NEWEST)
     {
         $products = $products->when($category, function ($query) use ($category) {
             return $query->where('category_id', $category);
-        })->orderBy($column, $sortDirection)
-            ->paginate(20, ['*'], 'products')
+        });
+
+        $products = match ($sort) {
+            self::NEWEST => $products->orderBy('created_at', self::ASCENDING),
+            self::HIGHEST_PRICE => $products->orderBy('price', self::DESCENDING),
+            self::LOWEST_PRICE => $products->orderBy('price', self::ASCENDING),
+        };
+
+        $products = $products->paginate(20, ['*'], 'products')
             ->through(function ($product) {
                 $name = $product->name;
                 $price = $product->price;
