@@ -3,8 +3,9 @@
 namespace App\Utilities;
 
 use App\Models\ProductImage;
+use App\Interfaces\SortDirectionInterface;
 
-class ProductsUtility
+class ProductsUtility implements SortDirectionInterface
 {
     private $googleDriveUtility;
 
@@ -20,13 +21,15 @@ class ProductsUtility
      * Summary of getProducts
      * @param \App\Models\Product $products
      * @param string $category
+     * @param mixed $column
+     * @param mixed $sortDirection
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getProducts($products, $category = null)
+    public function getProducts($products, $category = null, $column = 'created_at', $sortDirection = self::ASCENDING)
     {
         $products = $products->when($category, function ($query) use ($category) {
             return $query->where('category_id', $category);
-        })
+        })->orderBy($column, $sortDirection)
             ->paginate(20, ['*'], 'products')
             ->through(function ($product) {
                 $name = $product->name;
