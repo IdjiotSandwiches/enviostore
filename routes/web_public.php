@@ -23,7 +23,8 @@ Route::get('/', function () {
 })->name('home');
 
 Route::controller(ProductController::class)->group(function () {
-    Route::get('/product/{id}', 'index')->name('getProduct');
+    Route::get('/products', 'index')->name('getProducts');
+    Route::get('/products/{id}', 'getProduct')->name('getProduct');
 });
 
 Route::middleware(['guest:web,admin'])->group(function () {

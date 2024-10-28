@@ -24,7 +24,15 @@ class ProductController extends Controller
      * @param string $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index($id)
+    public function index()
+    {
+        $products = new Product;
+        $products = $products->paginate(2, ['*'], 'products');
+
+        return view('products', compact('products'));
+    }
+
+    public function getProduct($id)
     {
         // Still on work, need to be discuss
         // $id = base64_decode($id);
