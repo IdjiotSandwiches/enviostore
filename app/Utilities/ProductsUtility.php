@@ -21,8 +21,8 @@ class ProductsUtility implements SortDirectionInterface
      * Summary of getProducts
      * @param \App\Models\Product $products
      * @param string $category
-     * @param mixed $column
-     * @param mixed $sortDirection
+     * @param string $column
+     * @param string $sortDirection
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getProducts($products, $category = null, $column = 'created_at', $sortDirection = self::ASCENDING)
