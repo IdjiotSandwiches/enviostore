@@ -6,7 +6,7 @@
     <div class="grid grid-cols-5">
         @foreach ($products as $product)
             <div class="max-w-xs p-6 bg-white border border-gray-200 rounded-lg">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $product->name }}</h5>
                 <p class="font-normal text-gray-700 dark:text-gray-400"></p>
             </div>
         @endforeach

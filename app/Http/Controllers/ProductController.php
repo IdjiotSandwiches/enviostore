@@ -27,7 +27,15 @@ class ProductController extends Controller
     public function index()
     {
         $products = new Product;
-        $products = $products->paginate(2, ['*'], 'products');
+        $products = $products->paginate(2, ['*'], 'products')
+            ->through(function ($product) {
+                $name = $product->name;
+                $price = $product->price;
+                $imgUrl = ProductImage::where('product_id', $product->id)->first()->pluck('url');
+                $imgUrl = $this->googleDriveUtility->getImage($imgUrl);
+
+                return (object) compact('name', 'price', 'imgUrl');
+            });
 
         return view('products', compact('products'));
     }
