@@ -26,7 +26,7 @@ class ProductsUtility implements SortInterface, SortDirectionInterface
      * @param string $category
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getProducts($products, $sort = self::NEWEST, $category = null)
+    public function getProducts($products, $category, $sort = self::NEWEST)
     {
         $products = $products->when($category, function ($query) use ($category) {
             return $query->where('category_id', $category);

@@ -23,6 +23,7 @@ Route::get('/', function () {
 
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/category', 'index')->name('categoryPage');
+    Route::get('/category/{category}', 'indexProducts')->name('indexProducts');
 });
 
 Route::middleware(['guest:web,admin'])->group(function () {
