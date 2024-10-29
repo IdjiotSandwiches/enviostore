@@ -5,7 +5,7 @@ namespace App\Utilities;
 use App\Models\ProductImage;
 use App\Interfaces\SortInterface;
 use App\Interfaces\SortDirectionInterface;
-use App\Http\Utilities\GoogleDriveUtility;
+use App\Utilities\GoogleDriveUtility;
 
 class ProductsUtility implements SortInterface, SortDirectionInterface
 {
