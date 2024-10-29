@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Utilities;
+namespace App\Utilities;
 
 use App\Models\ErrorLog;
 use Illuminate\Http\UploadedFile;
