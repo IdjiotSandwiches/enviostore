@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductImage;
-use App\Utilities\ProductsUtility;
-use Illuminate\Http\Request;
 use App\Utilities\GoogleDriveUtility;
 
 class ProductController extends Controller
@@ -19,25 +17,6 @@ class ProductController extends Controller
     public function __construct()
     {
         $this->googleDriveUtility = new GoogleDriveUtility();
-        $this->productsUtility = new ProductsUtility();
-    }
-
-    /**
-     * Summary of index
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function index()
-    {
-        $products = new Product;
-        $products = $this->productsUtility->getProducts($products);
-
-        return view('products', compact('products'));
-    }
-
-    public function sortProduct($sort)
-    {
-        $products = new Product;
-        $products = $this->productsUtility->getProducts($products, $sort);
     }
 
     /**

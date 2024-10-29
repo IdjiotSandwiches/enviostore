@@ -23,8 +23,6 @@ Route::get('/', function () {
 })->name('home');
 
 Route::controller(ProductController::class)->group(function () {
-    Route::get('/products', 'index')->name('getProducts');
-    // Route::get('/products/{sort}', 'sortProduct')->name('getSortedProduct');
     Route::get('/products/{id}', 'getProduct')->name('getProduct');
 });
 
