@@ -3,7 +3,7 @@
 
 @section('content')
 <section class="max-w-screen-xl md:px-4 md:py-8 md:mx-auto grid gap-4">
-    <h1 class="font-bold text-2xl">Category</h1>
+    <h1 class="font-bold text-3xl">{{ ucfirst($category) }}</h1>
     <button id="filterDropdown" data-dropdown-toggle="dropdown" class="flex gap-2 p-2 rounded-lg max-w-[18rem] justify-center items-center bg-primary text-font_primary border border-font_primary" type="button">
         Sort By:
         <span class="font-bold">
@@ -14,7 +14,6 @@
         </svg>
     </button>
 
-    <!-- Dropdown menu -->
     <div id="dropdown" class="max-w-xs z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-72 dark:bg-gray-700">
         <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="filterDropdown">
             <li value="1" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Newest First</li>
@@ -24,23 +23,23 @@
     </div>
 
     <div class="grid grid-cols-4 gap-4">
-        {{-- @foreach ($products as $product) --}}
+        @foreach ($products as $product)
             <div class="max-w-xs bg-white rounded-lg dark:bg-gray-800 dark:border-gray-700">
-                <a href="{{-- $product->link --}}">
+                <a href="{{ $product->link }}">
                     <div>
-                        <img class="rounded-t-lg aspect-square object-contain" src="{{-- $product->img --}}" alt="" />
+                        <img class="rounded-t-lg aspect-square object-contain" src="{{ $product->img }}" alt="" />
                     </div>
                     <div class="p-5 flex flex-col gap-2">
                         <div>
-                            <h5 class="text-xl font-bold text-font_primary dark:text-white">{{-- $product->name --}}</h5>
+                            <h5 class="text-xl font-bold text-font_primary dark:text-white">{{ $product->name }}</h5>
                             <p class="text-base text-font_secondary dark:text-gray-400">Nama Penjual</p>
                             <p class="text-base text-font_secondary dark:text-gray-400">4.5 | 25 Review</p>
                         </div>
-                        <p class="text-xl font-bold text-font_primary dark:text-gray-400">Rp {{-- $product->price --}}</p>
+                        <p class="text-xl font-bold text-font_primary dark:text-gray-400">Rp {{ $product->price }}</p>
                     </div>
                 </a>
             </div>
-        {{-- @endforeach --}}
+        @endforeach
     </div>
 </section>
 @endsection

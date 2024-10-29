@@ -2,12 +2,14 @@
 
 namespace App\Utilities;
 
+use App\Models\Product;
 use App\Models\ProductImage;
-use App\Interfaces\SortInterface;
-use App\Interfaces\SortDirectionInterface;
 use App\Utilities\GoogleDriveUtility;
+use App\Interfaces\SortInterface;
+use App\Interfaces\CategoryInterface;
+use App\Interfaces\SortDirectionInterface;
 
-class ProductsUtility implements SortInterface, SortDirectionInterface
+class ProductsUtility implements SortInterface, SortDirectionInterface, CategoryInterface
 {
     private $googleDriveUtility;
 
@@ -21,14 +23,13 @@ class ProductsUtility implements SortInterface, SortDirectionInterface
 
     /**
      * Summary of getProducts
-     * @param \App\Models\Product $products
      * @param int $sort
      * @param string $category
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getProducts($products, $category, $sort = self::NEWEST)
+    public function getProducts($category = null, $sort = self::NEWEST)
     {
-        $products = $products->when($category, function ($query) use ($category) {
+        $products = Product::when($category, function ($query) use ($category) {
             return $query->where('category_id', $category);
         });
 

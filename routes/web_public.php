@@ -23,8 +23,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::controller(CategoryController::class)->group(function () {
-    Route::get('/category', 'index')->name('categoryPage');
-    Route::get('/category/{category}', 'indexProducts')->name('indexProducts');
+    Route::get('/category/{category}', 'index')->name('categoryPage');
 });
 
 Route::controller(ProductController::class)->group(function () {
