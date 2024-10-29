@@ -1,23 +1,15 @@
 @extends('layout.layout')
 @section('title', 'Product')
 
-@php
-$imgPaths = [
-    'img/0.png',
-    'img/1.png',
-    'img/2.png',
-];
-@endphp
-
 @section('content')
 <section class="max-w-screen-xl md:px-4 md:py-8 md:mx-auto">
     <section class="md:grid md:grid-cols-2 gap-4">
         <div class="glide group w-full md:w-80 lg:w-[24rem] xl:w-[30rem] md:h-[26rem] lg:h-[30rem] xl:h-[36rem]">
             <div class="glide__track" data-glide-el="track">
                 <ul class="glide__slides">
-                    @foreach ($imgPaths as $path)
+                    @foreach ($productImgs as $img)
                         <li class="glide__slide">
-                            <img src="{{ asset($path) }}" class="aspect-square object-contain select-none pointer-events-none md:rounded-md" alt="...">
+                            <img src="{{ $img }}" class="w-full h-full aspect-square object-contain select-none pointer-events-none md:rounded-md" alt="...">
                         </li>
                     @endforeach
                 </ul>
@@ -35,17 +27,17 @@ $imgPaths = [
                 </button>
             </div>
             <div class="glide__bullets w-full bottom-0 gap-4 overflow-auto hidden md:flex" data-glide-el="controls[nav]">
-                @foreach ($imgPaths as $key => $value)
+                @foreach ($productImgs as $key => $value)
                     <img class="glide__bullet h-20 w-20 p-0 m-0 object-contain border-none rounded-md" src="{{ $value }}" data-glide-dir="{{ "={$key}" }}" />
                 @endforeach
             </div>
         </div>
         <div class="p-4 md:p-0 flex flex-col justify-between">
             <div class="grid gap-4">
-                <h2 class="font-bold text-2xl md:text-4xl">Product Eco Friendly</h2>
+                <h2 class="font-bold text-2xl md:text-4xl">{{ $product->name }}</h2>
                 <p>212 have brought this product</p>
                 <p>25 Reviews</p>
-                <h3 class="font-bold text-xl md:text-3xl">Rp 5.000</h3>
+                <h3 class="font-bold text-xl md:text-3xl">Rp {{ $product->price }}</h3>
             </div>
             <div class="grid gap-4">
                 <div class="flex items-end justify-between">
@@ -56,13 +48,16 @@ $imgPaths = [
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
                             </svg>
                         </button>
-                        <input type="text" id="quantity-input" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="1" required />
+                        <input type="text" id="quantity-input" data-input-counter data-input-counter-min="1" data-input-counter-max="{{ $product->stocks }}" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ $product->stocks }}" value="1" required />
                         <button type="button" id="increment-button" data-input-counter-increment="quantity-input" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                             <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
                             </svg>
                         </button>
                     </div>
+                </div>
+                <div class="text-right block font-medium text-accent dark:text-white">
+                    Stocks: {{ $product->stocks }}
                 </div>
                 <div class="grid gap-4">
                     <a href="#" class="flex items-center justify-center gap-2 text-center py-2 px-5 text-lg font-medium text-gray-900 focus:outline-none rounded-lg border border-button hover:bg-accent/10 hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15 dark:focus:ring-button/15 dark:text-button dark:border-button dark:hover:text-white dark:hover:bg-accent/10 text-nowrap">
@@ -88,7 +83,7 @@ $imgPaths = [
             </h2>
             <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
                 <div class="p-5 border border-t-0 rounded-b-xl bg-primary dark:bg-primary">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id laudantium et, magnam nulla quidem, modi voluptate ad temporibus vitae maxime alias sint praesentium delectus molestiae sunt accusantium, suscipit voluptatem mollitia.</p>
+                    <p>{{ $product->description }}</p>
                 </div>
             </div>
         </div>
@@ -100,7 +95,7 @@ $imgPaths = [
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const options = {
-            type: 'carousel',
+            type: 'slider',
             startAt: 0,
             animationDuration: 350,
         };

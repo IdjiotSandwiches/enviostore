@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EmailVerificationController;
@@ -24,6 +25,10 @@ Route::get('/', function () {
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/category', 'index')->name('categoryPage');
     Route::get('/category/{category}', 'indexProducts')->name('indexProducts');
+});
+
+Route::controller(ProductController::class)->group(function () {
+    Route::get('/products/{id}', 'getProduct')->name('getProduct');
 });
 
 Route::middleware(['guest:web,admin'])->group(function () {
