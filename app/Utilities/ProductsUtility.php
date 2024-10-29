@@ -2,9 +2,9 @@
 
 namespace App\Utilities;
 
-use App\Interfaces\SortDirectionInterface;
 use App\Models\ProductImage;
 use App\Interfaces\SortInterface;
+use App\Interfaces\SortDirectionInterface;
 
 class ProductsUtility implements SortInterface, SortDirectionInterface
 {
@@ -21,12 +21,11 @@ class ProductsUtility implements SortInterface, SortDirectionInterface
     /**
      * Summary of getProducts
      * @param \App\Models\Product $products
-     * @param string $category
-     * @param string $column
      * @param int $sort
+     * @param string $category
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getProducts($products, $category = null, $sort = self::NEWEST)
+    public function getProducts($products, $sort = self::NEWEST, $category = null)
     {
         $products = $products->when($category, function ($query) use ($category) {
             return $query->where('category_id', $category);

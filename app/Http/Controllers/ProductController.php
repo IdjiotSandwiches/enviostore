@@ -34,6 +34,12 @@ class ProductController extends Controller
         return view('products', compact('products'));
     }
 
+    public function sortProduct($sort)
+    {
+        $products = new Product;
+        $products = $this->productsUtility->getProducts($products, $sort);
+    }
+
     /**
      * Summary of getProduct
      * @param string $id
