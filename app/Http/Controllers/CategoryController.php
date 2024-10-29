@@ -25,7 +25,7 @@ class CategoryController extends Controller implements CategoryInterface
     {
         $category = Category::where('name', $category)->first();
 
-        if(!$category) abort(404);
+        if (!$category) abort(404);
 
         $products = $this->productUtility->getProducts($category->id);
         $categoryName = ucfirst($category->name);
@@ -33,8 +33,10 @@ class CategoryController extends Controller implements CategoryInterface
         return view('category', compact('categoryName', 'products'));
     }
 
-    public function sortProducts($category, $sort)
+    public function sortProducts(Request $request, $category, $sort)
     {
+        if (!$request->ajax()) abort(404);
+
 
     }
 }
