@@ -3,7 +3,7 @@
 
 @section('content')
 <section class="max-w-screen-xl md:px-4 md:py-8 md:mx-auto grid gap-4">
-    <h1 class="font-bold text-3xl">{{ ucfirst($category) }}</h1>
+    <h1 class="font-bold text-3xl">{{ $categoryName }}</h1>
     <button id="filterDropdown" data-dropdown-toggle="dropdown" class="flex gap-2 p-2 rounded-lg max-w-[18rem] justify-center items-center bg-primary text-font_primary border border-font_primary" type="button">
         Sort By:
         <span class="font-bold">
@@ -42,4 +42,10 @@
         @endforeach
     </div>
 </section>
+@endsection
+
+@section('extra-js')
+<script>
+
+</script>
 @endsection

@@ -23,11 +23,14 @@ class CategoryController extends Controller implements CategoryInterface
      */
     public function index($category)
     {
-        $categoryId = Category::where('name', $category)->first();
-        if(!$categoryId) abort(404);
-        $products = $this->productUtility->getProducts($categoryId->id);
+        $category = Category::where('name', $category)->first();
 
-        return view('category', compact('category', 'products'));
+        if(!$category) abort(404);
+
+        $products = $this->productUtility->getProducts($category->id);
+        $categoryName = ucfirst($category->name);
+
+        return view('category', compact('categoryName', 'products'));
     }
 
     public function sortProducts($category, $sort)
