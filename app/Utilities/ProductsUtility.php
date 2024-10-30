@@ -23,8 +23,8 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
 
     /**
      * Summary of getProducts
-     * @param int $sort
      * @param string $category
+     * @param int $sort
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getProducts($category = null, $sort = self::NEWEST)
@@ -35,11 +35,11 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
 
         $products = match ($sort) {
             self::NEWEST => $products->orderBy('created_at', self::ASCENDING),
-            self::HIGHEST_PRICE => $products->orderBy('price', self::DESCENDING),
             self::LOWEST_PRICE => $products->orderBy('price', self::ASCENDING),
+            self::HIGHEST_PRICE => $products->orderBy('price', self::DESCENDING),
         };
 
-        $products = $products->paginate(20, ['*'], 'products')
+        $products = $products->paginate(2, ['*'], 'products')
             ->through(function ($product) {
                 $name = $product->name;
                 $price = $product->price;

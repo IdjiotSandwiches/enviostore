@@ -16,49 +16,85 @@
 
     <div id="dropdown" class="max-w-xs z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-72 dark:bg-gray-700">
         <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="filterDropdown">
-            <li id="new" value="1" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Newest First</li>
-            <li value="2" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Highest Price</li>
-            <li value="3" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Lowest Price</li>
+            <li value="1" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Newest First</li>
+            <li value="2" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Lowest Price</li>
+            <li value="3" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Highest Price</li>
         </ul>
     </div>
 
-    <div class="grid grid-cols-4 gap-4">
-        @foreach ($products as $product)
-            <div class="max-w-xs bg-white rounded-lg dark:bg-gray-800 dark:border-gray-700">
-                <a href="{{ $product->link }}">
-                    <div>
-                        <img class="rounded-t-lg aspect-square object-contain" src="{{ $product->img }}" alt="" />
-                    </div>
-                    <div class="p-5 flex flex-col gap-2">
+    <div>
+        <div id="productContainer" class="grid grid-cols-4 gap-4">
+            @foreach ($products as $product)
+                <div class="max-w-xs bg-white rounded-lg dark:bg-gray-800 dark:border-gray-700">
+                    <a href="{{ $product->link }}">
                         <div>
-                            <h5 class="text-xl font-bold text-font_primary dark:text-white">{{ $product->name }}</h5>
-                            <p class="text-base text-font_secondary dark:text-gray-400">Nama Penjual</p>
-                            <p class="text-base text-font_secondary dark:text-gray-400">4.5 | 25 Review</p>
+                            <img class="rounded-t-lg aspect-square object-contain" src="{{ $product->img }}" alt="" />
                         </div>
-                        <p class="text-xl font-bold text-font_primary dark:text-gray-400">Rp {{ $product->price }}</p>
-                    </div>
-                </a>
-            </div>
-        @endforeach
+                        <div class="p-5 flex flex-col gap-2">
+                            <div>
+                                <h5 class="text-xl font-bold text-font_primary dark:text-white">{{ $product->name }}</h5>
+                                <p class="text-base text-font_secondary dark:text-gray-400">Nama Penjual</p>
+                                <p class="text-base text-font_secondary dark:text-gray-400">4.5 | 25 Review</p>
+                            </div>
+                            <p class="text-xl font-bold text-font_primary dark:text-gray-400">Rp {{ $product->price }}</p>
+                        </div>
+                    </a>
+                </div>
+            @endforeach
+        </div>
+        {{ $products->links('pagination::tailwind') }}
     </div>
 </section>
 @endsection
 
 @section('extra-js')
 <script>
-    function fetchRequest() {
-        let url = "{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}";
-        const response = fetch(url, {
-            method: 'POST',
+    function fetchRequest(sort) {
+        let url = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
+        url = url.replace('::CATEGORY::', '{{ strtolower($categoryName) }}').replace('::SORT::', sort);
+        fetch(url, {
+            // Nanti dibikin ke common-js
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+        }).then(response => {
+            return response.json();
+        }).then(response => {
+            console.log(response)
+            let productContainer = document.querySelector('#productContainer');
+            productContainer.replaceChildren();
+
+            let products = response.data.data;
+            products.forEach(product => {
+                let item = `
+                    <div class="max-w-xs bg-white rounded-lg dark:bg-gray-800 dark:border-gray-700">
+                        <a href="${product.links}">
+                            <div>
+                                <img class="rounded-t-lg aspect-square object-contain" src="${product.img}" alt="" />
+                            </div>
+                            <div class="p-5 flex flex-col gap-2">
+                                <div>
+                                    <h5 class="text-xl font-bold text-font_primary dark:text-white">${product.name}</h5>
+                                    <p class="text-base text-font_secondary dark:text-gray-400">Nama Penjual</p>
+                                    <p class="text-base text-font_secondary dark:text-gray-400">4.5 | 25 Review</p>
+                                </div>
+                                <p class="text-xl font-bold text-font_primary dark:text-gray-400">Rp ${product.price}</p>
+                            </div>
+                        </a>
+                    </div>`;
+                productContainer.insertAdjacentHTML('beforeend', item)
+            });
         });
     }
 
     document.addEventListener('DOMContentLoaded', function() {
         let sort = document.querySelectorAll('#dropdown ul li');
+        let filterDropdown = document.querySelector('#filterDropdown span');
 
         sort.forEach(item => {
             item.addEventListener('click', function() {
-                console.log(this.textContent);
+                filterDropdown.textContent = this.textContent;
+                fetchRequest(item.value);
             });
         });
     });
