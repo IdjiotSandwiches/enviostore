@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ErrorLog;
 use App\Models\ProductImage;
 use App\Utilities\GoogleDriveUtility;
 
@@ -27,8 +28,16 @@ class ProductController extends Controller
     public function getProduct($id)
     {
         // Still on work, need to be discuss
-        $id = base64_decode($id);
-        $id = explode("-", $id)[1];
+        try {
+            $id = base64_decode($id);
+            $id = explode("-", $id)[1];
+        } catch (\Exception $e) {
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+
+            abort(404);
+        }
 
         $product = Product::find($id);
         if (!$product) abort(404);
