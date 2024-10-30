@@ -12,6 +12,9 @@ class CategoryController extends Controller implements CategoryInterface
 {
     private $productUtility;
 
+    /**
+     * Summary of __construct
+     */
     public function __construct()
     {
         $this->productUtility = new ProductsUtility();
@@ -34,6 +37,13 @@ class CategoryController extends Controller implements CategoryInterface
         return view('category', compact('categoryName', 'products'));
     }
 
+    /**
+     * Summary of sortProducts
+     * @param \Illuminate\Http\Request $request
+     * @param string $category
+     * @param string $sort
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function sortProducts(Request $request, $category, $sort)
     {
         if (!$request->ajax()) abort(404);
