@@ -2,7 +2,7 @@
 @section('title', 'Product')
 
 @section('content')
-<section class="max-w-screen-xl md:px-4 md:py-8 md:mx-auto grid gap-4">
+<section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
     <h1 class="font-bold text-3xl">{{ $categoryName }}</h1>
     <button id="filterDropdown" data-dropdown-toggle="dropdown" class="flex gap-2 p-2 rounded-lg max-w-[18rem] justify-center items-center bg-primary text-font_primary border border-font_primary" type="button">
         Sort By:
@@ -22,8 +22,8 @@
         </ul>
     </div>
 
-    <div>
-        <div id="productContainer" class="grid grid-cols-4 gap-4">
+    <div class="grid gap-4">
+        <div id="productContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             @foreach ($products as $product)
                 <div class="max-w-xs bg-white rounded-lg dark:bg-gray-800 dark:border-gray-700">
                     <a href="{{ $product->link }}">
