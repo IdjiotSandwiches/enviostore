@@ -49,9 +49,12 @@
                 'X-Requested-With': 'XMLHttpRequest'
             },
         }).then(response => {
+            if(!response.ok) {
+                throw new Error('Fetch Error!');
+            }
+
             return response.json();
         }).then(response => {
-            console.log(response)
             let productContainer = document.querySelector('#productContainer');
             productContainer.replaceChildren();
 
@@ -69,8 +72,11 @@
                     .replace('::NAME::', product.name)
                     .replace('::PRICE::', product.price);
 
-                productContainer.insertAdjacentHTML('beforeend', item)
+                productContainer.insertAdjacentHTML('beforeend', item);
             });
+        }).catch(error => {
+            // Nanti di fix pake toast
+            console.log('Error!');
         });
     }
 
