@@ -52,4 +52,23 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
 
         return $products;
     }
+
+    //without pagination, for homepage
+    public function getHomeProduct()
+    {
+        $products = Product::take(8)->get()
+        ->map(function($product) {
+            $name = $product->name;
+            $price = $product->price;
+            $rating = $product->sustainability_score;
+
+            $imgUrl = ProductImage::where('product_id', $product->id)->first();
+            $img = $this->googleDriveUtility->getImage($imgUrl->url);
+            
+            $link = route('getProduct', base64_encode("$name-$product->id"));
+
+            return (object) compact('name', 'rating', 'price', 'img', 'link');
+        });
+        return $products;
+    }
 }

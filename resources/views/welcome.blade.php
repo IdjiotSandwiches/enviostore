@@ -24,9 +24,6 @@ $imagePaths=[
     <div class="mx-auto px-4">
         <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-3">
             @include('component.tiles')
-            @include('component.tiles')
-            @include('component.tiles')
-            @include('component.tiles')
         </div>
         
     </div>
@@ -39,14 +36,15 @@ $imagePaths=[
     </div>
     <div class="mx-auto px-4 pb-9">
         <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-3">
-            @include('component.card')
-            @include('component.card')
-            @include('component.card')
-            @include('component.card')
-            @include('component.card')
-            @include('component.card')
-            @include('component.card')
-            @include('component.card')
+            @foreach ($products as $product)
+                @include('component.card', [
+                    'link' => $product->link,
+                    'img' => $product->img,
+                    'name' => $product->name,
+                    'rating' => $product->rating,
+                    'price' => $product->price,
+                ])
+            @endforeach
         </div>
     </div>
 </div>
