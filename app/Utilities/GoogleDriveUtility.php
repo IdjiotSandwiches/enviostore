@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Utilities;
+namespace App\Utilities;
 
 use App\Models\ErrorLog;
 use Illuminate\Http\UploadedFile;
@@ -66,8 +66,10 @@ class GoogleDriveUtility implements StatusInterface
     public function getImage($imgPath)
     {
         $img = $this->storage->read($imgPath);
-        return response($img, 200)
-            ->header('Content-Type', 'image/jpeg');
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $mimeType = $finfo->buffer($img);
+
+        return 'data:' . $mimeType . ';base64,' . base64_encode($img);
     }
 
     /**
