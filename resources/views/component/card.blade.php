@@ -1,6 +1,6 @@
 <div class="w-full max-w-xs md:max-w-md lg:max-w-xl bg-white border border-gray-200 rounded-lg shadow">
     <a href="#">
-        <img class="w-full h-auto rounded-t-lg" src="{{ asset('img/test-image.png') }}" alt="product image" />
+        <img class="w-full h-auto rounded-t-lg object-contain aspect-square" src="{{ asset('img/test-image.png') }}" alt="product image" />
     </a>
     <div class="pt-2 px-3 md:px-4 lg:px-5 pb-5">
         <a href="#">
