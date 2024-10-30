@@ -29,7 +29,10 @@ class ProductController extends Controller
         // Still on work, need to be discuss
         $id = base64_decode($id);
         $id = explode("-", $id)[1];
+
         $product = Product::find($id);
+        if (!$product) abort(404);
+
         $productImgUrls = ProductImage::where('product_id', $id)->pluck('url');
         $productImgs = [];
         foreach($productImgUrls as $url) {
