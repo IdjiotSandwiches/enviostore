@@ -1,6 +1,6 @@
 @props(['link', 'image', 'name', 'price'])
 
-<div class="max-w-xs bg-white rounded-lg dark:bg-gray-800 dark:border-gray-700">
+<div class="max-w-sm bg-white rounded-lg dark:bg-gray-800 dark:border-gray-700">
     <a href="{{ $link }}">
         <div>
             <img class="rounded-t-lg aspect-square object-contain" src="{{ $image }}" alt="{{ $name }}" />

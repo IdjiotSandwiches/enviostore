@@ -31,9 +31,6 @@ class CategoryController extends Controller implements CategoryInterface
 
         if (!$category) abort(404);
 
-        $products = $this->productUtility->getProducts($category->id);
-        $categoryName = ucfirst($category->name);
-
-        return view('category', compact('categoryName', 'products'));
+        return view('category', compact('category'));
     }
 }

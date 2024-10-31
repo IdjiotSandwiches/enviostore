@@ -21,21 +21,6 @@ class ProductsAPIController extends Controller
     }
 
     /**
-     * Summary of index
-     * @return mixed|\Illuminate\Http\JsonResponse
-     */
-    public function index()
-    {
-        $products = $this->productUtility->getProducts();
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Data sorted!',
-            'data' => $products,
-        ], Response::HTTP_OK);
-    }
-
-    /**
      * Summary of sortProducts
      * @param \Illuminate\Http\Request $request
      * @param string $category
