@@ -44,7 +44,7 @@
         let url = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
         url = url.replace('::CATEGORY::', '{{ strtolower($categoryName) }}').replace('::SORT::', sort);
         fetch(url, {
-            // Nanidibikin ke common-js
+            // Nanti dibikin ke common-js
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             },
@@ -69,7 +69,7 @@
 
                 item = item.replace('::LINK::', product.link)
                     .replace('::IMAGE::', product.img)
-                    .replace('::NAME::', product.name)
+                    .replaceAll('::NAME::', product.name)
                     .replace('::PRICE::', product.price);
 
                 productContainer.insertAdjacentHTML('beforeend', item);
