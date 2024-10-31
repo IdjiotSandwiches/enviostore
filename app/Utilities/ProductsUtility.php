@@ -39,7 +39,7 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
             self::HIGHEST_PRICE => $products->orderBy('price', self::DESCENDING),
         };
 
-        $products = $products->paginate(20, ['*'], 'products')
+        $products = $products->paginate(2, ['*'], 'products')
             ->through(function ($product) {
                 $name = $product->name;
                 $price = $product->price;

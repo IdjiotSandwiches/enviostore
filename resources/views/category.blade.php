@@ -33,16 +33,74 @@
                 ])
             @endforeach
         </div>
-        {{ $products->links('pagination::tailwind') }}
+        <div id="pagination" class="flex items-center md:justify-between">
+            <p class="hidden md:block text-sm text-font_secondary">Showing
+                <span id="totalShown">{{ $products->count() }}</span> of
+                <span id="totalItem">{{ $products->total() }}</span> results</p>
+            <div class="flex gap-2">
+                <a href="{{ $products->previousPageUrl() }}" id="prev-btn" class="p-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-md border border-button hover:bg-background hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15 dark:focus:ring-button/15 dark:bg-background dark:text-button dark:border-button dark:hover:text-white dark:hover:bg-background text-nowrap">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                </a>
+                <a href="{{ $products->nextPageUrl() }}" id="next-btn" class="p-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-md border border-button hover:bg-background hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15 dark:focus:ring-button/15 dark:bg-background dark:text-button dark:border-button dark:hover:text-white dark:hover:bg-background text-nowrap">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 @endsection
 
 @section('extra-js')
 <script>
-    function fetchRequest(sort) {
-        let url = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
-        url = url.replace('::CATEGORY::', '{{ strtolower($categoryName) }}').replace('::SORT::', sort);
+    function replaceProducts(response) {
+        let productContainer = document.querySelector('#productContainer');
+        productContainer.replaceChildren();
+
+        let products = response.data.data;
+        products.forEach(product => {
+            let item = `{!! view('component.product-card', [
+                'link' => '::LINK::',
+                'image' => '::IMAGE::',
+                'name' => '::NAME::',
+                'price' => '::PRICE::',
+            ])->render() !!}`
+
+            item = item.replace('::LINK::', product.link)
+                .replace('::IMAGE::', product.img)
+                .replaceAll('::NAME::', product.name)
+                .replace('::PRICE::', product.price);
+
+            productContainer.insertAdjacentHTML('beforeend', item);
+        });
+
+        let links = response.data.links;
+        let prevBtn = document.querySelector('#prev-btn')
+        let nextBtn = document.querySelector('#next-btn')
+
+        prevBtn.setAttribute('href', links.at(0).url);
+        nextBtn.setAttribute('href', links.at(-1).url);
+
+        let classReplace = ['pointer-events-none', 'cursor-not-allowed', 'border-font_secondary', 'text-font_secondary'];
+        if(links.at(0).url === null) {
+            prevBtn.classList.add('pointer-events-none', 'cursor-not-allowed', 'border-font_secondary', 'text-font_secondary');
+        }
+        else {
+            prevBtn.classList.remove('pointer-events-none', 'cursor-not-allowed', 'border-font_secondary', 'text-font_secondary');
+        }
+        if(links.at(-1).url === null) {
+            nextBtn.classList.add('pointer-events-none', 'cursor-not-allowed', 'border-font_secondary', 'text-font_secondary');
+        }
+        else {
+            nextBtn.classList.remove('pointer-events-none', 'cursor-not-allowed', 'border-font_secondary', 'text-font_secondary');
+        }
+    }
+
+    function fetchRequest(url) {
+        console.log(url)
         fetch(url, {
             // Nanti dibikin ke common-js
             headers: {
@@ -55,28 +113,11 @@
 
             return response.json();
         }).then(response => {
-            let productContainer = document.querySelector('#productContainer');
-            productContainer.replaceChildren();
-
-            let products = response.data.data;
-            products.forEach(product => {
-                let item = `{!! view('component.product-card', [
-                    'link' => '::LINK::',
-                    'image' => '::IMAGE::',
-                    'name' => '::NAME::',
-                    'price' => '::PRICE::',
-                ])->render() !!}`
-
-                item = item.replace('::LINK::', product.link)
-                    .replace('::IMAGE::', product.img)
-                    .replaceAll('::NAME::', product.name)
-                    .replace('::PRICE::', product.price);
-
-                productContainer.insertAdjacentHTML('beforeend', item);
-            });
+            console.log(response)
+            replaceProducts(response);
         }).catch(error => {
             // Nanti di fix pake toast
-            console.log('Error!');
+            console.log(error);
         });
     }
 
@@ -84,10 +125,22 @@
         let sort = document.querySelectorAll('#dropdown ul li');
         let filterDropdown = document.querySelector('#filterDropdown span');
 
+        document.querySelector('#prev-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            fetchRequest(this.getAttribute('href'));
+        });
+
+        document.querySelector('#next-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            fetchRequest(this.getAttribute('href'));
+        });
+
         sort.forEach(item => {
             item.addEventListener('click', function() {
                 filterDropdown.textContent = this.textContent;
-                fetchRequest(item.value);
+                let url = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
+                url = url.replace('::CATEGORY::', '{{ strtolower($categoryName) }}').replace('::SORT::', item.value);
+                fetchRequest(url);
             });
         });
     });

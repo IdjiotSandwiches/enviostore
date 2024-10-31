@@ -36,28 +36,4 @@ class CategoryController extends Controller implements CategoryInterface
 
         return view('category', compact('categoryName', 'products'));
     }
-
-    /**
-     * Summary of sortProducts
-     * @param \Illuminate\Http\Request $request
-     * @param string $category
-     * @param string $sort
-     * @return mixed|\Illuminate\Http\JsonResponse
-     */
-    public function sortProducts(Request $request, $category, $sort)
-    {
-        if (!$request->ajax()) abort(404);
-
-        $category = Category::where('name', $category)->first();
-
-        if (!$category) abort(404);
-
-        $products = $this->productUtility->getProducts($category->id, (int) $sort);
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Data sorted!',
-            'data' => $products,
-        ], Response::HTTP_OK);
-    }
 }
