@@ -107,15 +107,15 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        let sort = document.querySelectorAll('#dropdown ul li');
+        let sortButtons = document.querySelectorAll('#dropdown ul li');
         let filterDropdown = document.querySelector('#filterDropdown span');
 
         const URL = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
         let url = URL.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', 1);
         fetchRequest(url);
 
-        sort.forEach(item => {
-            item.addEventListener('click', function() {
+        sortButtons.forEach(button => {
+            button.addEventListener('click', function() {
                 filterDropdown.textContent = this.textContent;
                 let url = URL.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', item.value);
                 fetchRequest(url);
