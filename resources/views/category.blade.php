@@ -72,7 +72,10 @@
             let prevNext = [links.at(0), links.at(-1)];
             let buttons = document.querySelectorAll('.button');
             buttons.forEach((value, key) => {
-                value.setAttribute('onclick',  `fetchRequest('${prevNext[key].url}')`);
+                value.addEventListener('click', function() {
+                    fetchRequest(prevNext[key].url);
+                });
+
                 if(!prevNext[key].url) {
                     value.setAttribute('disabled', true);
                 }
@@ -108,12 +111,11 @@
         let sort = document.querySelectorAll('#dropdown ul li');
         let filterDropdown = document.querySelector('#filterDropdown span');
 
-        let fetchUrl = '{{ route('sortProducts', ['::CATEGORY::', 1]) }}';
-        fetchUrl = fetchUrl.replace('::CATEGORY::', '{{ $category->name }}');
-        fetchRequest(fetchUrl);
+        let url = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
+        url = url.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', 1);
+        fetchRequest(url);
 
         let buttons = document.querySelectorAll('.button');
-
         buttons.forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();

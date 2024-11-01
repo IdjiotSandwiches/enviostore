@@ -29,22 +29,23 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
      */
     public function getProducts($category = null, $sort = self::NEWEST)
     {
-        $products = Product::when($category, function ($query) use ($category) {
-            return $query->where('category_id', $category);
-        });
-
-        $products = match ($sort) {
-            self::NEWEST => $products->orderBy('created_at', self::ASCENDING),
-            self::LOWEST_PRICE => $products->orderBy('price', self::ASCENDING),
-            self::HIGHEST_PRICE => $products->orderBy('price', self::DESCENDING),
-        };
-
-        $products = $products->paginate(2, ['*'], 'products')
+        $products = Product::with('productImage')
+            ->when($category, function ($query) use ($category) {
+                return $query->where('category_id', $category);
+            })
+            ->when($sort, function ($query) use ($sort) {
+                match ($sort) {
+                    self::NEWEST => $query->orderBy('created_at', self::ASCENDING),
+                    self::LOWEST_PRICE => $query->orderBy('price', self::ASCENDING),
+                    self::HIGHEST_PRICE => $query->orderBy('price', self::DESCENDING),
+                };
+            })
+            ->paginate(2, ['*'], 'products')
             ->through(function ($product) {
                 $name = $product->name;
                 $price = $product->price;
-                $imgUrl = ProductImage::where('product_id', $product->id)->first();
-                $img = $this->googleDriveUtility->getImage($imgUrl->url);
+                $img = $product->productImage->first();
+                $img = $this->googleDriveUtility->getImage($img->url);
                 $link = route('getProduct', base64_encode("$name-$product->id"));
 
                 return (object) compact('name', 'price', 'img', 'link');
