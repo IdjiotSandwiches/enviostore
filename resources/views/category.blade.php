@@ -114,14 +114,6 @@
         let url = URL.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', 1);
         fetchRequest(url);
 
-        let buttons = document.querySelectorAll('.button');
-        buttons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                fetchRequest(button.getAttribute('href'));
-            });
-        });
-
         sort.forEach(item => {
             item.addEventListener('click', function() {
                 filterDropdown.textContent = this.textContent;
