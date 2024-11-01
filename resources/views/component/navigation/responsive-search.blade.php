@@ -10,21 +10,3 @@
         </div>
     </div>
 </div>
-
-@section('extra-js')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchIcon = document.querySelector('#search-icon');
-            const backBtn = document.querySelector('#back-btn');
-            const searchBar = document.querySelector('#search-bar');
-
-            searchIcon.addEventListener('click', function() {
-                searchBar.classList.toggle('hidden')
-            })
-
-            backBtn.addEventListener('click', function() {
-                searchBar.classList.toggle('hidden')
-            })
-        });
-    </script>
-@endsection
