@@ -99,7 +99,6 @@
 
             return response.json();
         }).then(response => {
-            console.log(response)
             replaceProducts(response);
         }).catch(error => {
             // Nanti di fix pake toast
@@ -111,8 +110,8 @@
         let sort = document.querySelectorAll('#dropdown ul li');
         let filterDropdown = document.querySelector('#filterDropdown span');
 
-        let url = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
-        url = url.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', 1);
+        const URL = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
+        let url = URL.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', 1);
         fetchRequest(url);
 
         let buttons = document.querySelectorAll('.button');
@@ -126,8 +125,7 @@
         sort.forEach(item => {
             item.addEventListener('click', function() {
                 filterDropdown.textContent = this.textContent;
-                let url = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
-                url = url.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', item.value);
+                let url = URL.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', item.value);
                 fetchRequest(url);
             });
         });

@@ -3,7 +3,6 @@
 namespace App\Utilities;
 
 use App\Models\Product;
-use App\Models\ProductImage;
 use App\Utilities\GoogleDriveUtility;
 use App\Interfaces\SortInterface;
 use App\Interfaces\CategoryInterface;
@@ -34,13 +33,13 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
                 return $query->where('category_id', $category);
             })
             ->when($sort, function ($query) use ($sort) {
-                match ($sort) {
+                return match ($sort) {
                     self::NEWEST => $query->orderBy('created_at', self::ASCENDING),
                     self::LOWEST_PRICE => $query->orderBy('price', self::ASCENDING),
                     self::HIGHEST_PRICE => $query->orderBy('price', self::DESCENDING),
                 };
             })
-            ->paginate(2, ['*'], 'products')
+            ->paginate(20, ['*'], 'products')
             ->through(function ($product) {
                 $name = $product->name;
                 $price = $product->price;
