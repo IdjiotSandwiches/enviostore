@@ -39,10 +39,10 @@ class ProductController extends Controller
             abort(404);
         }
 
-        $product = Product::find($id);
+        $product = Product::with('productImage')->find($id);
         if (!$product) abort(404);
 
-        $productImgUrls = ProductImage::where('product_id', $id)->pluck('url');
+        $productImgUrls = $product->productImage->pluck('url');
         $productImgs = [];
         foreach($productImgUrls as $url) {
             $img = $this->googleDriveUtility->getImage($url);
