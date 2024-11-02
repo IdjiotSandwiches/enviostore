@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Utilities\ProductsUtility;
 use App\Http\Controllers\Controller;
+use App\Interfaces\StatusInterface;
 
-class ProductsAPIController extends Controller
+class ProductsAPIController extends Controller implements StatusInterface
 {
     private $productUtility;
 
@@ -38,7 +39,7 @@ class ProductsAPIController extends Controller
         $products = $this->productUtility->getProducts($category->id, (int) $sort);
 
         return response()->json([
-            'status' => 200,
+            'status' => self::STATUS_SUCCESS,
             'message' => 'Data sorted!',
             'data' => $products,
         ], Response::HTTP_OK);
