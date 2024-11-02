@@ -43,7 +43,7 @@
                 'image' => '::IMAGE::',
                 'name' => '::NAME::',
                 'price' => '::PRICE::',
-            ])->render() !!}`
+            ])->render() !!}`;
 
             item = item.replace('::LINK::', product.link)
                 .replace('::IMAGE::', product.img)

@@ -42,7 +42,7 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
             ->paginate(20, ['*'], 'products')
             ->through(function ($product) {
                 $name = $product->name;
-                $price = $product->price;
+                $price = number_format($product->price, 0, ',', '.');
                 $img = $product->productImage->first();
                 $img = $this->googleDriveUtility->getImage($img->url);
                 $link = route('getProduct', base64_encode("$name-$product->id"));
