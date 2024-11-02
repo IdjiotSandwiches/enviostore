@@ -53,10 +53,17 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
         return $products;
     }
 
-    //without pagination, for homepage
+    //for homepage
     public function getHomeProduct()
     {
-        $products = Product::take(8)->get()
+        //hitung product kelipatan 4
+        $totalProducts = Product::count();
+        $limit = $totalProducts - ($totalProducts%4);
+        if($limit == 0 && $totalProducts >0){
+            $limit = $totalProducts;
+        }
+        
+        $products = Product::take($limit)->get()
         ->map(function($product) {
             $name = $product->name;
             $price = $product->price;
