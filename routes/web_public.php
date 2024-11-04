@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\GoogleDriveController;
 use App\Http\Controllers\EmailVerificationController;
 
 /*
@@ -54,6 +55,3 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/email/verification-notification', 'resendVerification')->middleware(['throttle:6,1'])->name('verification.send');
     });
 });
-
-
-
