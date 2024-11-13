@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ErrorLog;
+use App\Helper\StringHelper;
 use App\Models\ProductImage;
 use App\Utilities\GoogleDriveUtility;
 
@@ -48,6 +49,14 @@ class ProductController extends Controller
             $img = $this->googleDriveUtility->getImage($url);
             array_push($productImgs, $img);
         }
+
+        $product = (object) [
+            'name' => $product->name,
+            'price' => StringHelper::parseNumberFormat($product->price),
+            'stocks' => $product->stocks,
+            'description' => $product->description,
+            'images' => $productImgs,
+        ];
 
         return view('product', compact('product', 'productImgs'));
     }

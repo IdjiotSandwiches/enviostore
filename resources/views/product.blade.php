@@ -7,7 +7,7 @@
         <div class="glide group w-full md:w-80 lg:w-[24rem] xl:w-[30rem] md:h-[26rem] lg:h-[30rem] xl:h-[36rem]">
             <div class="glide__track" data-glide-el="track">
                 <ul class="glide__slides">
-                    @foreach ($productImgs as $img)
+                    @foreach ($product->images as $img)
                         <li class="glide__slide">
                             <img src="{{ $img }}" class="w-full h-full aspect-square object-contain select-none pointer-events-none md:rounded-md" alt="...">
                         </li>
