@@ -89,8 +89,19 @@
     }
 
     function fetchRequest(url) {
+        let productContainer = document.querySelector('#productContainer');
+        productContainer.replaceChildren();
+
+        setTimeout(function(){
+            for (let i = 0; i < 8; i++) {
+                let item = `{!! view('component.skeleton-card')->render() !!}`;
+                productContainer.insertAdjacentHTML('beforeend', item);
+            }
+        }, 500);
+
         fetch(url, {
             // Nanti dibikin ke common-js
+            method: 'GET',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             },
@@ -119,7 +130,7 @@
         sortButtons.forEach(button => {
             button.addEventListener('click', function() {
                 filterDropdown.textContent = this.textContent;
-                let url = URL.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', item.value);
+                let url = URL.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', this.value);
                 fetchRequest(url);
             });
         });
