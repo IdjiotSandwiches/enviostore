@@ -1,6 +1,6 @@
 <?php
 
-use App\Helper\StringHelper;
+use App\Helpers\StringHelper;
 
 if(!function_exists('parseNumberFormat')) {
     /**
