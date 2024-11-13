@@ -89,9 +89,8 @@
         productContainer.replaceChildren();
 
         setTimeout(function() {
-            if(productContainer.textContent !== '') {
-                return;
-            }
+            if(productContainer.textContent !== '') return;
+
             for (let i = 0; i < 8; i++) {
                 let item = `{!! view('component.skeleton-card')->render() !!}`;
                 productContainer.insertAdjacentHTML('beforeend', item);
