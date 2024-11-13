@@ -2,6 +2,7 @@
 
 namespace App\Utilities;
 
+use App\Helper\StringHelper;
 use App\Models\Product;
 use App\Utilities\GoogleDriveUtility;
 use App\Interfaces\SortInterface;
@@ -42,7 +43,7 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
             ->paginate(20, ['*'], 'products')
             ->through(function ($product) {
                 $name = $product->name;
-                $price = number_format($product->price, 0, ',', '.');
+                $price = StringHelper::parseNumberFormat($product->price);
                 $img = $product->productImage->first();
                 $img = $this->googleDriveUtility->getImage($img->url);
                 $link = route('getProduct', base64_encode("$name-$product->id"));
