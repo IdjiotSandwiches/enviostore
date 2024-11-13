@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ErrorLog;
 use App\Helpers\StringHelper;
-use App\Models\ProductImage;
 use App\Utilities\GoogleDriveUtility;
 
 class ProductController extends Controller
