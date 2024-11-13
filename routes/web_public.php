@@ -25,7 +25,6 @@ Route::get('/', function () {
 
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/category/{category}', 'index')->name('categoryPage');
-    // Route::get('/category/{category}/{sort}', 'sortProducts')->name('sortProducts');
 });
 
 Route::controller(ProductController::class)->group(function () {
