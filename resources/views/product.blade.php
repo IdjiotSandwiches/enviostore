@@ -15,12 +15,12 @@
                 </ul>
             </div>
             <div class="glide__arrows opacity-0 group-hover:opacity-100 transition-opacity" data-glide-el="controls">
-                <button class="glide__arrow glide__arrow--left rounded-none md:rounded-l-md md:top-40 lg:top-48 xl:top-60 h-80 lg:h-[24rem] xl:h-[30rem] bg-black/30 border-none shadow-none left-0" data-glide-dir="<">
+                <button class="glide__arrow glide__arrow--left rounded-none md:rounded-l-md md:top-40 lg:top-48 xl:top-60 h-full sm:h-80 lg:h-[24rem] xl:h-[30rem] bg-black/30 border-none shadow-none left-0" data-glide-dir="<">
                     <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
                     </svg>
                 </button>
-                <button class="glide__arrow glide__arrow--right rounded-none md:rounded-r-md md:top-40 lg:top-48 xl:top-60 h-80 lg:h-[24rem] xl:h-[30rem] bg-black/30 border-none shadow-none right-0" data-glide-dir=">">
+                <button class="glide__arrow glide__arrow--right rounded-none md:rounded-r-md md:top-40 lg:top-48 xl:top-60 h-full sm:h-80 lg:h-[24rem] xl:h-[30rem] bg-black/30 border-none shadow-none right-0" data-glide-dir=">">
                     <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
                     </svg>
