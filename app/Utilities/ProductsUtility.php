@@ -24,7 +24,7 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
      * Summary of getProducts
      * @param string $category
      * @param int $sort
-     * @return \Illuminate\Pagination\LengthAwarePaginator
+     * @return object
      */
     public function getProducts($category = null, $sort = self::NEWEST)
     {
@@ -39,7 +39,7 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
                     self::HIGHEST_PRICE => $query->orderBy('price', self::DESCENDING),
                 };
             })
-            ->paginate(20, ['*'], 'products')
+            ->paginate(2, ['*'], 'products')
             ->through(function ($product) {
                 $name = $product->name;
                 $price = number_format($product->price, 0, ',', '.');
@@ -49,6 +49,17 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
 
                 return (object) compact('name', 'price', 'img', 'link');
             });
+
+        $products = (object) [
+            'products' => $products->items(),
+            'hasPage' => $products->hasPages(),
+            'nextPageUrl' => $products->nextPageUrl(),
+            'previousPageUrl' => $products->previousPageUrl(),
+            'count' => $products->count(),
+            'total' => $products->total(),
+            'firstItem' => $products->firstItem(),
+            'lastItem' => $products->lastItem(),
+        ];
 
         return $products;
     }

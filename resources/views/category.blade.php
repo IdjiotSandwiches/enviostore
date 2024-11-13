@@ -36,7 +36,7 @@
         let productContainer = document.querySelector('#productContainer');
         productContainer.replaceChildren();
 
-        let products = data.data;
+        let products = data.products;
         products.forEach(product => {
             let item = `{!! view('component.product-card', [
                 'link' => '::LINK::',
@@ -53,30 +53,32 @@
             productContainer.insertAdjacentHTML('beforeend', item);
         });
 
-        let lastPage = data.last_page;
-        if(lastPage > 1) {
+        if(data.hasPage) {
             let pagination = document.querySelector('#pagination');
             pagination.replaceChildren();
 
             let item = `{!! view('component.pagination', [
-                'totalShown' => '::TOTAL_SHOWN::',
-                'totalItem' => '::TOTAL_ITEM::',
+                'firstItem' => '::FIRST_ITEM::',
+                'lastItem' => '::LAST_ITEM::',
+                'count' => '::COUNT::',
+                'total' => '::TOTAL::'
             ])->render() !!}`;
 
-            item = item.replace('::TOTAL_SHOWN::', data.to)
-                .replace('::TOTAL_ITEM::', data.total);
+            item = item.replace('::FIRST_ITEM::', data.firstItem)
+                .replace('::LAST_ITEM::', data.lastItem)
+                .replace('::COUNT::', data.count)
+                .replace('::TOTAL::', data.total);
 
             pagination.insertAdjacentHTML('beforeend', item);
 
-            let links = data.links;
-            let prevNext = [links.at(0), links.at(-1)];
+            let prevNext = [data.previousPageUrl, data.nextPageUrl];
             let buttons = document.querySelectorAll('.button');
             buttons.forEach((value, key) => {
                 value.addEventListener('click', function() {
-                    fetchRequest(prevNext[key].url);
+                    fetchRequest(prevNext[key]);
                 });
 
-                if(!prevNext[key].url) {
+                if(!prevNext[key]) {
                     value.setAttribute('disabled', true);
                 }
                 else {
