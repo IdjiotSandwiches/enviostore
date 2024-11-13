@@ -78,12 +78,8 @@
                     fetchRequest(prevNext[key]);
                 });
 
-                if(!prevNext[key]) {
-                    value.setAttribute('disabled', true);
-                }
-                else {
-                    value.removeAttribute('disabled');
-                }
+                if(!prevNext[key]) value.setAttribute('disabled', true);
+                else value.removeAttribute('disabled');
             });
         }
     }
@@ -92,16 +88,19 @@
         let productContainer = document.querySelector('#productContainer');
         productContainer.replaceChildren();
 
-        setTimeout(function(){
+        setTimeout(function() {
+            if(productContainer.textContent !== '') {
+                return;
+            }
             for (let i = 0; i < 8; i++) {
                 let item = `{!! view('component.skeleton-card')->render() !!}`;
                 productContainer.insertAdjacentHTML('beforeend', item);
             }
-        }, 500);
+        },200);
 
         fetch(url, {
-            // Nanti dibikin ke common-js
             method: 'GET',
+            // Nanti dibikin ke common-js
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             },
@@ -109,6 +108,8 @@
             if(!response.ok) {
                 throw new Error('Fetch Error!');
             }
+
+            productContainer.replaceChildren();
 
             return response.json();
         }).then(response => {
