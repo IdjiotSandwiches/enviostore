@@ -2,8 +2,8 @@
 
 namespace App\Utilities;
 
-use App\Helper\StringHelper;
 use App\Models\Product;
+use App\Helpers\StringHelper;
 use App\Utilities\GoogleDriveUtility;
 use App\Interfaces\SortInterface;
 use App\Interfaces\CategoryInterface;
