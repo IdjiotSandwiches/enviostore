@@ -12,8 +12,3 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "admin" middleware group. Make something great!
 |
 */
-
-
-Route::get('/', function () {
-    return view('admin');
-});
