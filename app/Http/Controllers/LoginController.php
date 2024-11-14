@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\ErrorLog;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
@@ -74,7 +75,8 @@ class LoginController extends Controller implements StatusInterface
             'message' => 'Logged In.'
         ];
 
-        return back()->with($response);
+        return redirect($isAdmin === 'admin' ? RouteServiceProvider::ADMIN_HOME : RouteServiceProvider::HOME)
+            ->with($response);
     }
 
     /**
