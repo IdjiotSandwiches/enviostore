@@ -4,17 +4,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\GoogleDriveController;
 use App\Http\Controllers\EmailVerificationController;
 
 /*
 |--------------------------------------------------------------------------
-| Web & Auth Admin Routes
+| Web Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" & "auth:admin" middleware group. Make something great!
+| be assigned to the "web" middleware group. Make something great!
 |
 */
 
