@@ -3,7 +3,7 @@
 <nav class="bg-white border-gray-200 dark:bg-gray-900 z-20 sticky top-0">
     <div class="max-w-screen-xl flex items-center justify-between mx-auto p-4 gap-2 md:gap-4">
         <!-- Logo -->
-        <a href="{{ auth('admin')->check() ? route('dashboard') : route('home') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <a href="{{ auth('admin')->check() ? route('admin.dashboard') : route('home') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-xl md:text-2xl font-semibold whitespace-nowrap dark:text-white italic">EnviroStore</span>
         </a>
         <!-- Search -->
