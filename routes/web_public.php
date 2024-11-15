@@ -51,8 +51,6 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::middleware(['web', 'auth:admin'])->group(function () {
-    Route::fallback(function () {
-        return view('errors.404');
-    });
-});
+Route::fallback(function () {
+    return view('errors.404');
+})->middleware(['web','admin']);

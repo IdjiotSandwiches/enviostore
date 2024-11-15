@@ -3,7 +3,7 @@
 <nav class="bg-white border-gray-200 dark:bg-gray-900 z-20 sticky top-0">
     <div class="max-w-screen-xl flex items-center justify-between mx-auto p-4 gap-2 md:gap-4">
         <!-- Logo -->
-        <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <a href="{{ auth('admin')->check() ? route('dashboard') : route('home') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-xl md:text-2xl font-semibold whitespace-nowrap dark:text-white italic">EnviroStore</span>
         </a>
         <!-- Search -->
@@ -27,7 +27,7 @@
             </a>
         </div>
         <div class="items-center justify-between md:flex w-auto md:order-2">
-            @auth
+            @if (auth('admin')->check() || auth()->check())
                 <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-end" class="block w-10 h-10 rounded-full cursor-pointer" aria-hidden="true" src="/docs/images/people/profile-picture-5.jpg" alt="User dropdown">
                 <div id="userDropdown" class="hidden z-10 bg-white divide-y divide-gray-200 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
                     <div class="py-1">
@@ -53,7 +53,7 @@
                     <a href="{{ route('login') }}" class="text-white bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-md px-4 md:px-5 py-1.5 md:py-2 dark:bg-button dark:hover:bg-button/80 dark:focus:ring-button/15 text-nowrap">Login</a>
                     <a href="{{ route('register') }}" class="hidden md:block py-2 px-5 text-md font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-button hover:bg-background hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15 dark:focus:ring-button/15 dark:bg-background dark:text-button dark:border-button dark:hover:text-white dark:hover:bg-background text-nowrap">Sign Up</a>
                 </div>
-            @endauth
+            @endif
         </div>
     </div>
     @include('component.navigation.sub-nav')
