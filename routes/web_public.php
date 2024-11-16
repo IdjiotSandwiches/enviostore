@@ -1,13 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\GoogleDriveController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,26 +19,13 @@ use App\Http\Controllers\EmailVerificationController;
 */
 
 Route::middleware(['guest:admin'])->group(function () {
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('home');
+    Route::controller(HomeController::class)->group(function(){
+        Route::get('/', 'getAllHome')->name('home');
+    });
 
     Route::controller(ProductController::class)->group(function () {
         Route::get('/products/{id}', 'getProduct')->name('getProduct');
     });
-});
-
-Route::controller(HomeController::class)->group(function(){
-    Route::get('/', 'getAllProduct')->name('getAllProduct');
-});
-
-Route::controller(CategoryController::class)->group(function () {
-    Route::get('/category/{category}', 'index')->name('categoryPage');
-    Route::get('/category/{category}/{sort}', 'sortProducts')->name('sortProducts');
-});
-
-Route::controller(ProductController::class)->group(function () {
-    Route::get('/products/{id}', 'getProduct')->name('getProduct');
 });
 
 Route::middleware(['guest:web,admin'])->group(function () {
@@ -67,11 +52,6 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::controller(GoogleDriveController::class)->group(function () {
-    Route::post('/store-file', 'storeFile')->name('storeFile');
-    Route::get('/get-file', 'getFile')->name('getFile');
-    Route::get('/test', 'index')->name('testDrive');
-});
 Route::fallback(function () {
     return view('errors.404');
 })->middleware(['web','admin']);
