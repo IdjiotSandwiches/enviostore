@@ -1,17 +1,8 @@
 @extends('layout.layout')
-@section('title', 'Welcome')
-@php
-$imagePaths=[
-    '/img/0.png',
-    '/img/1.png',
-    '/img/2.png',
-    '/img/3.png',
-    '/img/4.png',
-];
-@endphp
+@section('title', 'Homepage')
 
 @section('content')
-@include('component.carousel', ['imgPaths' => $imagePaths])
+@include('component.carousel', ['imgPaths' => $banners])
 <div class="max-w-screen-xl mx-auto">
     <div class="flex justify-center p-9 md:text-sm">
         <h1 class="text-5xl font-secondary">
@@ -48,5 +39,4 @@ $imagePaths=[
         </div>
     </div>
 </div>
-
 @endsection

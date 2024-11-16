@@ -1,12 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\GoogleDriveController;
 use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,5 +61,8 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-
-
+Route::controller(GoogleDriveController::class)->group(function () {
+    Route::post('/store-file', 'storeFile')->name('storeFile');
+    Route::get('/get-file', 'getFile')->name('getFile');
+    Route::get('/test', 'index')->name('testDrive');
+});

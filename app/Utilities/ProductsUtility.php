@@ -52,30 +52,4 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
 
         return $products;
     }
-
-    //for homepage
-    public function getHomeProduct()
-    {
-        //hitung product kelipatan 4
-        $totalProducts = Product::count();
-        $limit = $totalProducts - ($totalProducts%4);
-        if($limit == 0 && $totalProducts >0){
-            $limit = $totalProducts;
-        }
-        
-        $products = Product::take($limit)->get()
-        ->map(function($product) {
-            $name = $product->name;
-            $price = $product->price;
-            $rating = $product->sustainability_score;
-
-            $imgUrl = ProductImage::where('product_id', $product->id)->first();
-            $img = $this->googleDriveUtility->getImage($imgUrl->url);
-            
-            $link = route('getProduct', base64_encode("$name-$product->id"));
-
-            return (object) compact('name', 'rating', 'price', 'img', 'link');
-        });
-        return $products;
-    }
 }
