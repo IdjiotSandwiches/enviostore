@@ -11,7 +11,7 @@ use Illuminate\Support\ServiceProvider;
 use Google\Client as GoogleClient;
 use Google\Service\Drive as GoogleDriveService;
 use Masbug\Flysystem\GoogleDriveAdapter;
-use Illuminate\Pagination\Paginator;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -49,7 +49,5 @@ class AppServiceProvider extends ServiceProvider
             $errorLog->error = $e->getMessage();
             $errorLog->save();
         }
-
-        Paginator::useTailwind();
     }
 }

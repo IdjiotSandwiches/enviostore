@@ -20,9 +20,15 @@ use App\Http\Controllers\EmailVerificationController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::middleware(['guest:admin'])->group(function () {
+    Route::get('/', function () {
+        return view('welcome');
+    })->name('home');
+
+    Route::controller(ProductController::class)->group(function () {
+        Route::get('/products/{id}', 'getProduct')->name('getProduct');
+    });
+});
 
 Route::controller(HomeController::class)->group(function(){
     Route::get('/', 'getAllProduct')->name('getAllProduct');
@@ -66,3 +72,6 @@ Route::controller(GoogleDriveController::class)->group(function () {
     Route::get('/get-file', 'getFile')->name('getFile');
     Route::get('/test', 'index')->name('testDrive');
 });
+Route::fallback(function () {
+    return view('errors.404');
+})->middleware(['web','admin']);

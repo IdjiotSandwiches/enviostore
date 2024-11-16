@@ -40,13 +40,4 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
     ];
-
-    /**
-     * Return user type
-     * @return bool
-     */
-    public function isSeller()
-    {
-        return $this->user_type;
-    }
 }
