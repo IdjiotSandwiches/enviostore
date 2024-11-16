@@ -12,3 +12,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "admin" middleware group. Make something great!
 |
 */
+
+Route::get('/', function () {
+    // Change this if already works in admin related route (this only testing)
+    return view('welcome');
+})->name('dashboard');

@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\GoogleDriveController;
 use App\Http\Controllers\EmailVerificationController;
 
 /*
@@ -18,12 +17,14 @@ use App\Http\Controllers\EmailVerificationController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::middleware(['guest:admin'])->group(function () {
+    Route::get('/', function () {
+        return view('welcome');
+    })->name('home');
 
-Route::controller(ProductController::class)->group(function () {
-    Route::get('/products/{id}', 'getProduct')->name('getProduct');
+    Route::controller(ProductController::class)->group(function () {
+        Route::get('/products/{id}', 'getProduct')->name('getProduct');
+    });
 });
 
 Route::middleware(['guest:web,admin'])->group(function () {
@@ -50,5 +51,6 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-
-
+Route::fallback(function () {
+    return view('errors.404');
+})->middleware(['web','admin']);
