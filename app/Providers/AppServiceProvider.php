@@ -11,7 +11,6 @@ use Illuminate\Support\ServiceProvider;
 use Google\Client as GoogleClient;
 use Google\Service\Drive as GoogleDriveService;
 use Masbug\Flysystem\GoogleDriveAdapter;
-use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
