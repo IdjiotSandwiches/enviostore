@@ -21,25 +21,20 @@ class HomeService
 
     /**
      * Summary of getHomeProduct
-     * @return mixed
+     * @return (object) consisted of name, rating, img, link
      */
     public function getHomeProduct()
     {
-        //hitung product kelipatan 4
-        $totalProducts = Product::count();
-        $limit = $totalProducts - ($totalProducts%4);
-        if($limit == 0 && $totalProducts >0){
-            $limit = $totalProducts;
-        }
-        
-        $products = Product::take($limit)->get()
+        $products = Product::with('productImage')
+        ->take(8)
+        ->get()
         ->map(function($product) {
             $name = $product->name;
-            $price = $product->price;
+            $price = $product->price;   
             $rating = $product->sustainability_score;
 
-            $imgUrl = ProductImage::where('product_id', $product->id)->first();
-            $img = $this->googleDriveUtility->getImage($imgUrl->url);
+            $imgUrl = $product->productImage->first()->url;
+            $img = $this->googleDriveUtility->getImage($imgUrl);
             
             $link = route('getProduct', base64_encode("$name-$product->id"));
 
@@ -50,7 +45,7 @@ class HomeService
     
     /**
      * Summary of getCategoryAll
-     * @return mixed
+     * @return (object) name,a d
      */
     public function getCategoryAll()
     {

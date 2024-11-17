@@ -20,7 +20,7 @@ use App\Http\Controllers\HomeController;
 
 Route::middleware(['guest:admin'])->group(function () {
     Route::controller(HomeController::class)->group(function(){
-        Route::get('/', 'getAllHome')->name('home');
+        Route::get('/', 'index')->name('home');
     });
 
     Route::controller(ProductController::class)->group(function () {

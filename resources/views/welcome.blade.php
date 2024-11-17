@@ -4,7 +4,7 @@
 @section('content')
     @include('component.carousel', ['imgPaths' => $banners])
     <div class="max-w-screen-xl mx-auto">
-        <div class="flex justify-center p-9 md:text-sm">
+        <div class="flex justify-center p-9 md:text-2xl sm:text-lg">
             <h1 class="text-5xl font-secondary">
                 Category
             </h1>
@@ -15,7 +15,7 @@
         <div class="mx-auto px-4">
             <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-3">
                 @foreach ($categories as $category)
-                    @include('component.tiles', [
+                    @include('component.category-tiles', [
                         'image' => $category->image,
                         'name' => $category->name,
                     ])
@@ -34,7 +34,7 @@
                 @foreach ($products as $product)
                     @include('component.card', [
                         'link' => $product->link,
-                        'img' => $product->img,
+                        'image' => $product->img,
                         'name' => $product->name,
                         'rating' => $product->rating,
                         'price' => $product->price,

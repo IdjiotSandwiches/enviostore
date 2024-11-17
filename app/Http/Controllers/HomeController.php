@@ -13,7 +13,7 @@ class HomeController extends Controller
      * @param \App\Services\HomeService $homeService
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getAllHome(HomeService $homeService)
+    public function index(HomeService $homeService)
     {
         $banners = $homeService->getBanner();
         $categories = $homeService->getCategoryAll();
