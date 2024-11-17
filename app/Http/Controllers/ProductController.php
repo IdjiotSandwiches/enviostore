@@ -27,6 +27,7 @@ class ProductController extends Controller
      */
     public function getProduct($id)
     {
+        // Still on work, need to be discuss
         try {
             $id = base64_decode($id);
             $id = explode("-", $id)[1];

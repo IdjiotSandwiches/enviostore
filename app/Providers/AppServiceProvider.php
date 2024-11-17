@@ -49,7 +49,5 @@ class AppServiceProvider extends ServiceProvider
             $errorLog->error = $e->getMessage();
             $errorLog->save();
         }
-
-        Paginator::useTailwind();
     }
 }
