@@ -5,7 +5,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\GoogleDriveController;
 use App\Http\Controllers\EmailVerificationController;
 
 /*
@@ -19,9 +18,10 @@ use App\Http\Controllers\EmailVerificationController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::middleware(['guest:admin'])->group(function () {
+    Route::get('/', function () {
+        return view('welcome');
+    })->name('home');
 
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/category/{category}', 'index')->name('categoryPage');
@@ -54,3 +54,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/email/verification-notification', 'resendVerification')->middleware(['throttle:6,1'])->name('verification.send');
     });
 });
+
+Route::fallback(function () {
+    return view('errors.404');
+})->middleware(['web','admin']);

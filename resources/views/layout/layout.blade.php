@@ -5,6 +5,7 @@
     @include('component.navigation.navbar')
     @yield('content')
     @include('component.footer')
+    @include('component.common-js')
     @yield('extra-js')
 </body>
 </html>
