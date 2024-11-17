@@ -40,7 +40,7 @@ class HomeService
 
             return (object) compact('name', 'rating', 'price', 'img', 'link');
         });
-        return $products;
+    return $products;
     }
     
     /**
@@ -60,7 +60,7 @@ class HomeService
 
             return (object) compact('name', 'image');
         });
-        return $categories;
+    return $categories;
     }
 
     /**
@@ -74,6 +74,6 @@ class HomeService
         foreach($bannerUrls as $url){
             $banners[] = $this->googleDriveUtility->getImage($url);
         }
-        return $banners;
+    return $banners;
     }
 }

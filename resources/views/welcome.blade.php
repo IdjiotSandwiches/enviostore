@@ -22,8 +22,7 @@
                 @endforeach
             </div>
         </div>
-
-
+        
         <div class="flex justify-center p-9">
             <h1 class="text-5xl font-secondary">
                 Recommended Products
