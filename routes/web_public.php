@@ -23,13 +23,15 @@ Route::middleware(['guest:admin'])->group(function () {
         return view('welcome');
     })->name('home');
 
+    Route::controller(ProductController::class)->group(function () {
+        Route::get('/products/{id}', 'getProduct')->name('getProduct');
+    });
+});
+
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/category/{category}', 'index')->name('categoryPage');
 });
 
-Route::controller(ProductController::class)->group(function () {
-    Route::get('/products/{id}', 'getProduct')->name('getProduct');
-});
 
 Route::middleware(['guest:web,admin'])->group(function () {
     Route::controller(LoginController::class)->group(function () {
