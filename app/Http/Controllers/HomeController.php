@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Services\HomeService;
 use Illuminate\Http\Request;
 
-
 class HomeController extends Controller
 {
     /**

@@ -4,10 +4,8 @@ namespace App\Services;
 
 use App\Models\Product;
 use App\Models\Category;
-use App\Helpers\StringHelper;
 use App\Utilities\GoogleDriveUtility;
 use App\Utilities\ProductsUtility;
-
 
 class HomeService
 {
