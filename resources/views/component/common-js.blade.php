@@ -38,7 +38,7 @@
             }
         });
 
-        var successToast = baseToast.mixin({
+        const successToast = baseToast.mixin({
             background: '#22c55e',
         });
 

@@ -99,15 +99,11 @@
             }
         },200);
 
-        fetch(url, {
+        customFetch(url, {
             method: 'GET',
-            // Nanti dibikin ke common-js
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            },
         }).then(response => {
             if(!response.ok) {
-                throw new Error('Fetch Error!');
+                throw new Error(response.status);
             }
 
             productContainer.replaceChildren();
@@ -116,8 +112,7 @@
         }).then(response => {
             replaceProducts(response);
         }).catch(error => {
-            // Nanti di fix pake toast
-            console.log(error);
+            console.log(error)
         });
     }
 
