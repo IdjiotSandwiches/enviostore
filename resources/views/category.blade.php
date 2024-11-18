@@ -1,0 +1,95 @@
+@extends('layout.layout')
+@section('title', 'Product')
+
+@section('content')
+<section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
+    <h1 class="font-bold text-3xl">{{ $categoryName }}</h1>
+    <button id="filterDropdown" data-dropdown-toggle="dropdown" class="flex gap-2 p-2 rounded-lg max-w-[18rem] justify-center items-center bg-primary text-font_primary border border-font_primary" type="button">
+        Sort By:
+        <span class="font-bold">
+            Newest First
+        </span>
+        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M20 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6h-2m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4"/>
+        </svg>
+    </button>
+
+    <div id="dropdown" class="max-w-xs z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-72 dark:bg-gray-700">
+        <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="filterDropdown">
+            <li value="1" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Newest First</li>
+            <li value="2" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Lowest Price</li>
+            <li value="3" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Highest Price</li>
+        </ul>
+    </div>
+
+    <div class="grid gap-4">
+        <div id="productContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            @foreach ($products as $product)
+                @include('component.product-card', [
+                    'link' => $product->link,
+                    'image' => $product->img,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                ])
+            @endforeach
+        </div>
+        {{ $products->links('pagination::tailwind') }}
+    </div>
+</section>
+@endsection
+
+@section('extra-js')
+<script>
+    function fetchRequest(sort) {
+        let url = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
+        url = url.replace('::CATEGORY::', '{{ strtolower($categoryName) }}').replace('::SORT::', sort);
+        fetch(url, {
+            // Nanidibikin ke common-js
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+        }).then(response => {
+            if(!response.ok) {
+                throw new Error('Fetch Error!');
+            }
+
+            return response.json();
+        }).then(response => {
+            let productContainer = document.querySelector('#productContainer');
+            productContainer.replaceChildren();
+
+            let products = response.data.data;
+            products.forEach(product => {
+                let item = `{!! view('component.product-card', [
+                    'link' => '::LINK::',
+                    'image' => '::IMAGE::',
+                    'name' => '::NAME::',
+                    'price' => '::PRICE::',
+                ])->render() !!}`
+
+                item = item.replace('::LINK::', product.link)
+                    .replace('::IMAGE::', product.img)
+                    .replace('::NAME::', product.name)
+                    .replace('::PRICE::', product.price);
+
+                productContainer.insertAdjacentHTML('beforeend', item);
+            });
+        }).catch(error => {
+            // Nanti di fix pake toast
+            console.log('Error!');
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        let sort = document.querySelectorAll('#dropdown ul li');
+        let filterDropdown = document.querySelector('#filterDropdown span');
+
+        sort.forEach(item => {
+            item.addEventListener('click', function() {
+                filterDropdown.textContent = this.textContent;
+                fetchRequest(item.value);
+            });
+        });
+    });
+</script>
+@endsection

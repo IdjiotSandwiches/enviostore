@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,9 @@ use App\Http\Controllers\EmailVerificationController;
 */
 
 Route::middleware(['guest:admin'])->group(function () {
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('home');
+    Route::controller(HomeController::class)->group(function(){
+        Route::get('/', 'index')->name('home');
+    });
 
     Route::controller(ProductController::class)->group(function () {
         Route::get('/products/{id}', 'getProduct')->name('getProduct');
