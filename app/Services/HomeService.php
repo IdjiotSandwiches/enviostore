@@ -61,7 +61,7 @@ class HomeService
      */
     public function getBanner()
     {
-        $bannerUrls = ['home_carousel_images/Banner1.png', 'home_carousel_images/Banner2.png', 'home_carousel_images/Banner3.png', 'home_carousel_images/Banner4.png'];
+        $bannerUrls = $this->googleDriveUtility->getAllFilePaths('home_carousel_images');
         $banners = [];
         foreach($bannerUrls as $url){
             $banners[] = $this->googleDriveUtility->getFile($url);

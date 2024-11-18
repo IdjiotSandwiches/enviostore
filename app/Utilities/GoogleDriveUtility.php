@@ -65,9 +65,22 @@ class GoogleDriveUtility implements StatusInterface
      */
     public function getFile($filePath)
     {
-        $file = $this->storage->read($filePath);
-        $finfo = new \finfo(FILEINFO_MIME_TYPE);
-        $mimeType = $finfo->buffer($file);
+        try {
+            $file = $this->storage->read($filePath);
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($file);
+        } catch (\Exception $e) {
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+
+            $response = [
+                'status' => self::STATUS_ERROR,
+                'message' => 'File fetcyh failed!',
+            ];
+
+            return back()->with($response);
+        }
 
         return 'data:' . $mimeType . ';base64,' . base64_encode($file);
     }
@@ -106,5 +119,25 @@ class GoogleDriveUtility implements StatusInterface
         ];
 
         return $response;
+    }
+
+    public function getAllFilePaths($folderPath)
+    {
+        try {
+            $files = $this->storage->allFiles($folderPath);
+        } catch (\Exception $e) {
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+
+            $response = [
+                'status' => self::STATUS_ERROR,
+                'message' => 'Files fetch failed!',
+            ];
+
+            return back()->with($response);
+        }
+
+        return $files;
     }
 }
