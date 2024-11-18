@@ -45,7 +45,7 @@ class HomeService
         $categories = Category::all()->map(function($category){
             $name = $category->name;
             $url = $category->url;
-            $image = $this->googleDriveUtility->getImage($url);
+            $image = $this->googleDriveUtility->getFile($url);
             $link = route('categoryPage', $category->name);
 
             return (object) compact('name', 'image', 'link');
@@ -64,7 +64,7 @@ class HomeService
         $bannerUrls = ['home_carousel_images/Banner1.png', 'home_carousel_images/Banner2.png', 'home_carousel_images/Banner3.png', 'home_carousel_images/Banner4.png'];
         $banners = [];
         foreach($bannerUrls as $url){
-            $banners[] = $this->googleDriveUtility->getImage($url);
+            $banners[] = $this->googleDriveUtility->getFile($url);
         }
 
         return $banners;
