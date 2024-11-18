@@ -31,7 +31,10 @@
             <div class="flex items-start">
                 <a href="#" class="text-sm text-font_secondary hover:text-font_primary hover:underline dark:text-font_secondary">Lost Password?</a>
             </div>
-            <button type="submit" class="w-full text-white bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-button dark:hover:bg-button/80 dark:focus:ring-button/15">Login</button>
+            <button type="submit" class="flex w-full justify-center items-center gap-4 text-white bg-button disabled:cursor-not-allowed disabled:bg-button/70 hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-button dark:hover:bg-button/80 dark:focus:ring-button/15">
+                @include('component.spinner')
+                Login
+            </button>
             <div class="text-sm font-medium text-font_primary dark:text-font_primary">
                 Not registered? <a href="{{ route('register') }}" class="text-font_secondary hover:text-font_primary hover:underline dark:text-font_secondary">Create account</a>
             </div>

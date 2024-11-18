@@ -1,4 +1,4 @@
-@include('component.navigation.responsive-search')
+{{--@include('component.navigation.responsive-search')--}}
 
 <nav class="bg-white border-gray-200 dark:bg-gray-900 z-20 sticky top-0">
     <div class="max-w-screen-xl flex items-center justify-between mx-auto p-4 gap-2 md:gap-4">
