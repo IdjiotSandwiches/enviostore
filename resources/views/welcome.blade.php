@@ -15,10 +15,7 @@
         <div class="mx-auto px-4">
             <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-3">
                 @foreach ($categories as $category)
-                    @include('component.category-tiles', [
-                        'image' => $category->image,
-                        'name' => $category->name,
-                    ])
+                    @include('component.category-tiles', ['category' => $category])
                 @endforeach
             </div>
         </div>
@@ -31,7 +28,7 @@
         <div class="mx-auto px-4 pb-9">
             <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-3">
                 @foreach ($products as $product)
-                    @include('component.card', [
+                    @include('component.product-card', [
                         'link' => $product->link,
                         'image' => $product->img,
                         'name' => $product->name,
