@@ -15,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     // Change this if already works in admin related route (this only testing)
-    return view('welcome');
+    // return view('welcome');
 })->name('dashboard');

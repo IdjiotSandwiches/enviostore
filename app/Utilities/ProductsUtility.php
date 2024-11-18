@@ -27,7 +27,7 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
      * @param int $sort
      * @return object
      */
-    public function getProducts($category = null, $sort = self::NEWEST)
+    public function getProducts($category = null, $sort = self::NEWEST, $perPage = 20)
     {
         $products = Product::with('productImage')
             ->when($category, function ($query) use ($category) {
@@ -40,7 +40,7 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
                     self::HIGHEST_PRICE => $query->orderBy('price', self::DESCENDING),
                 };
             })
-            ->paginate(20, ['*'], 'products')
+            ->paginate($perPage, ['*'], 'products')
             ->through(function ($product) {
                 return $this->convertItem($product);
             });
