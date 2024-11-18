@@ -42,15 +42,14 @@ class HomeService
      */
     public function getCategories()
     {
-        $categories = Category::all()
-            ->map(function($category){
-                $name = $category->name;
-                $url = $category->url;
-                $image = $this->googleDriveUtility->getImage($url);
-                $link = route('categoryPage', $category->name);
+        $categories = Category::all()->map(function($category){
+            $name = $category->name;
+            $url = $category->url;
+            $image = $this->googleDriveUtility->getImage($url);
+            $link = route('categoryPage', $category->name);
 
-                return (object) compact('name', 'image', 'link');
-            });
+            return (object) compact('name', 'image', 'link');
+        });
 
         return $categories;
     }
