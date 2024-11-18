@@ -39,26 +39,25 @@ class HomeService
     }
 
     /**
-     * Summary of getCategoryAll
+     * Summary of getCategories
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
      */
-    public function getCategoryAll()
+    public function getCategories()
     {
-        $categories = Category::take(4)->get()
+        $categories = Category::all()
             ->map(function($category){
                 $name = $category->name;
                 $url = $category->url;
-
                 $image = $this->googleDriveUtility->getImage($url);
-                //TODO: added when merge with category
-                //$link = route()
+                $link = route('categoryPage', $category->name);
 
-                return (object) compact('name', 'image');
+                return (object) compact('name', 'image', 'link');
             });
 
         return $categories;
     }
 
+    // Take all item inside the folder
     /**
      * Summary of getBanner
      * @return string[]

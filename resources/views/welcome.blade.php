@@ -12,14 +12,7 @@
         <div class="flex justify-center pb-9">
             <img class="h-auto max-w-full" src="{{ asset('img/Example Banner.png') }}" alt="image description">
         </div>
-        <div class="mx-auto px-4">
-            <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-3">
-                @foreach ($categories as $category)
-                    @include('component.category-tiles', ['category' => $category])
-                @endforeach
-            </div>
-        </div>
-        
+        @include('component.slider', ['categories' => $categories])
         <div class="flex justify-center p-9">
             <h1 class="text-5xl font-secondary">
                 Recommended Products
@@ -40,4 +33,30 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('extra-js')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const carousel = new Glide('.glide_carousel', {
+            type: 'carousel',
+            startAt: 0,
+            autoplay: 3000,
+            animationDuration: 1000,
+            hoverpause: true,
+        });
+
+        const slider = new Glide('.glide_slider', {
+            type: 'slider',
+            startAt: 0,
+            animationDuration: 350,
+            perView: 4,
+            bound: true,
+            rewind: false,
+        });
+
+        carousel.mount({ Controls, Breakpoints, Swipe, Autoplay });
+        slider.mount({ Controls, Breakpoints, Swipe });
+    });
+</script>
 @endsection

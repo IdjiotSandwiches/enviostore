@@ -1,6 +1,6 @@
 @props(['banners'])
 
-<div class="glide group">
+<div class="glide glide_carousel group">
     <div class="glide__track" data-glide-el="track">
         <ul class="glide__slides">
             @foreach ($banners as $banner)
@@ -29,17 +29,3 @@
         @endforeach
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const options = {
-            type: 'carousel',
-            startAt: 0,
-            autoplay: 3000,
-            animationDuration: 1000,
-            hoverpause: true,
-        };
-
-        new Glide('.glide', options).mount({ Controls, Breakpoints, Swipe, Autoplay });
-    });
-</script>
