@@ -28,13 +28,13 @@ class GoogleDriveController extends Controller
         $img = $request->file('image');
         $imgName = time() . '_' . $img->getClientOriginalName();
 
-        $response = $this->googleDriveUtility->storeImage($imgName, $img);
+        $response = $this->googleDriveUtility->storeFile($imgName, $img);
         return back()->with($response);
     }
 
     public function getFile()
     {
-        $img = $this->googleDriveUtility->getImage('1729481441_eupho3-icon10.png');
+        $img = $this->googleDriveUtility->getFile('1729481441_eupho3-icon10.png');
         return $img;
     }
 }

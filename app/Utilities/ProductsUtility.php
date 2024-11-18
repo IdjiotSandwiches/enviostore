@@ -70,7 +70,7 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
         $price = StringHelper::parseNumberFormat($product->price);
         $rating = $product->sustainability_score;
         $img = $product->productImage->first();
-        $img = $this->googleDriveUtility->getImage($img->url);
+        $img = $this->googleDriveUtility->getFile($img->url);
         $link = route('getProduct', base64_encode("$name-$product->id"));
 
         return (object) compact('name', 'rating', 'price', 'img', 'link');
