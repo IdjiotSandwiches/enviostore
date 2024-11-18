@@ -29,7 +29,7 @@ class CategoryController extends Controller implements CategoryInterface
         $category = Category::where('name', $category)->first();
 
         if (!$category) abort(404);
-
+      
         return view('category', compact('category'));
     }
 }

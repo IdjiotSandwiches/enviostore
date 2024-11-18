@@ -1,11 +1,11 @@
-@props(['imgPaths'])
+@props(['banners'])
 
 <div class="glide group">
     <div class="glide__track" data-glide-el="track">
         <ul class="glide__slides">
-            @foreach ($imgPaths as $path)
+            @foreach ($banners as $banner)
                 <li class="glide__slide">
-                    <img src="{{ asset($path) }}" class="w-full h-96 object-cover select-none pointer-events-none" alt="...">
+                    <img src="{{ $banner }}" class="w-full h-auto object-cover select-none pointer-events-none" alt="...">
                 </li>
             @endforeach
         </ul>
