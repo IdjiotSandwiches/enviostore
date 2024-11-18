@@ -40,12 +40,14 @@
         products.forEach(product => {
             let item = `{!! view('component.product-card', [
                 'link' => '::LINK::',
+                'rating' => '::RATING::',
                 'image' => '::IMAGE::',
                 'name' => '::NAME::',
                 'price' => '::PRICE::',
             ])->render() !!}`;
 
             item = item.replace('::LINK::', product.link)
+                .replace('::RATING::', product.rating)
                 .replace('::IMAGE::', product.img)
                 .replaceAll('::NAME::', product.name)
                 .replace('::PRICE::', product.price);

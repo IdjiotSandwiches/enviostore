@@ -1,4 +1,4 @@
-@props(['link', 'image', 'name', 'price'])
+@props(['link', 'rating', 'image', 'name', 'price'])
 
 <div class="max-w-sm bg-white rounded-lg dark:bg-gray-800 dark:border-gray-700">
     <a href="{{ $link }}">
