@@ -3,7 +3,7 @@
 namespace App\Utilities;
 
 use App\Models\Product;
-use App\Models\ProductImage;
+use App\Helpers\StringHelper;
 use App\Utilities\GoogleDriveUtility;
 use App\Interfaces\SortInterface;
 use App\Interfaces\CategoryInterface;
@@ -25,30 +25,42 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
      * Summary of getProducts
      * @param string $category
      * @param int $sort
-     * @return \Illuminate\Pagination\LengthAwarePaginator
+     * @return object
      */
     public function getProducts($category = null, $sort = self::NEWEST)
     {
-        $products = Product::when($category, function ($query) use ($category) {
-            return $query->where('category_id', $category);
-        });
-
-        $products = match ($sort) {
-            self::NEWEST => $products->orderBy('created_at', self::ASCENDING),
-            self::LOWEST_PRICE => $products->orderBy('price', self::ASCENDING),
-            self::HIGHEST_PRICE => $products->orderBy('price', self::DESCENDING),
-        };
-
-        $products = $products->paginate(20, ['*'], 'products')
+        $products = Product::with('productImage')
+            ->when($category, function ($query) use ($category) {
+                return $query->where('category_id', $category);
+            })
+            ->when($sort, function ($query) use ($sort) {
+                return match ($sort) {
+                    self::NEWEST => $query->orderBy('created_at', self::ASCENDING),
+                    self::LOWEST_PRICE => $query->orderBy('price', self::ASCENDING),
+                    self::HIGHEST_PRICE => $query->orderBy('price', self::DESCENDING),
+                };
+            })
+            ->paginate(20, ['*'], 'products')
             ->through(function ($product) {
                 $name = $product->name;
-                $price = $product->price;
-                $imgUrl = ProductImage::where('product_id', $product->id)->first();
-                $img = $this->googleDriveUtility->getImage($imgUrl->url);
+                $price = StringHelper::parseNumberFormat($product->price);
+                $img = $product->productImage->first();
+                $img = $this->googleDriveUtility->getImage($img->url);
                 $link = route('getProduct', base64_encode("$name-$product->id"));
 
                 return (object) compact('name', 'price', 'img', 'link');
             });
+
+        $products = (object) [
+            'products' => $products->items(),
+            'hasPage' => $products->hasPages(),
+            'nextPageUrl' => $products->nextPageUrl(),
+            'previousPageUrl' => $products->previousPageUrl(),
+            'count' => $products->count(),
+            'total' => $products->total(),
+            'firstItem' => $products->firstItem(),
+            'lastItem' => $products->lastItem(),
+        ];
 
         return $products;
     }

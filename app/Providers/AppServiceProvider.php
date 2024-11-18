@@ -12,7 +12,6 @@ use Google\Client as GoogleClient;
 use Google\Service\Drive as GoogleDriveService;
 use Masbug\Flysystem\GoogleDriveAdapter;
 
-
 class AppServiceProvider extends ServiceProvider
 {
     /**
