@@ -12,7 +12,9 @@
         <div class="flex justify-center pb-9">
             <img class="h-auto max-w-full" src="{{ asset('img/Example Banner.png') }}" alt="image description">
         </div>
-        @include('component.slider', ['categories' => $categories])
+        <div class="mx-auto px-4">
+            @include('component.slider', ['categories' => $categories])
+        </div>
         <div class="flex justify-center p-9">
             <h1 class="text-5xl font-secondary">
                 Recommended Products
