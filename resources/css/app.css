@@ -16,5 +16,5 @@
 } */
 
 .glide__bullet--active {
-    @apply border-solid border-2 border-button shadow-md p-0.5;
+    @apply shadow-md p-0.5;
 }
