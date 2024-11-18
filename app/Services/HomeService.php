@@ -25,7 +25,7 @@ class HomeService
      */
     public function getHomeProduct()
     {
-        $products = Product::with('productImage')
+    $products = Product::with('productImage')
         ->take(8)
         ->get()
         ->map(function($product) {
@@ -49,7 +49,7 @@ class HomeService
      */
     public function getCategoryAll()
     {
-        $categories = Category::take(4)->get()
+    $categories = Category::take(4)->get()
         ->map(function($category){
             $name = $category->name;
             $url = $category->url;
@@ -69,7 +69,7 @@ class HomeService
      */
     public function getBanner()
     {
-        $bannerUrls = ['home_carousel_images/Banner1.png', 'home_carousel_images/Banner2.png', 'home_carousel_images/Banner3.png', 'home_carousel_images/Banner4.png'];
+    $bannerUrls = ['home_carousel_images/Banner1.png', 'home_carousel_images/Banner2.png', 'home_carousel_images/Banner3.png', 'home_carousel_images/Banner4.png'];
         $banners = [];
         foreach($bannerUrls as $url){
             $banners[] = $this->googleDriveUtility->getImage($url);
