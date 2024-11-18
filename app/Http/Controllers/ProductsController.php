@@ -9,7 +9,7 @@ use App\Utilities\ProductsUtility;
 use App\Http\Controllers\Controller;
 use App\Interfaces\StatusInterface;
 
-class ProductsAPIController extends Controller implements StatusInterface
+class ProductsController extends Controller implements StatusInterface
 {
     private $productUtility;
 
