@@ -3,7 +3,7 @@
 
 @section('content')
 <section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
-    <h1 class="font-bold text-3xl">{{ $categoryName }}</h1>
+    <h1 class="font-bold text-3xl">{{ ucfirst($category->name) }}</h1>
     <button id="filterDropdown" data-dropdown-toggle="dropdown" class="flex gap-2 p-2 rounded-lg max-w-[18rem] justify-center items-center bg-primary text-font_primary border border-font_primary" type="button">
         Sort By:
         <span class="font-bold">
@@ -23,28 +23,83 @@
     </div>
 
     <div class="grid gap-4">
-        <div id="productContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            @foreach ($products as $product)
-                @include('component.product-card', [
-                    'link' => $product->link,
-                    'image' => $product->img,
-                    'name' => $product->name,
-                    'price' => $product->price,
-                ])
-            @endforeach
-        </div>
-        {{ $products->links('pagination::tailwind') }}
+        <div id="productContainer" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+        <div id="pagination" class="flex items-center md:justify-between"></div>
     </div>
 </section>
 @endsection
 
 @section('extra-js')
 <script>
-    function fetchRequest(sort) {
-        let url = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
-        url = url.replace('::CATEGORY::', '{{ strtolower($categoryName) }}').replace('::SORT::', sort);
+    function replaceProducts(response) {
+        let data = response.data;
+        let productContainer = document.querySelector('#productContainer');
+        productContainer.replaceChildren();
+
+        let products = data.products;
+        products.forEach(product => {
+            let item = `{!! view('component.product-card', [
+                'link' => '::LINK::',
+                'image' => '::IMAGE::',
+                'name' => '::NAME::',
+                'price' => '::PRICE::',
+            ])->render() !!}`;
+
+            item = item.replace('::LINK::', product.link)
+                .replace('::IMAGE::', product.img)
+                .replaceAll('::NAME::', product.name)
+                .replace('::PRICE::', product.price);
+
+            productContainer.insertAdjacentHTML('beforeend', item);
+        });
+
+        if(data.hasPage) {
+            let pagination = document.querySelector('#pagination');
+            pagination.replaceChildren();
+
+            let item = `{!! view('component.pagination', [
+                'firstItem' => '::FIRST_ITEM::',
+                'lastItem' => '::LAST_ITEM::',
+                'count' => '::COUNT::',
+                'total' => '::TOTAL::'
+            ])->render() !!}`;
+
+            item = item.replace('::FIRST_ITEM::', data.firstItem)
+                .replace('::LAST_ITEM::', data.lastItem)
+                .replace('::COUNT::', data.count)
+                .replace('::TOTAL::', data.total);
+
+            pagination.insertAdjacentHTML('beforeend', item);
+
+            let prevNext = [data.previousPageUrl, data.nextPageUrl];
+            let buttons = document.querySelectorAll('.button');
+            buttons.forEach((value, key) => {
+                value.addEventListener('click', function() {
+                    fetchRequest(prevNext[key]);
+                });
+
+                if(!prevNext[key]) value.setAttribute('disabled', true);
+                else value.removeAttribute('disabled');
+            });
+        }
+    }
+
+    function fetchRequest(url) {
+        let productContainer = document.querySelector('#productContainer');
+        productContainer.replaceChildren();
+
+        setTimeout(function() {
+            if(productContainer.textContent !== '') return;
+
+            for (let i = 0; i < 8; i++) {
+                let item = `{!! view('component.skeleton-card')->render() !!}`;
+                productContainer.insertAdjacentHTML('beforeend', item);
+            }
+        },200);
+
         fetch(url, {
-            // Nanidibikin ke common-js
+            method: 'GET',
+            // Nanti dibikin ke common-js
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             },
@@ -53,41 +108,30 @@
                 throw new Error('Fetch Error!');
             }
 
-            return response.json();
-        }).then(response => {
-            let productContainer = document.querySelector('#productContainer');
             productContainer.replaceChildren();
 
-            let products = response.data.data;
-            products.forEach(product => {
-                let item = `{!! view('component.product-card', [
-                    'link' => '::LINK::',
-                    'image' => '::IMAGE::',
-                    'name' => '::NAME::',
-                    'price' => '::PRICE::',
-                ])->render() !!}`
-
-                item = item.replace('::LINK::', product.link)
-                    .replace('::IMAGE::', product.img)
-                    .replace('::NAME::', product.name)
-                    .replace('::PRICE::', product.price);
-
-                productContainer.insertAdjacentHTML('beforeend', item);
-            });
+            return response.json();
+        }).then(response => {
+            replaceProducts(response);
         }).catch(error => {
             // Nanti di fix pake toast
-            console.log('Error!');
+            console.log(error);
         });
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        let sort = document.querySelectorAll('#dropdown ul li');
+        let sortButtons = document.querySelectorAll('#dropdown ul li');
         let filterDropdown = document.querySelector('#filterDropdown span');
 
-        sort.forEach(item => {
-            item.addEventListener('click', function() {
+        const URL = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
+        let url = URL.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', 1);
+        fetchRequest(url);
+
+        sortButtons.forEach(button => {
+            button.addEventListener('click', function() {
                 filterDropdown.textContent = this.textContent;
-                fetchRequest(item.value);
+                let url = URL.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', this.value);
+                fetchRequest(url);
             });
         });
     });

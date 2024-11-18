@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\HomeController;
@@ -27,6 +28,11 @@ Route::middleware(['guest:admin'])->group(function () {
         Route::get('/products/{id}', 'getProduct')->name('getProduct');
     });
 });
+
+Route::controller(CategoryController::class)->group(function () {
+    Route::get('/category/{category}', 'index')->name('categoryPage');
+});
+
 
 Route::middleware(['guest:web,admin'])->group(function () {
     Route::controller(LoginController::class)->group(function () {
