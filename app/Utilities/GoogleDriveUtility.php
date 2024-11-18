@@ -47,7 +47,7 @@ class GoogleDriveUtility implements StatusInterface
                 'message' => 'File upload failed!',
             ];
 
-            return back()->with($response);
+            return $response;
         }
 
         $response = [
@@ -61,7 +61,7 @@ class GoogleDriveUtility implements StatusInterface
     /**
      * Summary of getFile
      * @param string $filePath
-     * @return string
+     * @return string|string[]
      */
     public function getFile($filePath)
     {
@@ -74,12 +74,7 @@ class GoogleDriveUtility implements StatusInterface
             $errorLog->error = $e->getMessage();
             $errorLog->save();
 
-            $response = [
-                'status' => self::STATUS_ERROR,
-                'message' => 'File fetcyh failed!',
-            ];
-
-            return back()->with($response);
+            abort(404);
         }
 
         return 'data:' . $mimeType . ';base64,' . base64_encode($file);
@@ -110,7 +105,7 @@ class GoogleDriveUtility implements StatusInterface
                 'message' => 'File deletion failed!',
             ];
 
-            return back()->with($response);
+            return $response;
         }
 
         $response = [
@@ -121,6 +116,11 @@ class GoogleDriveUtility implements StatusInterface
         return $response;
     }
 
+    /**
+     * Summary of getAllFilePaths
+     * @param string $folderPath
+     * @return array|\Illuminate\Http\RedirectResponse
+     */
     public function getAllFilePaths($folderPath)
     {
         try {
@@ -130,12 +130,7 @@ class GoogleDriveUtility implements StatusInterface
             $errorLog->error = $e->getMessage();
             $errorLog->save();
 
-            $response = [
-                'status' => self::STATUS_ERROR,
-                'message' => 'Files fetch failed!',
-            ];
-
-            return back()->with($response);
+            abort(404);
         }
 
         return $files;
