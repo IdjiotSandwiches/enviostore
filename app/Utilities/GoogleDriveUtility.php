@@ -22,17 +22,17 @@ class GoogleDriveUtility implements StatusInterface
     }
 
     /**
-     * Summary of storeImage
-     * @param string $imgName
-     * @param array|UploadedFile|null $img
+     * Summary of storeFile
+     * @param string $fileName
+     * @param array|UploadedFile|null $file
      * @return string[]|\Illuminate\Http\RedirectResponse
      */
-    public function storeImage($imgName, $img)
+    public function storeFile($fileName, $file)
     {
         try {
             DB::beginTransaction();
 
-            $this->storage->write($imgName, file_get_contents($img));
+            $this->storage->write($fileName, file_get_contents($file));
 
             DB::commit();
         } catch (\Exception $e) {
@@ -44,45 +44,53 @@ class GoogleDriveUtility implements StatusInterface
 
             $response = [
                 'status' => self::STATUS_ERROR,
-                'message' => 'Image upload failed!',
+                'message' => 'File upload failed!',
             ];
 
-            return back()->with($response);
+            return $response;
         }
 
         $response = [
             'status' => self::STATUS_SUCCESS,
-            'message' => 'Image uploaded successfully!',
+            'message' => 'File uploaded successfully!',
         ];
 
         return $response;
     }
 
     /**
-     * Summary of getImage
-     * @param string $imgPath
-     * @return string
+     * Summary of getFile
+     * @param string $filePath
+     * @return string|string[]
      */
-    public function getImage($imgPath)
+    public function getFile($filePath)
     {
-        $img = $this->storage->read($imgPath);
-        $finfo = new \finfo(FILEINFO_MIME_TYPE);
-        $mimeType = $finfo->buffer($img);
+        try {
+            $file = $this->storage->read($filePath);
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($file);
+        } catch (\Exception $e) {
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
 
-        return 'data:' . $mimeType . ';base64,' . base64_encode($img);
+            abort(404);
+        }
+
+        return 'data:' . $mimeType . ';base64,' . base64_encode($file);
     }
 
     /**
-     * Summary of deleteImage
-     * @param string $imgPath
+     * Summary of deleteFile
+     * @param string $filePath
      * @return string[]|\Illuminate\Http\RedirectResponse
      */
-    public function deleteImage($imgPath)
+    public function deleteFile($filePath)
     {
         try {
             DB::beginTransaction();
 
-            $this->storage->delete($imgPath);
+            $this->storage->delete($filePath);
 
             DB::commit();
         } catch (\Exception $e) {
@@ -94,17 +102,37 @@ class GoogleDriveUtility implements StatusInterface
 
             $response = [
                 'status' => self::STATUS_ERROR,
-                'message' => 'Image deletion failed!',
+                'message' => 'File deletion failed!',
             ];
 
-            return back()->with($response);
+            return $response;
         }
 
         $response = [
             'status' => self::STATUS_SUCCESS,
-            'message' => 'Image deleted successfully!',
+            'message' => 'File deleted successfully!',
         ];
 
         return $response;
+    }
+
+    /**
+     * Summary of getAllFilePaths
+     * @param string $folderPath
+     * @return array|\Illuminate\Http\RedirectResponse
+     */
+    public function getAllFilePaths($folderPath)
+    {
+        try {
+            $files = $this->storage->allFiles($folderPath);
+        } catch (\Exception $e) {
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+
+            abort(404);
+        }
+
+        return $files;
     }
 }

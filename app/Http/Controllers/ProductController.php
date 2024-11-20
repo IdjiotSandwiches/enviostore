@@ -45,8 +45,7 @@ class ProductController extends Controller
         $productImgUrls = $product->productImage->pluck('url');
         $productImgs = [];
         foreach($productImgUrls as $url) {
-            $img = $this->googleDriveUtility->getImage($url);
-            array_push($productImgs, $img);
+            $productImgs[] = $this->googleDriveUtility->getFile($url);
         }
 
         $product = (object) [

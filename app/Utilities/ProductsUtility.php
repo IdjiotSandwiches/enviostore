@@ -27,7 +27,7 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
      * @param int $sort
      * @return object
      */
-    public function getProducts($category = null, $sort = self::NEWEST)
+    public function getProducts($category = null, $sort = self::NEWEST, $perPage = 20)
     {
         $products = Product::with('productImage')
             ->when($category, function ($query) use ($category) {
@@ -40,15 +40,9 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
                     self::HIGHEST_PRICE => $query->orderBy('price', self::DESCENDING),
                 };
             })
-            ->paginate(20, ['*'], 'products')
+            ->paginate($perPage, ['*'], 'products')
             ->through(function ($product) {
-                $name = $product->name;
-                $price = StringHelper::parseNumberFormat($product->price);
-                $img = $product->productImage->first();
-                $img = $this->googleDriveUtility->getImage($img->url);
-                $link = route('getProduct', base64_encode("$name-$product->id"));
-
-                return (object) compact('name', 'price', 'img', 'link');
+                return $this->convertItem($product);
             });
 
         $products = (object) [
@@ -63,5 +57,22 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
         ];
 
         return $products;
+    }
+
+    /**
+     * Summary of convertItem
+     * @param \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     * @return object
+     */
+    public function convertItem($product)
+    {
+        $name = $product->name;
+        $price = StringHelper::parseNumberFormat($product->price);
+        $rating = $product->sustainability_score;
+        $img = $product->productImage->first();
+        $img = $this->googleDriveUtility->getFile($img->url);
+        $link = route('getProduct', base64_encode("$name-$product->id"));
+
+        return (object) compact('name', 'rating', 'price', 'img', 'link');
     }
 }

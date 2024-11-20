@@ -4,13 +4,14 @@ namespace App\Providers;
 
 use App\Models\ErrorLog;
 use League\Flysystem\Filesystem;
+use Google\Client as GoogleClient;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
-use Google\Client as GoogleClient;
-use Google\Service\Drive as GoogleDriveService;
 use Masbug\Flysystem\GoogleDriveAdapter;
+use Illuminate\Filesystem\FilesystemAdapter;
+use Google\Service\Drive as GoogleDriveService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,8 +41,9 @@ class AppServiceProvider extends ServiceProvider
 
                 $service = new GoogleDriveService($client);
                 $adapter = new GoogleDriveAdapter($service, $config['folderId']);
+                $filesystem = new Filesystem($adapter);
 
-                return new Filesystem($adapter);
+                return new FilesystemAdapter($filesystem, $adapter);
             });
         } catch (\Exception $e) {
             $errorLog = new ErrorLog();
