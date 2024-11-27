@@ -1,7 +1,7 @@
 @if (auth('admin')->check() || auth()->check())
     <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-end"
         class="block w-10 h-10 rounded-full cursor-pointer" aria-hidden="true"
-        src="/docs/images/people/profile-picture-5.jpg" alt="User dropdown">
+        src="" alt="User dropdown">
     <div id="userDropdown"
         class="hidden z-10 bg-white divide-y divide-gray-200 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
         <div class="py-1">
