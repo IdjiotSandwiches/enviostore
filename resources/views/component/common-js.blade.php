@@ -23,11 +23,12 @@
             searchBar.classList.toggle('hidden')
         });
 
-        form.addEventListener('submit', function () {
-            console.log('submit')
-            document.querySelector('button[type="submit"]').disabled = true;
-            document.querySelector('div[role="status"]').classList.toggle('hidden');
-        });
+        if(form) {
+            form.addEventListener('submit', function () {
+                document.querySelector('button[type="submit"]').disabled = true;
+                document.querySelector('div[role="status"]').classList.toggle('hidden');
+            });
+        }
 
         const baseToast = Swal.mixin({
             toast: true,
