@@ -1,8 +1,7 @@
 @if (auth('admin')->check() || auth()->check())
     <div class="flex items-center gap-2" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-end">
         <img id="avatarButton" type="button"
-            class="block w-10 h-10 rounded-full cursor-pointer border border-gray-400" aria-hidden="true" src="" alt="User dropdown">
-        <p class="hidden md:block">{{ auth()->user()->username ?? auth('admin')->user()->username }}</p>
+            class="block w-10 h-10 rounded-full cursor-pointer" aria-hidden="true" src="" alt="User dropdown">
     </div>
     <div id="userDropdown"
         class="hidden z-10 bg-white divide-y divide-gray-200 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
