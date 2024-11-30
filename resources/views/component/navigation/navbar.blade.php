@@ -3,8 +3,10 @@
         @include('component.navigation.logo')
 
         <div class="flex w-full items-center justify-end gap-2 md:gap-4">
-            @include('component.navigation.search-bar')
-            @include('component.navigation.user-cart')
+            @if (auth()->check())
+                @include('component.navigation.search-bar')
+                @include('component.navigation.user-cart')
+            @endif
             @include('component.navigation.user-auth')
         </div>
     </div>
