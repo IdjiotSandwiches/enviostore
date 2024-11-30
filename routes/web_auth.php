@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,3 +13,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "auth" middleware group. Make something great!
 |
 */
+
+Route::controller(CartController::class)->group(function () {
+    Route::get('/cart', 'index')->name('cart');
+});
+
