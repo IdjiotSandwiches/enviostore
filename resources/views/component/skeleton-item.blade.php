@@ -1,4 +1,4 @@
-<div role="status" class="w-full h-full flex items-center bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 animate-pulse">
+<div role="status" class="w-full h-full flex items-center bg-white border-gray-200 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 animate-pulse">
     <div class="flex justify-center items-center rounded-t-lg aspect-square object-contain bg-gray-200 h-full">
         <svg class="h-10 w-10 text-gray-300 dark:text-gray-600" aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
@@ -7,14 +7,12 @@
         </svg>
     </div>
     <div class="p-5 flex flex-col gap-2 w-full">
-        <div class="">
-            <div class="flex justify-between">
-                <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-1/3 mb-4"></div>
-                <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-1/3 mb-4"></div>
-            </div>
-            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-1/4 mb-2.5"></div>
-            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-1/4 mb-2.5"></div>
+        <div class="flex justify-between">
+            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-1/3"></div>
+            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-1/3"></div>
         </div>
+        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-1/4"></div>
+        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-1/4"></div>
         <div class="flex justify-end">
             <div class="h-6 bg-gray-200 rounded-full dark:bg-gray-700 w-1/3 md:w-1/5"></div>
         </div>
