@@ -57,12 +57,13 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
         session($sessionData->all());
         Auth::guard($sessionData['identity']->auth)->login($user);
         $loginRequest->session()->regenerate();
+
         $response = [
             'status' => self::STATUS_SUCCESS,
             'message' => 'Logged In.'
         ];
 
-        if ($isAdmin) {
+        if ($sessionData['is_admin']) {
             return to_route('admin.home')->with($response);
         }
 
@@ -77,8 +78,9 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
     public function logout(Request $request)
     {
         $identity = session(self::SESSION_IDENTITY);
+        // dd($identity);
         
-        Auth::guard($identity->auth)->logout();
+        Auth::guard()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
