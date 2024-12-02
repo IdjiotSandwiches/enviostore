@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\ErrorLog;
-use Illuminate\Support\Str;
+use App\Services\Register\RegisterService;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\StatusInterface;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Auth\Events\Registered;
 
@@ -24,30 +22,21 @@ class RegisterController extends Controller implements StatusInterface
     }
 
     /**
-     * Register Attempt
+     * Summary of register
      * @param \App\Http\Requests\RegisterRequest $registerRequest
-     * @return mixed|\Illuminate\Http\RedirectResponse
+     * @param \App\Services\Register\RegisterService $registerService
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function register(RegisterRequest $registerRequest)
+    public function register(RegisterRequest $registerRequest, RegisterService $registerService)
     {
         $validated = $registerRequest->validated();
 
         try {
             DB::beginTransaction();
 
-            $user = new User();
-            $user->uuid = Str::uuid();
-            $user->username = $validated['username'];
-            $user->email = $validated['email'];
-            $user->password = Hash::make($validated['password']);
-            $user->phone_number = $validated['phone_number'];
-            $user->save();
+            $user = $registerService->register($validated);
 
             DB::commit();
-            $response = [
-                'status' => self::STATUS_SUCCESS,
-                'message' => 'Account successfully created.',
-            ];
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -60,12 +49,12 @@ class RegisterController extends Controller implements StatusInterface
                 'message' => 'Invalid operation.',
             ];
 
-            return back()->with($response);
+            return back()->withInput()->with($response);
         }
 
         event(new Registered($user));
         Auth::login($user);
 
-        return redirect()->route('verification.notice');
+        return to_route('verification.notice');
     }
 }
