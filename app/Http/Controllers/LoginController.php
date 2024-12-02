@@ -3,17 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\SessionKeyInterface;
-use App\Models\User;
-use App\Models\Admin;
 use App\Models\ErrorLog;
-use App\Providers\RouteServiceProvider;
 use App\Services\Login\LoginService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
 use App\Interfaces\StatusInterface;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller implements StatusInterface, SessionKeyInterface
 {
@@ -27,13 +23,15 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
     }
 
     /**
-     * Login Attempt
+     * Summary of login
      * @param \App\Http\Requests\LoginRequest $loginRequest
+     * @param \App\Services\Login\LoginService $loginService
      * @return \Illuminate\Http\RedirectResponse
      */
     public function login(LoginRequest $loginRequest, LoginService $loginService)
     {
         $validated = $loginRequest->validated();
+        
         try {
             DB::beginTransaction();
 
