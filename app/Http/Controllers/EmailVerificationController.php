@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\StatusInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
-class EmailVerificationController extends Controller
+class EmailVerificationController extends Controller implements StatusInterface
 {
     /**
      * Return verification notice
@@ -15,7 +16,7 @@ class EmailVerificationController extends Controller
     public function verificationNotice()
     {
         if (Auth::user()->hasVerifiedEmail()) {
-            return redirect()->route('home');
+            return to_route('home');
         }
 
         return view('auth.verify-email');
@@ -29,8 +30,13 @@ class EmailVerificationController extends Controller
     public function verifyEmail(EmailVerificationRequest $request)
     {
         $request->fulfill();
+        
+        $response = [
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Account has been verified.',
+        ];
 
-        return redirect()->route('home');
+        return to_route('home')->with($response);
     }
 
     /**
