@@ -51,6 +51,7 @@ class LoginService implements StatusInterface, SessionKeyInterface
 
         return collect([
             self::SESSION_IDENTITY => (object) $identity,
+            self::SESSION_IS_ADMIN => $isAdmin,
         ]);
     }
 }
