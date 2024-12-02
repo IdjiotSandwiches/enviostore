@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\SessionKeyInterface;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\ErrorLog;
 use App\Providers\RouteServiceProvider;
+use App\Services\Login\LoginService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
@@ -13,7 +15,7 @@ use App\Interfaces\StatusInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class LoginController extends Controller implements StatusInterface
+class LoginController extends Controller implements StatusInterface, SessionKeyInterface
 {
     /**
      * Return Login View
@@ -29,28 +31,14 @@ class LoginController extends Controller implements StatusInterface
      * @param \App\Http\Requests\LoginRequest $loginRequest
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function login(LoginRequest $loginRequest)
+    public function login(LoginRequest $loginRequest, LoginService $loginService)
     {
         $validated = $loginRequest->validated();
-
         try {
             DB::beginTransaction();
 
-            $user = User::where('email', $validated['email'])->first() ??
-                Admin::where('email', $validated['email'])->first();
-
-            if ($user && Hash::check($validated['password'], $user->password)) {
-                $isAdmin = $user instanceof Admin ? 'admin' : 'web';
-            }
-            else {
-                DB::rollBack();
-                $response = [
-                    'status' => self::STATUS_ERROR,
-                    'message' => 'E-mail or password invalid.'
-                ];
-
-                return back()->with($response);
-            }
+            [$user, $isAdmin] = $loginService->login($validated['email'], $validated['password']);
+            $sessionData = $loginService->setSessionData($user, $isAdmin);
 
             DB::commit();
         } catch (\Exception $e) {
@@ -62,21 +50,25 @@ class LoginController extends Controller implements StatusInterface
 
             $response = [
                 'status' => self::STATUS_ERROR,
-                'message' => 'Invalid operation.',
+                'message' => $e->getMessage(),
             ];
 
-            return back()->with($response);
+            return back()->withInput()->with($response);
         }
 
-        Auth::guard($isAdmin)->login($user);
+        session($sessionData->all());
+        Auth::guard($sessionData['identity']->auth)->login($user);
         $loginRequest->session()->regenerate();
         $response = [
             'status' => self::STATUS_SUCCESS,
             'message' => 'Logged In.'
         ];
 
-        return redirect($isAdmin === 'admin' ? RouteServiceProvider::ADMIN_HOME : RouteServiceProvider::HOME)
-            ->with($response);
+        if ($isAdmin) {
+            return to_route('admin.home')->with($response);
+        }
+
+        return to_route('home')->with($response);
     }
 
     /**
@@ -86,7 +78,9 @@ class LoginController extends Controller implements StatusInterface
      */
     public function logout(Request $request)
     {
-        Auth::logout();
+        $identity = session(self::SESSION_IDENTITY);
+        
+        Auth::guard($identity->auth)->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
@@ -95,7 +89,6 @@ class LoginController extends Controller implements StatusInterface
             'message' => 'Logged Out.'
         ];
 
-        return redirect()->route('home')
-            ->with($response);
+        return to_route('home')->with($response);
     }
 }

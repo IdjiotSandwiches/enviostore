@@ -10,10 +10,14 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        document.querySelector('form').addEventListener('submit', function () {
-            document.querySelector('button[type="submit"]').disabled = true;
-            document.querySelector('div[role="status"]').classList.toggle('hidden');
-        });
+        const form = document.querySelector('form');
+
+        if(form) {
+            form.addEventListener('submit', function () {
+                document.querySelector('button[type="submit"]').disabled = true;
+                document.querySelector('div[role="status"]').classList.toggle('hidden');
+            });
+        }
 
         const baseToast = Swal.mixin({
             toast: true,

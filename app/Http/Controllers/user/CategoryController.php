@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\user;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Utilities\ProductsUtility;
 use App\Interfaces\CategoryInterface;
+use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller implements CategoryInterface
 {
