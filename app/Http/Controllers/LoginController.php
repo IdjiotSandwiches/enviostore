@@ -79,8 +79,8 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
     public function logout(Request $request)
     {
         $identity = session(self::SESSION_IDENTITY);
+        
         Auth::guard($identity->auth)->logout();
-
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
