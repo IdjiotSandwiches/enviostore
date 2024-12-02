@@ -6,7 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\user\HomeController;
 
 /*
 |--------------------------------------------------------------------------
