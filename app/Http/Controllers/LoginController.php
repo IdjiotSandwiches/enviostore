@@ -31,6 +31,7 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
     public function login(LoginRequest $loginRequest, LoginService $loginService)
     {
         $validated = $loginRequest->validated();
+        
         try {
             DB::beginTransaction();
 
