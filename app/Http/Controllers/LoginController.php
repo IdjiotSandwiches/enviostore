@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Admin;
 use App\Models\ErrorLog;
 use App\Providers\RouteServiceProvider;
+use App\Services\Login\LoginService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
@@ -29,28 +30,13 @@ class LoginController extends Controller implements StatusInterface
      * @param \App\Http\Requests\LoginRequest $loginRequest
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function login(LoginRequest $loginRequest)
+    public function login(LoginRequest $loginRequest, LoginService $loginService)
     {
         $validated = $loginRequest->validated();
-
         try {
             DB::beginTransaction();
 
-            $user = User::where('email', $validated['email'])->first() ??
-                Admin::where('email', $validated['email'])->first();
-
-            if ($user && Hash::check($validated['password'], $user->password)) {
-                $isAdmin = $user instanceof Admin ? 'admin' : 'web';
-            }
-            else {
-                DB::rollBack();
-                $response = [
-                    'status' => self::STATUS_ERROR,
-                    'message' => 'E-mail or password invalid.'
-                ];
-
-                return back()->with($response);
-            }
+            [$user, $isAdmin] = $loginService->login($validated['email'], $validated['password']);
 
             DB::commit();
         } catch (\Exception $e) {
@@ -62,10 +48,10 @@ class LoginController extends Controller implements StatusInterface
 
             $response = [
                 'status' => self::STATUS_ERROR,
-                'message' => 'Invalid operation.',
+                'message' => $e->getMessage(),
             ];
 
-            return back()->with($response);
+            return back()->withInput()->with($response);
         }
 
         Auth::guard($isAdmin)->login($user);
