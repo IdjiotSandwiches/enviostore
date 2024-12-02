@@ -15,7 +15,10 @@ class CartController extends Controller
     
     public function getItems()
     {
-        $items = Cart::with(['product', 'user'])->get();
-        dd($items);
+        // $id = auth()->user()->id;
+        // dd($id);
+        // $items = Cart::with(['product'])->where('user_id', $id)->get();
+        // dd($items);
+        dd(session('key'));
     }
 }
