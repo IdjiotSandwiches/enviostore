@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\SessionKeyInterface;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\ErrorLog;
@@ -14,7 +15,7 @@ use App\Interfaces\StatusInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class LoginController extends Controller implements StatusInterface
+class LoginController extends Controller implements StatusInterface, SessionKeyInterface
 {
     /**
      * Return Login View
@@ -37,6 +38,7 @@ class LoginController extends Controller implements StatusInterface
             DB::beginTransaction();
 
             [$user, $isAdmin] = $loginService->login($validated['email'], $validated['password']);
+            $sessionData = $loginService->setSessionData($user, $isAdmin);
 
             DB::commit();
         } catch (\Exception $e) {
@@ -54,15 +56,19 @@ class LoginController extends Controller implements StatusInterface
             return back()->withInput()->with($response);
         }
 
-        Auth::guard($isAdmin)->login($user);
+        session($sessionData->all());
+        Auth::guard($sessionData['identity']->auth)->login($user);
         $loginRequest->session()->regenerate();
         $response = [
             'status' => self::STATUS_SUCCESS,
             'message' => 'Logged In.'
         ];
 
-        return redirect($isAdmin === 'admin' ? RouteServiceProvider::ADMIN_HOME : RouteServiceProvider::HOME)
-            ->with($response);
+        if ($isAdmin) {
+            return to_route('admin.home')->with($response);
+        }
+
+        return to_route('home')->with($response);
     }
 
     /**
