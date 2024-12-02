@@ -78,7 +78,9 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
      */
     public function logout(Request $request)
     {
-        Auth::logout();
+        $identity = session(self::SESSION_IDENTITY);
+        Auth::guard($identity->auth)->logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
@@ -87,7 +89,6 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
             'message' => 'Logged Out.'
         ];
 
-        return redirect()->route('home')
-            ->with($response);
+        return to_route('home')->with($response);
     }
 }
