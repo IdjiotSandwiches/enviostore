@@ -3,7 +3,7 @@
         @include('component.navigation.logo')
 
         <div class="flex w-full items-center justify-end gap-2 md:gap-4">
-            @if (auth()->check())
+            @if (!session(App\Interfaces\SessionKeyInterface::SESSION_IS_ADMIN))
                 @include('component.navigation.search-bar')
                 @include('component.navigation.user-cart')
             @endif
