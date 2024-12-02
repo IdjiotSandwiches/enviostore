@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ErrorLog;
+use App\Services\Login\LoginService;
 use App\Services\Register\RegisterService;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\StatusInterface;
@@ -27,7 +28,7 @@ class RegisterController extends Controller implements StatusInterface
      * @param \App\Services\Register\RegisterService $registerService
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function register(RegisterRequest $registerRequest, RegisterService $registerService)
+    public function register(RegisterRequest $registerRequest, RegisterService $registerService, LoginService $loginService)
     {
         $validated = $registerRequest->validated();
 
@@ -53,7 +54,10 @@ class RegisterController extends Controller implements StatusInterface
         }
 
         event(new Registered($user));
-        Auth::login($user);
+
+        [$user, $isAdmin] = $loginService->login($validated['email'], $validated['password']);
+        $sessionData = $loginService->setSessionData($user, $isAdmin);
+        Auth::guard($sessionData['identity']->auth)->login($user);
 
         return to_route('verification.notice');
     }
