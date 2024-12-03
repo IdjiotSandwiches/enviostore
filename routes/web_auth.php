@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\common\ProductController;
+use App\Http\Controllers\user\CartController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(ProductController::class)->group(function () {
+Route::controller(CartController::class)->group(function () {
     Route::post('/add-to-cart', 'addToCart')->name('addToCart');
 });

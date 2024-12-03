@@ -15,7 +15,11 @@
         if(form) {
             form.addEventListener('submit', function () {
                 document.querySelector('button[type="submit"]').disabled = true;
-                document.querySelector('div[role="status"]').classList.toggle('hidden');
+                const spinner = document.querySelector('div[role="status"]');
+
+                if(spinner) {
+                    spinner.classList.toggle('hidden');
+                }
             });
         }
 
