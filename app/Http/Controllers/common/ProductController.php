@@ -57,6 +57,7 @@ class ProductController extends Controller implements StatusInterface
 
         $product = (object) [
             'name' => $product->name,
+            'product_serial' => $product->product_serial_code,
             'price' => StringHelper::parseNumberFormat($product->price),
             'stocks' => $product->stocks,
             'description' => $product->description,
