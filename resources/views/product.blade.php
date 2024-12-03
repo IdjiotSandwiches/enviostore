@@ -39,10 +39,10 @@
                 <p>25 Reviews</p>
                 <h3 class="font-bold text-xl md:text-3xl">Rp {{ $product->price }}</h3>
             </div>
-            <form action="" method="POST" class="grid gap-4">
+            <form action="{{ route('addToCart') }}" method="POST" class="grid gap-4">
                 @csrf
                 @method('POST')
-                <input type="text" value="{{  }}" class="hidden" disabled>
+                <input type="hidden" id="product_serial" name="product_serial" value="{{ $product->product_serial }}" class="hidden">
                 <div class="flex items-end justify-between">
                     <label for="quantity-input" class="block mb-2 text-lg font-medium text-accent dark:text-white">Amount:</label>
                     <div class="relative flex items-center max-w-[8rem]">
@@ -51,7 +51,7 @@
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
                             </svg>
                         </button>
-                        <input type="text" id="quantity" data-input-counter data-input-counter-min="1" data-input-counter-max="{{ $product->stocks }}" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ $product->stocks }}" value="1" required />
+                        <input type="text" name="quantity" id="quantity" data-input-counter data-input-counter-min="1" data-input-counter-max="{{ $product->stocks }}" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ $product->stocks }}" value="1" required />
                         <button type="button" id="increment-button" data-input-counter-increment="quantity-input" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                             <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
@@ -63,7 +63,7 @@
                     Stocks: {{ $product->stocks }}
                 </div>
                 <div class="grid gap-4">
-                    <button class="flex items-center justify-center gap-2 text-center py-2 px-5 text-lg font-medium text-gray-900 focus:outline-none rounded-lg border border-button hover:bg-accent/10 hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15 dark:focus:ring-button/15 dark:text-button dark:border-button dark:hover:text-white dark:hover:bg-accent/10 text-nowrap">
+                    <button type="submit" class="flex items-center justify-center gap-2 text-center py-2 px-5 text-lg font-medium text-gray-900 focus:outline-none rounded-lg border border-button hover:bg-accent/10 hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15 dark:focus:ring-button/15 dark:text-button dark:border-button dark:hover:text-white dark:hover:bg-accent/10 text-nowrap">
                         <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
                         </svg>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\common\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,3 +13,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "auth" middleware group. Make something great!
 |
 */
+
+Route::controller(ProductController::class)->group(function () {
+    Route::post('/add-to-cart', 'addToCart')->name('addToCart');
+});

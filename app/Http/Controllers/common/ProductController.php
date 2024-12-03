@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\common;
 
+use App\Http\Requests\CartRequest;
+use App\Interfaces\SessionKeyInterface;
+use App\Models\Cart;
 use App\Models\Product;
 use App\Models\ErrorLog;
 use App\Models\Category;
@@ -12,8 +15,9 @@ use App\Utilities\GoogleDriveUtility;
 use App\Utilities\ProductsUtility;
 use App\Interfaces\StatusInterface;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
-class ProductController extends Controller implements StatusInterface
+class ProductController extends Controller implements StatusInterface, SessionKeyInterface
 {
     private $googleDriveUtility;
     private $productUtility;
@@ -57,6 +61,7 @@ class ProductController extends Controller implements StatusInterface
 
         $product = (object) [
             'name' => $product->name,
+            'product_serial' => $product->product_serial_code,
             'price' => StringHelper::parseNumberFormat($product->price),
             'stocks' => $product->stocks,
             'description' => $product->description,
@@ -88,5 +93,52 @@ class ProductController extends Controller implements StatusInterface
             'message' => 'Data sorted!',
             'data' => $products,
         ], Response::HTTP_OK);
+    }
+
+    public function addToCart(CartRequest $cartRequest)
+    {
+        $item = $cartRequest->validated();
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = session(self::SESSION_IDENTITY);
+
+        try {
+            DB::beginTransaction();
+            
+            $product = Product::where('product_serial_code', $item['product_serial'])->first();
+            
+            if (!$product) {
+                throw new \Exception('Invalid operation.');
+            }
+
+            $cart = new Cart();
+            $cart->user_id = $user->id;
+            $cart->product_id = $product->id;
+            $cart->quantity = $item['quantity'];
+            $cart->save();
+            
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+
+            $response = [
+                'status' => self::STATUS_ERROR,
+                'message' => 'Invalid operation.',
+            ];
+
+            return back()->withInput()->with($response);
+        }
+
+        $response = [
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Product added to cart.',
+        ];
+
+        return back()->with($response);
     }
 }
