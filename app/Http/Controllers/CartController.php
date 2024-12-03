@@ -14,7 +14,7 @@ class CartController extends Controller implements SessionKeyInterface
      */
     public function index()
     {
-        $this->getItems();
+        // $this->getItems();
         return view('cart');
     }
 

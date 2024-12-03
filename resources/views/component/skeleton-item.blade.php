@@ -7,10 +7,7 @@
         </svg>
     </div>
     <div class="p-5 flex flex-col gap-2 w-full">
-        <div class="flex justify-between">
-            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-1/3"></div>
-            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-1/3"></div>
-        </div>
+        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-2/3"></div>
         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-1/4"></div>
         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-1/4"></div>
         <div class="flex justify-end">
