@@ -1,4 +1,4 @@
-<div class="divide-y bg-white dark:bg-gray-800 h-fit animate-pulse">
+<div role="status" class="divide-y bg-white dark:bg-gray-800 h-fit animate-pulse">
     <div class="p-4">
         <div class="h-3.5 bg-gray-200 rounded-full dark:bg-gray-700 w-1/3"></div>
     </div>

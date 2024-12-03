@@ -5,8 +5,8 @@
 <section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
     <h1 class="font-bold text-3xl">Your Cart</h1>
     <div class="flex flex-col md:flex-row justify-between gap-4">
-        <div id="cartContainer" class="grid gap-4 md:w-3/4"></div>
-        <div id="summaryContainer" class="md:w-1/4"></div>
+        <div id="cartContainer" class="grid gap-4 flex-1"></div>
+        <div id="summaryContainer" class="md:w-1/4">@include('component.skeleton-summary')</div>
     </div>
 </section>
 @endsection
