@@ -4,7 +4,7 @@
             <div class="mb-6 md:mb-0">
                 <a href="#" class="flex items-center">  
                     {{-- Logo --}}
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white italic">EnvioStore</span>
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white italic">EnviroStore</span>
                 </a>
             </div>
             {{-- Content --}}
