@@ -32,12 +32,10 @@ class ProductController extends Controller implements StatusInterface
      * @param string $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getProduct($id)
+    public function getProduct($product_serial)
     {
-        // Still on work, need to be discuss
         try {
-            $id = base64_decode($id);
-            $id = explode("-", $id)[1];
+            $product_serial = base64_decode($product_serial);
         } catch (\Exception $e) {
             $errorLog = new ErrorLog();
             $errorLog->error = $e->getMessage();
@@ -46,7 +44,8 @@ class ProductController extends Controller implements StatusInterface
             abort(404);
         }
 
-        $product = Product::with('productImage')->find($id);
+        $product = Product::with('productImage')->where('product_serial_code', $product_serial)
+            ->first();
         if (!$product) abort(404);
 
         $productImgUrls = $product->productImage->pluck('url');

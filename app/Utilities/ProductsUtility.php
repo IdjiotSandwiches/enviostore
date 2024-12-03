@@ -71,7 +71,7 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
         $rating = $product->sustainability_score;
         $img = $product->productImage->first();
         $img = $this->googleDriveUtility->getFile($img->url);
-        $link = route('getProduct', base64_encode("$name-$product->id"));
+        $link = route('getProduct', base64_encode("$product->product_serial_code"));
 
         return (object) compact('name', 'rating', 'price', 'img', 'link');
     }

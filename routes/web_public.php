@@ -25,7 +25,7 @@ Route::middleware(['guest:admin'])->group(function () {
     });
 
     Route::controller(ProductController::class)->group(function () {
-        Route::get('/products/{id}', 'getProduct')->name('getProduct');
+        Route::get('/products/{product_serial}', 'getProduct')->name('getProduct');
     });
 
     Route::controller(CategoryController::class)->group(function () {
