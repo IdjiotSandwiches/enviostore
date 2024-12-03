@@ -27,6 +27,11 @@ class CartService implements SessionKeyInterface
             throw new \Exception('Invalid operation.');
         }
 
+        $currentStock = $product->stocks;
+        if (!$this->isAvailable($currentStock, $item['quantity'])) {
+            throw new \Exception('Invalid operation.');
+        }
+
         $cart = new Cart();
         $cart->user_id = $user->id;
         $cart->product_id = $product->id;
@@ -47,12 +52,27 @@ class CartService implements SessionKeyInterface
     {
         $currentStock = $product->stocks;
 
-        if ($currentStock < $quantity) {
+        if (!$this->isAvailable($currentStock, $quantity)) {
             throw new \Exception('Invalid operation.');
         }
 
         $updatedStock = $currentStock - $quantity;
         $product->stocks = $updatedStock;
         $product->save();
+    }
+
+    /**
+     * Summary of isAvailable
+     * @param int $currentStock
+     * @param int $quantity
+     * @return bool
+     */
+    public function isAvailable($currentStock, $quantity)
+    {
+        if ($currentStock < $quantity) {
+            return false;
+        }
+
+        return true;
     }
 }
