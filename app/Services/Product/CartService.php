@@ -17,6 +17,10 @@ class CartService implements SessionKeyInterface
         $this->googleDriveUtility = new GoogleDriveUtility();
     }
 
+    /**
+     * Summary of getCartItems
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     */
     public function getCartItems()
     {
         /**
@@ -43,6 +47,30 @@ class CartService implements SessionKeyInterface
             });
 
         return $items;
+    }
+
+    public function getCartSummary()
+    {
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = session(self::SESSION_IDENTITY);
+
+        $items = Cart::with(['product'])
+            ->where('user_id', $user->id)
+            ->get()
+            ->map(function ($item) {
+                $price = $item->quantity * $item->product->price;
+
+                return (object) [
+                    'quantity' => $item->quantity,
+                    'price' => $price,
+                ];
+            });
+
+        $price = StringHelper::parseNumberFormat($items->sum('price'));
+        $quantity = $items->sum('quantity');
+        dd($price, $quantity);
     }
 
     /**
