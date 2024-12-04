@@ -23,11 +23,11 @@
             if(cartContainer.textContent !== '' && summaryContainer.textContent !== '') return;
 
             for (let i = 0; i < 8; i++) {
-                let item = `{!! view('component.skeleton-item')->render() !!}`;
+                let item = `{!! view('cart.component.__skeleton-item')->render() !!}`;
                 cartContainer.insertAdjacentHTML('beforeend', item);
             }
 
-            let item = `{!! view('component.skeleton-summary')->render() !!}`;
+            let item = `{!! view('cart.component.__skeleton-summary')->render() !!}`;
             summaryContainer.insertAdjacentHTML('beforeend', item);
         },200);
 
@@ -52,7 +52,7 @@
         
         let items = response.data;
         items.forEach(item => {
-            let card = `{!! view('component.item-card', [
+            let card = `{!! view('cart.component.__item-card', [
                 'link' => '::LINK::',
                 'image' => '::IMAGE::',
                 'name' => '::NAME::',

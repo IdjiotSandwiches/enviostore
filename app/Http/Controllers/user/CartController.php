@@ -30,7 +30,7 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
      */
     public function index()
     {
-        return view('cart');
+        return view('cart.index');
     }
 
     public function getCartItems()
