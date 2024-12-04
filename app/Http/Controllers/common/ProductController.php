@@ -52,9 +52,9 @@ class ProductController extends Controller implements StatusInterface
      * @param string $sort
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function sortProducts(Request $request, $category, $sort)
+    public function sortProducts($category, $sort)
     {
-        if (!$request->ajax()) abort(404);
+        if (!request()->ajax()) abort(404);
 
         $category = Category::where('name', $category)->first();
 
