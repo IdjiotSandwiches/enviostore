@@ -1,16 +1,16 @@
 @props(['link', 'image', 'name', 'price', 'quantity', 'category'])
 
 <div class="w-full h-fit flex bg-white rounded-lg">
-    <div class="flex justify-center items-center rounded-l-lg aspect-square object-contain max-w-[10rem]">
-        <img class="w-full" src="{{ asset($image) }}" alt="{{ $name }}" />
+    <div class="flex justify-center items-center rounded-l-lg aspect-square object-contain max-w-[8rem] md:max-w-[10rem]">
+        <img class="w-full aspect-square object-contain" src="{{ $image }}" alt="{{ $name }}" />
     </div>
-    <div class="p-5 flex flex-col justify-between w-full">
-        <div class="flex flex-col">
-            <div class="flex justify-between flex-1 gap-2">
+    <div class="p-2 md:p-5 flex flex-col justify-between w-full">
+        <div class="flex flex-col gap-2 lg:gap-0">
+            <div class="flex flex-col lg:flex-row lg:justify-between flex-1 gap-1 lg:gap-2">
                 <a href="{{ $link }}" class="font-bold text-xl">
-                    {{ Str::limit($name) }}
+                    {{ Str::limit($name, 30) }}
                 </a>
-                <h2 class="font-bold text-xl w-1/3 text-end">Rp {{ $price }}</h2>
+                <h2 class="font-bold text-xl lg:w-1/3 lg:text-end">Rp {{ $price }}</h2>
             </div>
             <div class="text-sm text-font_secondary">
                 <p>Category: {{ $category }}</p>

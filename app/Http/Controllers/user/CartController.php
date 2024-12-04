@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Interfaces\StatusInterface;
 use App\Models\ErrorLog;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CartController extends Controller implements StatusInterface, SessionKeyInterface
 {
@@ -29,8 +30,18 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
      */
     public function index()
     {
-        // $this->getItems();
         return view('cart');
+    }
+
+    public function getCartItems()
+    {
+        $items = $this->cartService->getCartItems();
+
+        return response()->json([
+            'status' => self::STATUS_SUCCESS,
+            'message' => '',
+            'data' => $items,
+        ], Response::HTTP_OK);
     }
 
     /**

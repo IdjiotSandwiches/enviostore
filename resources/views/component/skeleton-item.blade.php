@@ -1,6 +1,6 @@
 <div role="status" class="w-full h-fit flex items-center bg-white rounded-lg animate-pulse">
-    <div class="rounded-l-lg aspect-square object-contain bg-gray-200 max-w-[10rem]">
-        <div class="flex justify-center items-center w-40 h-40">
+    <div class="rounded-l-lg aspect-square object-contain bg-gray-200 max-w-[8rem] md:max-w-[10rem]">
+        <div class="flex justify-center items-center w-32 h-32 md:w-40 md:h-40">
             <svg class="h-8 w-8 text-gray-300 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor" viewBox="0 0 20 18">
                 <path
@@ -8,10 +8,12 @@
             </svg>
         </div>
     </div>
-    <div class="p-5 flex flex-col gap-2 w-full">
-        <div class="flex justify-between">
-            <div class="h-2.5 bg-gray-200 rounded-full w-1/3"></div>
-            <div class="h-2.5 bg-gray-200 rounded-full w-1/3"></div>
+    <div class="p-2 md:p-5 flex flex-col gap-2 w-full">
+        <div class="flex flex-col gap-2 lg:gap-0">
+            <div class="flex flex-col lg:flex-row lg:justify-between flex-1 gap-2">
+                <div class="h-2.5 bg-gray-200 rounded-full w-1/3"></div>
+                <div class="h-2.5 bg-gray-200 rounded-full w-1/3"></div>
+            </div>
         </div>
         <div class="h-2 bg-gray-200 rounded-full w-1/4"></div>
         <div class="h-2 bg-gray-200 rounded-full w-1/4"></div>
