@@ -7,10 +7,10 @@
     <div class="p-2 md:p-5 flex flex-col justify-between w-full">
         <div class="flex flex-col gap-2 lg:gap-0">
             <div class="flex flex-col lg:flex-row lg:justify-between flex-1 gap-1 lg:gap-2">
-                <a href="{{ $link }}" class="font-bold text-xl">
+                <a href="{{ $link }}" class="font-bold text-lg md:text-xl">
                     {{ Str::limit($name, 30) }}
                 </a>
-                <h2 class="font-bold text-xl lg:w-1/3 lg:text-end">Rp {{ $price }}</h2>
+                <h2 class="font-bold text-lg md:text-xl lg:w-1/3 lg:text-end">Rp {{ $price }}</h2>
             </div>
             <div class="text-sm text-font_secondary">
                 <p>Category: {{ $category }}</p>
