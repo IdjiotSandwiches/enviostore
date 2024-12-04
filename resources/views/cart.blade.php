@@ -66,7 +66,7 @@
                 .replaceAll('::NAME::', item.product_name)
                 .replace('::PRICE::', item.price)
                 .replace('::QUANTITY::', item.quantity)
-                .replace('::CATEGORY::', item.category_name)
+                .replace('::CATEGORY::', item.category_name);
             
             cartContainer.insertAdjacentHTML('beforeend', card);
         });
