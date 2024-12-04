@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers\common;
 
-use App\Models\Product;
 use App\Models\ErrorLog;
 use App\Models\Category;
-use App\Helpers\StringHelper;
+use App\Services\Product\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Utilities\GoogleDriveUtility;
 use App\Utilities\ProductsUtility;
 use App\Interfaces\StatusInterface;
 use App\Http\Controllers\Controller;
 
 class ProductController extends Controller implements StatusInterface
 {
-    private $googleDriveUtility;
     private $productUtility;
 
     /**
@@ -23,7 +20,6 @@ class ProductController extends Controller implements StatusInterface
      */
     public function __construct()
     {
-        $this->googleDriveUtility = new GoogleDriveUtility();
         $this->productUtility = new ProductsUtility();
     }
 
@@ -32,12 +28,10 @@ class ProductController extends Controller implements StatusInterface
      * @param string $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getProduct($id)
+    public function getProduct($product_serial, ProductService $productService)
     {
-        // Still on work, need to be discuss
         try {
-            $id = base64_decode($id);
-            $id = explode("-", $id)[1];
+            $product_serial = base64_decode($product_serial);
         } catch (\Exception $e) {
             $errorLog = new ErrorLog();
             $errorLog->error = $e->getMessage();
@@ -46,22 +40,7 @@ class ProductController extends Controller implements StatusInterface
             abort(404);
         }
 
-        $product = Product::with('productImage')->find($id);
-        if (!$product) abort(404);
-
-        $productImgUrls = $product->productImage->pluck('url');
-        $productImgs = [];
-        foreach($productImgUrls as $url) {
-            $productImgs[] = $this->googleDriveUtility->getFile($url);
-        }
-
-        $product = (object) [
-            'name' => $product->name,
-            'price' => StringHelper::parseNumberFormat($product->price),
-            'stocks' => $product->stocks,
-            'description' => $product->description,
-            'images' => $productImgs,
-        ];
+        [$product, $productImgs] = $productService->getProduct($product_serial);
 
         return view('product', compact('product', 'productImgs'));
     }
@@ -73,9 +52,9 @@ class ProductController extends Controller implements StatusInterface
      * @param string $sort
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function sortProducts(Request $request, $category, $sort)
+    public function sortProducts($category, $sort)
     {
-        if (!$request->ajax()) abort(404);
+        if (!request()->ajax()) abort(404);
 
         $category = Category::where('name', $category)->first();
 
