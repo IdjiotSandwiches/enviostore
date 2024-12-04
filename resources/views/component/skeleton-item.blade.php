@@ -1,4 +1,4 @@
-<div role="status" class="w-full h-fit flex items-center bg-white rounded-lg animate-pulse">
+<div role="status" class="w-full h-fit flex items-start bg-white rounded-lg animate-pulse">
     <div class="rounded-l-lg aspect-square object-contain bg-gray-200 max-w-[8rem] md:max-w-[10rem]">
         <div class="flex justify-center items-center w-32 h-32 md:w-40 md:h-40">
             <svg class="h-8 w-8 text-gray-300 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"

@@ -64,15 +64,16 @@ class CartService implements SessionKeyInterface
             throw new \Exception('Invalid operation.');
         }
 
-        $currentStock = $product->stocks;
-        if (!$this->isAvailable($currentStock, $item['quantity'])) {
-            throw new \Exception('Invalid operation.');
-        }
-
-        $cart = new Cart();
+        $cart = Cart::firstOrNew(['product_id' => $product->id]);
         $cart->user_id = $user->id;
         $cart->product_id = $product->id;
-        $cart->quantity = $item['quantity'];
+        $cart->quantity = ($cart->exists() ? $cart->quantity : 0) + $item['quantity'];
+        
+        $currentStock = $product->stocks;
+        if (!$this->isAvailable($currentStock, $cart->quantity)) {
+            throw new \Exception('Your product amounts exceeded our stocks.');
+        }
+
         $cart->save();
     }
 
