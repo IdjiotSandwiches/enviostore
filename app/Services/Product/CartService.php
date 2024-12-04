@@ -12,7 +12,7 @@ class CartService implements SessionKeyInterface
      * Summary of addToCart
      * @param \App\Http\Requests\CartRequest $item
      * @throws \Exception
-     * @return array
+     * @return void
      */
     public function addToCart($item)
     {
@@ -37,8 +37,6 @@ class CartService implements SessionKeyInterface
         $cart->product_id = $product->id;
         $cart->quantity = $item['quantity'];
         $cart->save();
-
-        return [$product, $item['quantity']];
     }
 
     /**
@@ -48,18 +46,19 @@ class CartService implements SessionKeyInterface
      * @throws \Exception
      * @return void
      */
-    public function updateStocks($product, $quantity)
-    {
-        $currentStock = $product->stocks;
+    // Dipake pas bayar
+    // public function updateStocks($product, $quantity)
+    // {
+    //     $currentStock = $product->stocks;
 
-        if (!$this->isAvailable($currentStock, $quantity)) {
-            throw new \Exception('Invalid operation.');
-        }
+    //     if (!$this->isAvailable($currentStock, $quantity)) {
+    //         throw new \Exception('Invalid operation.');
+    //     }
 
-        $updatedStock = $currentStock - $quantity;
-        $product->stocks = $updatedStock;
-        $product->save();
-    }
+    //     $updatedStock = $currentStock - $quantity;
+    //     $product->stocks = $updatedStock;
+    //     $product->save();
+    // }
 
     /**
      * Summary of isAvailable

@@ -45,8 +45,7 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
         try {
             DB::beginTransaction();
             
-            [$product, $quantity] = $this->cartService->addToCart($item);
-            $this->cartService->updateStocks($product, $quantity);
+            $this->cartService->addToCart($item);
             
             DB::commit();
         } catch (\Exception $e) {

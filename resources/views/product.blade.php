@@ -87,7 +87,7 @@
                 </div>
                 @if (!$product->stocks)
                     <div class="p-4 mb-4 text-red-800 rounded-lg bg-red-100/80 text-center" role="alert">
-                        <span class="font-bold">Product is unavailable!</span>
+                        <span class="font-bold">Product is out of stock!</span>
                     </div>
                 @else
                     <div class="grid gap-4">
