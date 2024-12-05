@@ -33,9 +33,35 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
         return view('cart.index');
     }
 
-    public function delete()
+    public function delete(Request $request)
     {
-        
+        try {
+            DB::beginTransaction();
+
+            $this->cartService->delete($request);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+
+            $response = [
+                'status' => self::STATUS_ERROR,
+                'message' => $e->getMessage(),
+            ];
+
+            return back()->withInput()->with($response);
+        }
+
+        $response = [
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Item removed.',
+        ];
+
+        return back()->with($response);
     }
 
     /**

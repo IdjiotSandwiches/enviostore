@@ -148,4 +148,17 @@ class CartService implements SessionKeyInterface
 
         return true;
     }
+
+    public function delete($request)
+    {
+        $id = $request->id;
+
+        $cart = Cart::find($id);
+
+        if (!$cart) {
+            throw new \Exception('Invalid operation.');
+        }
+
+        $cart->delete();
+    }
 }
