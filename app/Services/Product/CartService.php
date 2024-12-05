@@ -49,6 +49,10 @@ class CartService implements SessionKeyInterface
         return $items;
     }
 
+    /**
+     * Summary of getCartSummary
+     * @return object
+     */
     public function getCartSummary()
     {
         /**
