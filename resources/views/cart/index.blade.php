@@ -4,7 +4,7 @@
 @section('content')
 <section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
     <h1 class="font-bold text-3xl">Your Cart</h1>
-    <div class="flex flex-col md:flex-row justify-between gap-4">
+    <div id="container" class="flex flex-col md:flex-row justify-between gap-4">
         <div id="cartContainer" class="grid gap-4 flex-1"></div>
         <div id="summaryContainer" class="md:w-1/3 lg:w-1/4"></div>
     </div>
@@ -51,6 +51,13 @@
         emptyContent();
         
         let items = response.data.items;
+        if(items.length === 0) {
+            let container = document.querySelector('#container');
+            container.replaceChildren();
+
+            let item = `{!! view('cart.component.__empty-card')->render() !!}`;
+            container.insertAdjacentHTML('beforeend', item);
+        }
         items.forEach(item => {
             let card = `{!! view('cart.component.__item-card', [
                 'link' => '::LINK::',
