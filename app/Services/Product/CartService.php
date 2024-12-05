@@ -152,7 +152,6 @@ class CartService implements SessionKeyInterface
     public function delete($request)
     {
         $id = $request->id;
-
         $cart = Cart::find($id);
 
         if (!$cart) {
