@@ -1,4 +1,4 @@
-@props(['link', 'image', 'name', 'price', 'quantity', 'category'])
+@props(['link', 'image', 'name', 'price', 'quantity', 'category', 'delete'])
 
 <div class="w-full h-fit flex bg-white rounded-lg">
     <div class="flex justify-center items-center rounded-l-lg aspect-square object-contain max-w-[8rem] md:max-w-[10rem]">
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="flex justify-end">
-            <form action="" method="">
+            <form action="{{ $delete }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit">

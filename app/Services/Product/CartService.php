@@ -43,6 +43,7 @@ class CartService implements SessionKeyInterface
                     'category_name' => $item->product->category->name,
                     'img' => $img,
                     'link' => route('getProduct', base64_encode($item->product->product_serial_code)),
+                    'delete' => route('cart.deleteItem', $item->id),
                 ];
             });
 

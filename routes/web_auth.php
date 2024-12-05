@@ -14,8 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(CartController::class)->group(function () {
-    Route::get('/cart', 'index')->name('cart');
-    Route::get('/cart-items', 'getCartItems')->name('getCartItems');
-    Route::post('/add-to-cart', 'addToCart')->name('addToCart');
-});
+Route::prefix('cart')
+    ->name('cart.')
+    ->controller(CartController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/cart-items', 'getCartItems')->name('getCartItems');
+        Route::post('/add-to-cart', 'addToCart')->name('addToCart');
+        Route::delete('/delete/{id}', 'delete')->name('deleteItem');
+    });

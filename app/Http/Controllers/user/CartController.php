@@ -33,6 +33,11 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
         return view('cart.index');
     }
 
+    public function delete()
+    {
+        
+    }
+
     /**
      * Summary of getCartItems
      * @return mixed|\Illuminate\Http\JsonResponse

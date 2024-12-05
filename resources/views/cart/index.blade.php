@@ -66,6 +66,7 @@
                 'price' => '::PRICE::',
                 'quantity' => '::QUANTITY::',
                 'category' => '::CATEGORY::',
+                'delete' => '::DELETE::',
             ])->render() !!}`;
 
             card = card.replace('::LINK::', item.link)
@@ -73,7 +74,8 @@
                 .replaceAll('::NAME::', item.product_name)
                 .replace('::PRICE::', item.price)
                 .replace('::QUANTITY::', item.quantity)
-                .replace('::CATEGORY::', item.category_name);
+                .replace('::CATEGORY::', item.category_name)
+                .replace('::DELETE::', item.delete);
             
             cartContainer.insertAdjacentHTML('beforeend', card);
         });
@@ -96,7 +98,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        const URL = '{{ route('getCartItems') }}';
+        const URL = '{{ route('cart.getCartItems') }}';
         fetchRequest(URL);
     });
 </script>
