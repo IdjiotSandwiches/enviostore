@@ -68,9 +68,12 @@ class CartService implements SessionKeyInterface
                 ];
             });
 
-        $price = StringHelper::parseNumberFormat($items->sum('price'));
-        $quantity = $items->sum('quantity');
-        dd($price, $quantity);
+        $summary = (object) [
+            'price' => StringHelper::parseNumberFormat($items->sum('price')),
+            'quantity' => $items->sum('quantity'),
+        ];
+
+        return $summary;
     }
 
     /**

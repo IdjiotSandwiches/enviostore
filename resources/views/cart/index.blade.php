@@ -6,15 +6,13 @@
     <h1 class="font-bold text-3xl">Your Cart</h1>
     <div class="flex flex-col md:flex-row justify-between gap-4">
         <div id="cartContainer" class="grid gap-4 flex-1"></div>
-        <div id="summaryContainer" class="md:w-1/3 lg:w-1/4">
-            @include('cart.component.__summary-card')
-        </div>
+        <div id="summaryContainer" class="md:w-1/3 lg:w-1/4"></div>
     </div>
 </section>
 @endsection
 
 @section('extra-js')
-{{--<script>
+<script>
     let cartContainer = document.querySelector('#cartContainer');
     let summaryContainer = document.querySelector('#summaryContainer');
     
@@ -52,7 +50,7 @@
     function replaceContent(response) {
         emptyContent();
         
-        let items = response.data;
+        let items = response.data.items;
         items.forEach(item => {
             let card = `{!! view('cart.component.__item-card', [
                 'link' => '::LINK::',
@@ -72,6 +70,17 @@
             
             cartContainer.insertAdjacentHTML('beforeend', card);
         });
+
+        let summary = response.data.summary;
+        let card = `{!! view('cart.component.__summary-card', [
+            'price' => '::PRICE::',
+            'quantity' => '::QUANTITY::',
+        ])->render() !!}`;
+
+        card = card.replace('::PRICE::', summary.price)
+            .replace('::QUANTITY::', summary.quantity);
+        
+        summaryContainer.insertAdjacentHTML('beforeend', card);
     }
 
     function emptyContent() {
@@ -83,5 +92,5 @@
         const URL = '{{ route('getCartItems') }}';
         fetchRequest(URL);
     });
-</script>--}}
+</script>
 @endsection

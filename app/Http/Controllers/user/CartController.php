@@ -35,12 +35,15 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
 
     public function getCartItems()
     {
-        $items = $this->cartService->getCartItems();
+        $cart = (object) [
+            'items' => $this->cartService->getCartItems(),
+            'summary' => $this->cartService->getCartSummary(),
+        ];
 
         return response()->json([
             'status' => self::STATUS_SUCCESS,
             'message' => '',
-            'data' => $items,
+            'data' => $cart,
         ], Response::HTTP_OK);
     }
 
