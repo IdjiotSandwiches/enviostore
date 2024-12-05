@@ -77,8 +77,8 @@
             'quantity' => '::QUANTITY::',
         ])->render() !!}`;
 
-        card = card.replace('::PRICE::', summary.price)
-            .replace('::QUANTITY::', summary.quantity);
+        card = card.replace('::PRICE::', summary.price ?? '-')
+            .replace('::QUANTITY::', summary.quantity ?? '-');
         
         summaryContainer.insertAdjacentHTML('beforeend', card);
     }
