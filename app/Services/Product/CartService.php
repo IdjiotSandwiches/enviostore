@@ -149,6 +149,12 @@ class CartService implements SessionKeyInterface
         return true;
     }
 
+    /**
+     * Summary of delete
+     * @param \Illuminate\Http\Request $request
+     * @throws \Exception
+     * @return void
+     */
     public function delete($request)
     {
         $id = $request->id;

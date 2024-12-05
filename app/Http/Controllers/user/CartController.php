@@ -33,6 +33,11 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
         return view('cart.index');
     }
 
+    /**
+     * Summary of delete
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function delete(Request $request)
     {
         try {
