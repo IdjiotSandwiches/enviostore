@@ -3,7 +3,7 @@
         <a href="{{ session(App\Interfaces\SessionKeyInterface::SESSION_IS_ADMIN) ? route('admin.dashboard') : route('home') }}"
             class="flex items-center space-x-3 rtl:space-x-reverse">
             <span
-                class="self-center text-xl md:text-2xl font-semibold whitespace-nowrap dark:text-white italic">EnviroStore</span>
+                class="self-center text-xl md:text-2xl font-semibold whitespace-nowrap italic">EnviroStore</span>
         </a>
 
         <div class="flex w-full items-center justify-end gap-2 md:gap-4">
