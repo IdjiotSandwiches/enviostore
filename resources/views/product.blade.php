@@ -58,11 +58,11 @@
                     class="hidden">
                 <div class="flex items-end justify-between">
                     <label for="quantity-input"
-                        class="block mb-2 text-lg font-medium text-accent dark:text-white">Amount:</label>
+                        class="block mb-2 text-lg font-medium text-accent">Amount:</label>
                     <div class="relative flex items-center max-w-[8rem]">
                         <button type="button" id="decrement-button" data-input-counter-decrement="quantity"
                             class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none">
-                            <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true"
+                            <svg class="w-3 h-3 text-gray-900" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2" d="M1 1h16" />
@@ -74,7 +74,7 @@
                             placeholder="{{ $product->stocks }}" value="1" required />
                         <button type="button" id="increment-button" data-input-counter-increment="quantity"
                             class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none">
-                            <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true"
+                            <svg class="w-3 h-3 text-gray-900" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2" d="M9 1v16M1 9h16" />
@@ -82,7 +82,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="text-right block font-medium text-accent dark:text-white">
+                <div class="text-right block font-medium text-accent">
                     Stocks: {{ $product->stocks }}
                 </div>
                 @if (!$product->stocks)
@@ -92,8 +92,8 @@
                 @else
                     <div class="grid gap-4">
                         <button type="submit"
-                            class="flex items-center justify-center gap-2 text-center py-2 px-5 text-lg font-medium text-gray-900 focus:outline-none rounded-lg border border-button hover:bg-accent/10 hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15 dark:focus:ring-button/15 dark:text-button dark:border-button dark:hover:text-white dark:hover:bg-accent/10 text-nowrap">
-                            <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true"
+                            class="flex items-center justify-center gap-2 text-center py-2 px-5 text-lg font-medium text-gray-900 focus:outline-none rounded-lg border border-button hover:bg-accent/10 hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15">
+                            <svg class="w-8 h-8 text-gray-800" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="1.5"
@@ -102,7 +102,7 @@
                             + Add to Cart
                         </button>
                         <a href="/"
-                            class="text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-lg px-4 md:px-5 py-1.5 md:py-2 dark:bg-button dark:hover:bg-button/80 dark:focus:ring-button/15 text-nowrap">Buy</a>
+                            class="text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-lg px-4 md:px-5 py-1.5 md:py-2 text-nowrap">Buy</a>
                     </div>
                 @endif
             </form>
@@ -113,7 +113,7 @@
             data-inactive-classes="text-font_primary">
             <h2 id="accordion-collapse-heading-1">
                 <button type="button"
-                    class="flex items-center justify-between w-full p-5 font-bold rtl:text-right text-font_primary border-b border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 bg-primary hover:bg-accent/10 dark:hover:bg-accent/10 gap-3"
+                    class="flex items-center justify-between w-full p-5 font-bold rtl:text-right text-font_primary border-b border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 gap-3"
                     data-accordion-target="#accordion-collapse-body-1" aria-expanded="false"
                     aria-controls="accordion-collapse-body-1">
                     <span>About this Products</span>
@@ -125,7 +125,7 @@
                 </button>
             </h2>
             <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
-                <div class="p-5 border border-t-0 rounded-b-xl bg-primary dark:bg-primary">
+                <div class="p-5 border border-t-0 rounded-b-xl bg-primary">
                     <p>{{ $product->description }}</p>
                 </div>
             </div>

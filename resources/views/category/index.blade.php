@@ -38,7 +38,7 @@
 
         let products = data.products;
         products.forEach(product => {
-            let item = `{!! view('component.product-card', [
+            let item = `{!! view('component.__product-card', [
                 'link' => '::LINK::',
                 'rating' => '::RATING::',
                 'image' => '::IMAGE::',
@@ -59,7 +59,7 @@
             let pagination = document.querySelector('#pagination');
             pagination.replaceChildren();
 
-            let item = `{!! view('component.pagination', [
+            let item = `{!! view('category.component.__pagination', [
                 'firstItem' => '::FIRST_ITEM::',
                 'lastItem' => '::LAST_ITEM::',
                 'count' => '::COUNT::',
@@ -94,7 +94,7 @@
             if(productContainer.textContent !== '') return;
 
             for (let i = 0; i < 8; i++) {
-                let item = `{!! view('component.skeleton-card')->render() !!}`;
+                let item = `{!! view('component.__skeleton-card')->render() !!}`;
                 productContainer.insertAdjacentHTML('beforeend', item);
             }
         },200);
