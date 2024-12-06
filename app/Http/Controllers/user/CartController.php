@@ -130,6 +130,8 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
 
     public function checkout()
     {
-        return view('');
+        $cart = route('getCartItems');
+        
+        return to_route('checkout.index')->with(['items' => $cart]);
     }
 }

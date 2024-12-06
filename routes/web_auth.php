@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\user\CartController;
+use App\Http\Controllers\user\CheckoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,4 +22,10 @@ Route::prefix('cart')
         Route::get('/cart-items', 'getCartItems')->name('getCartItems');
         Route::post('/add-to-cart', 'addToCart')->name('addToCart');
         Route::delete('/delete/{id}', 'delete')->name('deleteItem');
+    });
+
+Route::prefix('checkout')
+    ->name('checkout.')
+    ->controller(CheckoutController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
     });

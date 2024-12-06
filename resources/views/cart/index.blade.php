@@ -23,11 +23,11 @@
             if(cartContainer.textContent !== '' && summaryContainer.textContent !== '') return;
 
             for (let i = 0; i < 8; i++) {
-                let item = `{!! view('cart.component.__skeleton-item')->render() !!}`;
+                let item = `{!! view('component.__skeleton-item')->render() !!}`;
                 cartContainer.insertAdjacentHTML('beforeend', item);
             }
 
-            let item = `{!! view('cart.component.__skeleton-summary')->render() !!}`;
+            let item = `{!! view('component.__skeleton-summary')->render() !!}`;
             summaryContainer.insertAdjacentHTML('beforeend', item);
         },200);
 
