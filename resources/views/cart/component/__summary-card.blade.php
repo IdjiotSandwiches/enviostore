@@ -1,8 +1,8 @@
 @props(['price', 'quantity'])
 
-<form action="" method="POST">
+<form action="{{ route('cart.checkout') }}" method="GET">
     @csrf
-    @method('POST')
+    @method('GET')
     <div class="divide-y bg-white h-fit rounded-lg">
         <div class="p-4">
             <h2 class="text-xl font-bold">Subtotal</h2>
