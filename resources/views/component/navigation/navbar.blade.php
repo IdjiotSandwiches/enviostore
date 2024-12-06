@@ -15,5 +15,5 @@
         </div>
     </div>
 
-    @include('component.navigation.sub-menu')
+    @include('component.navigation.__sub-menu')
 </nav>
