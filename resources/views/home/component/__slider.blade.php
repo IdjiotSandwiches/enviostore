@@ -4,7 +4,7 @@
     <div class="glide__track" data-glide-el="track">
         <ul class="glide__slides">
             @foreach ($categories as $category)
-                @include('component.category-tiles', ['category' => $category])
+                @include('home.component.__category-tiles', ['category' => $category])
             @endforeach
         </ul>
     </div>
