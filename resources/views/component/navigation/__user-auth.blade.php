@@ -6,7 +6,7 @@
     <div id="userDropdown"
         class="hidden z-10 bg-white divide-y divide-gray-200 rounded-lg shadow">
         <div class="py-1">
-            <a href="#"
+            <a href="{{ route('profile.index') }}"
                 class="flex gap-2 items-center justify-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                 <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     width="24" height="24" fill="none" viewBox="0 0 24 24">

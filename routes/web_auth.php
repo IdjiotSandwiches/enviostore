@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\user\CartController;
+use App\Http\Controllers\user\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,3 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::controller(CartController::class)->group(function () {
     Route::post('/add-to-cart', 'addToCart')->name('addToCart');
 });
+
+Route::prefix('profile')
+    ->name('profile.')
+    ->controller(ProfileController::class)
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+    });
