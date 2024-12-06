@@ -2,7 +2,7 @@
 @section('title', 'Homepage')
 
 @section('content')
-    @include('component.carousel', ['imgPaths' => $banners])
+    @include('home.component.__carousel', ['imgPaths' => $banners])
     <div class="max-w-screen-xl mx-auto">
         <div class="flex justify-center p-9 md:text-2xl sm:text-lg">
             <h1 class="text-5xl font-secondary">
