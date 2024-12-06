@@ -59,7 +59,7 @@
             let pagination = document.querySelector('#pagination');
             pagination.replaceChildren();
 
-            let item = `{!! view('component.__pagination', [
+            let item = `{!! view('category.component.__pagination', [
                 'firstItem' => '::FIRST_ITEM::',
                 'lastItem' => '::LAST_ITEM::',
                 'count' => '::COUNT::',
