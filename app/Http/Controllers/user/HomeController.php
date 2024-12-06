@@ -19,7 +19,7 @@ class HomeController extends Controller
         $categories = $homeService->getCategories();
         $products = $homeService->getHomeProduct();
 
-        return view('welcome', compact('banners', 'categories', 'products'));
+        return view('home.index', compact('banners', 'categories', 'products'));
     }
 
 }

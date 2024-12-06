@@ -31,6 +31,6 @@ class CategoryController extends Controller implements CategoryInterface
 
         if (!$category) abort(404);
       
-        return view('category', compact('category'));
+        return view('category.index', compact('category'));
     }
 }
