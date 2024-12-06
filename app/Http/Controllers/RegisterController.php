@@ -57,7 +57,9 @@ class RegisterController extends Controller implements StatusInterface
 
         [$user, $isAdmin] = $loginService->login($validated['email'], $validated['password']);
         $sessionData = $loginService->setSessionData($user, $isAdmin);
+        session($sessionData->all());
         Auth::guard($sessionData['identity']->auth)->login($user);
+        $registerRequest->session()->regenerate();
 
         return to_route('verification.notice');
     }
