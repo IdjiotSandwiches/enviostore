@@ -71,10 +71,10 @@
 
             card = card.replace('::LINK::', item.link)
                 .replace('::IMAGE::', item.img)
-                .replaceAll('::NAME::', item.product_name)
+                .replaceAll('::NAME::', item.productName)
                 .replace('::PRICE::', item.price)
                 .replace('::QUANTITY::', item.quantity)
-                .replace('::CATEGORY::', item.category_name)
+                .replace('::CATEGORY::', item.categoryName)
                 .replace('::DELETE::', item.delete);
             
             cartContainer.insertAdjacentHTML('beforeend', card);
@@ -82,11 +82,11 @@
 
         let summary = response.data.summary;
         let card = `{!! view('cart.component.__summary-card', [
-            'price' => '::PRICE::',
+            'subtotal' => '::SUBTOTAL::',
             'quantity' => '::QUANTITY::',
         ])->render() !!}`;
 
-        card = card.replace('::PRICE::', summary.price ?? '-')
+        card = card.replace('::SUBTOTAL::', summary.subtotal ?? '-')
             .replace('::QUANTITY::', summary.quantity ?? '-');
         
         summaryContainer.insertAdjacentHTML('beforeend', card);

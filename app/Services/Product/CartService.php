@@ -37,10 +37,10 @@ class CartService implements SessionKeyInterface
                 $price = $item->quantity * $item->product->price;
 
                 return (object) [
-                    'product_name' => $item->product->name,
+                    'productName' => $item->product->name,
                     'quantity' => $item->quantity,
                     'price' => StringHelper::parseNumberFormat($price),
-                    'category_name' => $item->product->category->name,
+                    'categoryName' => $item->product->category->name,
                     'img' => $img,
                     'link' => route('getProduct', base64_encode($item->product->product_serial_code)),
                     'delete' => route('cart.deleteItem', $item->id),
@@ -65,17 +65,25 @@ class CartService implements SessionKeyInterface
             ->where('user_id', $user->id)
             ->get()
             ->map(function ($item) {
-                $price = $item->quantity * $item->product->price;
+                $subtotal = $item->quantity * $item->product->price;
 
                 return (object) [
                     'quantity' => $item->quantity,
-                    'price' => $price,
+                    'subtotal' => $subtotal,
                 ];
             });
 
+        $shippingFee = 5000;
+        $adminFee = 2000;
+        $subtotal = $items->sum('subtotal');
+        $total = $shippingFee + $adminFee + $subtotal;
+
         $summary = (object) [
-            'price' => StringHelper::parseNumberFormat($items->sum('price')),
+            'subtotal' => StringHelper::parseNumberFormat($subtotal),
             'quantity' => $items->sum('quantity'),
+            'shippingFee' => StringHelper::parseNumberFormat($shippingFee),
+            'adminFee' => StringHelper::parseNumberFormat($adminFee),
+            'total' => StringHelper::parseNumberFormat($total),
         ];
 
         return $summary;
