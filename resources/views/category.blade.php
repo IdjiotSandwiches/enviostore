@@ -103,16 +103,19 @@
             method: 'GET',
         }).then(response => {
             if(!response.ok) {
-                throw new Error(response.status);
+                throw new Error();
             }
 
             productContainer.replaceChildren();
-
             return response.json();
         }).then(response => {
             replaceProducts(response);
         }).catch(error => {
-            console.log(error)
+            let section = document.querySelector('section');
+            let item = `{!! view('component.__fetch-failed')->render() !!}`;
+            
+            section.replaceChildren();
+            section.insertAdjacentHTML('beforeend', item);
         });
     }
 
