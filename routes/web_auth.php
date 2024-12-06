@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('cart')
     ->name('cart.')
-    ->controller(CartController::class)->group(function () {
+    ->controller(CartController::class)
+    ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/cart-items', 'getCartItems')->name('getCartItems');
         Route::post('/add-to-cart', 'addToCart')->name('addToCart');
@@ -27,6 +28,7 @@ Route::prefix('cart')
 
 Route::prefix('checkout')
     ->name('checkout.')
-    ->controller(CheckoutController::class)->group(function () {
+    ->controller(CheckoutController::class)
+    ->group(function () {
         Route::get('/', 'index')->name('index');
     });
