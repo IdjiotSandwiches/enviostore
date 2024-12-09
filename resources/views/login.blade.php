@@ -15,7 +15,7 @@
                     "border-red-500" => $errors->has('email')
                 ]) placeholder="user@email.com" value="{{ old('email') }}" required />
                 @error('email')
-                    <p class="text-red-500 text-sm capitalize">{{ $message }}</p>
+                    <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
                 @enderror
             </div>
             <div>
@@ -25,7 +25,7 @@
                     "border-red-500" => $errors->has('password')
                 ]) required />
                 @error('password')
-                    <p class="text-red-500 text-sm capitalize">{{ $message }}</p>
+                    <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
                 @enderror
             </div>
             <div class="flex items-start">
