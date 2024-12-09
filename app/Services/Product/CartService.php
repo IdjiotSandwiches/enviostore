@@ -133,9 +133,9 @@ class CartService implements SessionKeyInterface
     // {
     //     $currentStock = $product->stocks;
 
-    //     if (!$this->isAvailable($currentStock, $quantity)) {
-    //         throw new \Exception('Invalid operation.');
-    //     }
+        // if (!$this->isAvailable($currentStock, $quantity)) {
+        //     throw new \Exception(__('message.invalid'));
+        // }
 
     //     $updatedStock = $currentStock - $quantity;
     //     $product->stocks = $updatedStock;

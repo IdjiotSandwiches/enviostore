@@ -6,7 +6,7 @@
     <div class="max-w-screen-xl mx-auto">
         <div class="flex justify-center p-9 md:text-2xl sm:text-lg">
             <h1 class="text-5xl font-secondary">
-                Category
+                {{ __('header.category') }}
             </h1>
         </div>
         <div class="flex justify-center pb-9">
@@ -17,7 +17,7 @@
         </div>
         <div class="flex justify-center p-9">
             <h1 class="text-5xl font-secondary">
-                Recommended Products
+                {{ __('header.recommended') }}
             </h1>
         </div>
         <div class="mx-auto px-4 pb-9">

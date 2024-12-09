@@ -25,7 +25,7 @@ class LoginService implements StatusInterface, SessionKeyInterface
         if ($user && Hash::check($password, $user->password)) {
             $isAdmin = $user instanceof Admin;
         } else {
-            throw new \Exception('E-mail or password invalid.');
+            throw new \Exception(__('message.email_password_error'));
         }
 
         return [$user, $isAdmin];

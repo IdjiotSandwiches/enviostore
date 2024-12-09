@@ -111,7 +111,7 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
 
             $response = [
                 'status' => self::STATUS_ERROR,
-                'message' => $e->getMessage(),
+                'message' => __('message.invalid'),
             ];
 
             return back()->withInput()->with($response);
@@ -119,7 +119,7 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
 
         $response = [
             'status' => self::STATUS_SUCCESS,
-            'message' => 'Product added to cart.',
+            'message' => __('message.add_to_cart'),
         ];
 
         return back()->with($response);

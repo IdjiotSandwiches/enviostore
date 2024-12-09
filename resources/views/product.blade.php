@@ -58,7 +58,7 @@
                     class="hidden">
                 <div class="flex items-end justify-between">
                     <label for="quantity-input"
-                        class="block mb-2 text-lg font-medium text-accent">Amount:</label>
+                        class="block mb-2 text-lg font-medium text-accent">{{ __('product.amount') }}:</label>
                     <div class="relative flex items-center max-w-[8rem]">
                         <button type="button" id="decrement-button" data-input-counter-decrement="quantity"
                             class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none">
@@ -83,11 +83,11 @@
                     </div>
                 </div>
                 <div class="text-right block font-medium text-accent">
-                    Stocks: {{ $product->stocks }}
+                    {{ __('product.stocks') }}: {{ $product->stocks }}
                 </div>
                 @if (!$product->stocks)
                     <div class="p-4 mb-4 text-red-800 rounded-lg bg-red-100/80 text-center" role="alert">
-                        <span class="font-bold">Product is out of stock!</span>
+                        <span class="font-bold">{{ __('product.unavailable') }}</span>
                     </div>
                 @else
                     <div class="grid gap-4">
@@ -99,10 +99,10 @@
                                     stroke-width="1.5"
                                     d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
                             </svg>
-                            + Add to Cart
+                            + {{ __('product.add') }}
                         </button>
                         <a href="/"
-                            class="text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-lg px-4 md:px-5 py-1.5 md:py-2 text-nowrap">Buy</a>
+                            class="text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-lg px-4 md:px-5 py-1.5 md:py-2 text-nowrap">{{ __('product.buy') }}</a>
                     </div>
                 @endif
             </form>
@@ -116,7 +116,7 @@
                     class="flex items-center justify-between w-full p-5 font-bold rtl:text-right text-font_primary border-b border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 gap-3"
                     data-accordion-target="#accordion-collapse-body-1" aria-expanded="false"
                     aria-controls="accordion-collapse-body-1">
-                    <span>About this Products</span>
+                    <span>{{ __('product.about') }}</span>
                     <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
