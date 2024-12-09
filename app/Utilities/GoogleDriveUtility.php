@@ -44,7 +44,7 @@ class GoogleDriveUtility implements StatusInterface
 
             $response = [
                 'status' => self::STATUS_ERROR,
-                'message' => 'File upload failed!',
+                'message' => __('message.upload_failed'),
             ];
 
             return $response;
@@ -52,7 +52,7 @@ class GoogleDriveUtility implements StatusInterface
 
         $response = [
             'status' => self::STATUS_SUCCESS,
-            'message' => 'File uploaded successfully!',
+            'message' => __('message.upload_success'),
         ];
 
         return $response;
@@ -102,7 +102,7 @@ class GoogleDriveUtility implements StatusInterface
 
             $response = [
                 'status' => self::STATUS_ERROR,
-                'message' => 'File deletion failed!',
+                'message' => __('message.delete_success'),
             ];
 
             return $response;
@@ -110,7 +110,7 @@ class GoogleDriveUtility implements StatusInterface
 
         $response = [
             'status' => self::STATUS_SUCCESS,
-            'message' => 'File deleted successfully!',
+            'message' => __('message.delete_failed'),
         ];
 
         return $response;

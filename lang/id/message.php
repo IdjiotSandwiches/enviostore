@@ -8,4 +8,8 @@ return [
     'fetch_error' => 'Terjadi kesalahan.',
     'return_home' => 'Kembali ke Beranda',
     'not_found' => 'Hai, apa yang sedang anda cari?',
+    'upload_success' => 'File berhasil diupload!',
+    'upload_failed' => 'File gagal diupload!',
+    'delete_success' => 'File berhasil dihapus!',
+    'delete_failed' => 'File gagal dihapus!',
 ];
