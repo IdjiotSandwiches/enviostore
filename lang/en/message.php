@@ -12,4 +12,6 @@ return [
     'upload_failed' => 'File upload failed!',
     'delete_success' => 'File deleted successfully!',
     'delete_failed' => 'File deletion failed!',
+    'verified' => 'Account has been verified.',
+    'resent' => 'Verification link sent!',
 ];

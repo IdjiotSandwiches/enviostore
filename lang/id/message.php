@@ -12,4 +12,6 @@ return [
     'upload_failed' => 'File gagal diupload!',
     'delete_success' => 'File berhasil dihapus!',
     'delete_failed' => 'File gagal dihapus!',
+    'verified' => 'Akun telah diverifikasi.',
+    'resent' => 'Tautan verifikasi telah dikirim',
 ];
