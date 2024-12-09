@@ -23,12 +23,12 @@ Route::prefix('cart')
         Route::get('/cart-items', 'getCartItems')->name('getCartItems');
         Route::post('/add-to-cart', 'addToCart')->name('addToCart');
         Route::delete('/delete/{id}', 'delete')->name('deleteItem');
-        Route::get('/checkout', 'checkout')->name('checkout');
+        Route::post('/checkout', 'checkout')->name('checkout');
     });
 
 Route::prefix('checkout')
     ->name('checkout.')
     ->controller(CheckoutController::class)
     ->group(function () {
-        Route::get('/', 'index')->name('index');
+        
     });
