@@ -33,7 +33,7 @@ class EmailVerificationController extends Controller implements StatusInterface
         
         $response = [
             'status' => self::STATUS_SUCCESS,
-            'message' => 'Account has been verified.',
+            'message' => __('message.verified'),
         ];
 
         return to_route('home')->with($response);
@@ -48,6 +48,6 @@ class EmailVerificationController extends Controller implements StatusInterface
     {
         $request->user()->sendEmailVerificationNotification();
 
-        return back()->with('message', 'Verification link sent!');
+        return back()->with('message', __('message.resent'));
     }
 }

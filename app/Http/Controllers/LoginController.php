@@ -60,7 +60,7 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
 
         $response = [
             'status' => self::STATUS_SUCCESS,
-            'message' => 'Logged In.'
+            'message' => __('message.login'),
         ];
 
         if ($sessionData['is_admin']) {
@@ -88,7 +88,7 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
 
         $response = [
             'status' => self::STATUS_SUCCESS,
-            'message' => 'Logged Out.'
+            'message' => __('message.logout'),
         ];
 
         return to_route('home')->with($response);

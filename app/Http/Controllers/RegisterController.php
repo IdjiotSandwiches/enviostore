@@ -47,7 +47,7 @@ class RegisterController extends Controller implements StatusInterface
 
             $response = [
                 'status' => self::STATUS_ERROR,
-                'message' => 'Invalid operation.',
+                'message' => __('message.invalid'),
             ];
 
             return back()->withInput()->with($response);
