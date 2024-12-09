@@ -13,7 +13,7 @@
                     <path stroke="currentColor" stroke-width="2"
                         d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                 </svg>
-                Profile
+                {{ __('navbar.profile') }}
             </a>
         </div>
         <div class="py-1">
@@ -24,16 +24,15 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2" />
                 </svg>
-                Logout
+                {{ __('navbar.logout') }}
             </a>
         </div>
     </div>
 @else
     <div class="flex justify-center items-center gap-2">
         <a href="{{ route('login') }}"
-            class="text-white bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-md px-4 md:px-5 py-1.5 md:py-2 text-nowrap">Login</a>
+            class="text-white bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-md px-4 md:px-5 py-1.5 md:py-2 text-nowrap">{{ __('login.login') }}</a>
         <a href="{{ route('register') }}"
-            class="hidden md:block py-2 px-5 text-md font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-button hover:bg-background hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15 text-nowrap">Sign
-            Up</a>
+            class="hidden md:block py-2 px-5 text-md font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-button hover:bg-background hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15 text-nowrap">{{ __('register.register') }}</a>
     </div>
 @endif
