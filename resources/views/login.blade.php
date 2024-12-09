@@ -1,5 +1,5 @@
 @extends('layout.layout')
-@section('title', 'Login')
+@section('title', __('login.login'))
 
 @section('content')
 <section class="flex items-center justify-center px-4 py-8">
