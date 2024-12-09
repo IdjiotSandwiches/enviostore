@@ -14,9 +14,9 @@ return [
     */
 
     'reset' => 'Kata sandi berhasil diatur ulang.',
-    'sent' => 'We have emailed your password reset link.',
-    'throttled' => 'Please wait before retrying.',
-    'token' => 'This password reset token is invalid.',
-    'user' => "We can't find a user with that email address.",
+    'sent' => 'Kami telah mengirimkan tautan pengaturan ulang kata sandi ke email anda.',
+    'throttled' => 'Silahkan menunggu sebelum mencoba ulang.',
+    'token' => 'Token reset kata sandi tidak valid.',
+    'user' => "Kami tidak menemukan pengguna dengan alamat email tersebut.",
 
 ];
