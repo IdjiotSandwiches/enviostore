@@ -13,21 +13,21 @@ return [
     |
     */
 
-    'accepted' => 'The :attribute field must be accepted.',
-    'unique' => 'The :attribute has already been taken.',
-    'confirmed' => 'The :attribute field confirmation does not match.',
-    'current_password' => 'The password is incorrect.',
-    'email' => 'The :attribute field must be a valid email address.',
-    'integer' => 'The :attribute field must be an integer.',
+    'accepted' => ':attribute harus disetujui.',
+    'unique' => ':attribute telah diambil.',
+    'confirmed' => 'Konfirmasi :attribute tidak sesuai.',
+    'current_password' => 'Kata sandi salah.',
+    'email' => ':attribute harus menggunakan alamat email yang valid.',
+    'integer' => ':attribute harus angka.',
     'min' => [
-        'array' => 'The :attribute field must have at least :min items.',
-        'file' => 'The :attribute field must be at least :min kilobytes.',
-        'numeric' => 'The :attribute field must be at least :min.',
-        'string' => 'The :attribute field must be at least :min characters.',
+        'array' => ':attribute harus setidaknya :min items.',
+        'file' => ':attribute harus setidaknya :min kilobytes.',
+        'numeric' => ':attribute harus setidaknya :min.',
+        'string' => ':attribute harus setidaknya :min karakter.',
     ],
-    'regex' => 'The :attribute field format is invalid.',
-    'required' => 'The :attribute field is required.',
-    'string' => 'The :attribute field must be a string.',
+    'regex' => 'Format :attribute tidak valid.',
+    'required' => ':attribute diperlukan.',
+    'string' => ':attribute harus kalimat.',
 
     /*
     |--------------------------------------------------------------------------
