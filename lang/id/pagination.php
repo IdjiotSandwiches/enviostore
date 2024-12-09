@@ -15,5 +15,8 @@ return [
 
     'previous' => '&laquo; Sebelumnya',
     'next' => 'Berikutnya &raquo;',
+    'showing' => 'Menampilkan',
+    'of' => 'dari',
+    'results' => 'hasil',
 
 ];
