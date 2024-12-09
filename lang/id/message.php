@@ -14,5 +14,7 @@ return [
     'delete_failed' => 'File gagal dihapus!',
     'verified' => 'Akun telah diverifikasi.',
     'resent' => 'Tautan verifikasi telah dikirim',
-    'add_to_cart' => 'Produk telah ditambahkan pada keranjang.'
+    'add_to_cart' => 'Produk telah ditambahkan pada keranjang.',
+    'exceeded_stock' => 'Jumlah produk anda melebihi stok kami.',
+    'remove_item' => 'Barang dihapus',
 ];

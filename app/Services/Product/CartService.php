@@ -105,7 +105,7 @@ class CartService implements SessionKeyInterface
         $product = Product::where('product_serial_code', $item['product_serial'])->first();
 
         if (!$product) {
-            throw new \Exception('Invalid operation.');
+            throw new \Exception(__('message.invalid'));
         }
 
         $cart = Cart::firstOrNew(['product_id' => $product->id]);
@@ -115,7 +115,7 @@ class CartService implements SessionKeyInterface
         
         $currentStock = $product->stocks;
         if (!$this->isAvailable($currentStock, $cart->quantity)) {
-            throw new \Exception('Your product amounts exceeded our stocks.');
+            throw new \Exception(__('exceeded_stock'));
         }
 
         $cart->save();
@@ -169,7 +169,7 @@ class CartService implements SessionKeyInterface
         $cart = Cart::find($id);
 
         if (!$cart) {
-            throw new \Exception('Invalid operation.');
+            throw new \Exception(__('message.invalid'));
         }
 
         $cart->delete();

@@ -63,7 +63,7 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
 
         $response = [
             'status' => self::STATUS_SUCCESS,
-            'message' => 'Item removed.',
+            'message' => __('message.remove_item'),
         ];
 
         return back()->with($response);
