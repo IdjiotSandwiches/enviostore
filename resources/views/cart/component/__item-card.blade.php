@@ -13,8 +13,8 @@
                 <h2 class="font-bold text-lg md:text-xl lg:w-1/3 lg:text-end">Rp {{ $price }}</h2>
             </div>
             <div class="text-sm text-font_secondary">
-                <p>Category: {{ $category }}</p>
-                <p>Quantity: {{ $quantity }}</p>
+                <p>{{ __('header.category') }}: {{ $category }}</p>
+                <p>{{ __('cart.quantity') }}: {{ $quantity }}</p>
             </div>
         </div>
         <div class="flex justify-end">

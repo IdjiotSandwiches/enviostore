@@ -5,11 +5,11 @@
     @method('POST')
     <div class="divide-y bg-white h-fit rounded-lg">
         <div class="p-4">
-            <h2 class="text-xl font-bold">Summary</h2>
+            <h2 class="text-xl font-bold">{{ __('cart.summary') }}</h2>
         </div>
         <div class="p-4">
             <div class="flex justify-between pb-2">
-                <p class="font-medium text-font_secondary">Total Items</p>
+                <p class="font-medium text-font_secondary">{{ __('Total Barang') }}</p>
                 <p>{{ $quantity }}</p>
             </div>
             <div class="flex justify-between">
