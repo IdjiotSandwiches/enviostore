@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'resources' => 'Sumebr',
+    'resources' => 'Sumber',
     'resources.goals' => 'Tujuan Pembangunan Berkelanjutan',
     'resouces.supply' => 'Transparansi Pasokan',
     'legal' => 'Hukum dan Terkait',
