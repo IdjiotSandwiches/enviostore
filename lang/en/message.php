@@ -14,4 +14,5 @@ return [
     'delete_failed' => 'File deletion failed!',
     'verified' => 'Account has been verified.',
     'resent' => 'Verification link sent!',
+    'add_to_cart' => 'Product added to cart.',
 ];
