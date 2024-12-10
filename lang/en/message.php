@@ -15,4 +15,5 @@ return [
     'verified' => 'Account has been verified.',
     'resent' => 'Verification link sent!',
     'add_to_cart' => 'Product added to cart.',
+    'not_found_title' => 'Not Found',
 ];
