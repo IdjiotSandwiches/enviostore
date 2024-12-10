@@ -3,7 +3,7 @@
 return [
     'resources' => 'Sumber',
     'resources.goals' => 'Tujuan Pembangunan Berkelanjutan',
-    'resouces.supply' => 'Transparansi Pasokan',
+    'resources.supply' => 'Transparansi Pasokan',
     'legal' => 'Hukum dan Terkait',
     'legal.privacy' => 'Kebijakan Privasi',
     'legal.terms' => 'Syarat dan Ketentuan',
