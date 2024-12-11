@@ -12,12 +12,15 @@
             @endif
             @include('component.navigation.__user-auth')
         </div>
+
+        <div>
+            @include('component.navigation.__toggle')
+        </div>
     </div>
 
     <div class="bg-gray-50 shadow-sm overflow-auto flex justify-between">
         <div class="md:flex justify-between items-center w-full max-w-screen-xl px-4 py-3 mx-auto">
             @include('component.navigation.__sub-menu')
-            @include('component.navigation.__toggle')
         </div>
     </div>
 </nav>

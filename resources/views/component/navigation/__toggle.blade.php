@@ -1,5 +1,5 @@
 <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
-    class="text-white bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-bg-button/20 font-medium rounded-lg text-sm px-2.5 py-1 text-center inline-flex items-center"
+    class="text-black hover:bg-button/10 focus:ring-4 focus:outline-none focus:ring-button/20 font-medium rounded-lg text-sm px-2.5 py-1 text-center inline-flex items-center"
     type="button">
     @if (\Illuminate\Support\Facades\App::getLocale() === 'id')
         @include('component.navigation.__ID')
