@@ -10,11 +10,18 @@
                 @include('component.navigation.__search-bar')
                 @include('component.navigation.__user-cart')
             @endif
-            @include('component.navigation.__user-auth')
-        </div>
 
-        <div>
-            @include('component.navigation.__toggle')
+            <div class="hidden md:block">
+                @include('component.navigation.auth.__user-auth')
+            </div>
+
+            <div class="hidden md:block">
+                @include('component.navigation.locale.__toggle')
+            </div>
+
+            <div class="md:hidden">
+                @include('component.navigation.drawer.__drawer')
+            </div>
         </div>
     </div>
 
