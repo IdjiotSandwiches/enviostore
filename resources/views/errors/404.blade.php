@@ -1,5 +1,5 @@
 @extends('layout.layout')
-@section('title', 'Not Found')
+@section('title', __('message.not_found_title'))
 
 @section('content')
 <section class="flex flex-col justify-center items-center gap-4 p-4">

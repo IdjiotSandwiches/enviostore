@@ -1,5 +1,5 @@
 @extends('layout.layout')
-@section('title', 'Product')
+@section('title', $product->name)
 
 @section('content')
 <section class="max-w-screen-xl md:px-4 md:py-8 md:mx-auto">

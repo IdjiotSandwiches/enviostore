@@ -1,5 +1,5 @@
 @extends('layout.layout')
-@section('title', 'Product')
+@section('title', $category->name)
 
 @section('content')
 <section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
