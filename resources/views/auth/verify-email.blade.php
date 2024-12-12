@@ -1,5 +1,5 @@
 @extends('layout.layout')
-@section('title', 'Verification')
+@section('title', __('verification.verification_title'))
 
 @section('content')
 <section class="max-w-screen-xl p-4 md:px-4 md:py-8 md:mx-auto flex justify-center gap-4">
