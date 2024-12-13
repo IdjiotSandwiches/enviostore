@@ -8,5 +8,5 @@
         @include('component.navigation.auth.__user-settings', ['link' => route('logout'), 'text' => __('navbar.logout'), 'icon' => 'component.navigation.icon.__logout'])
     </div>
 @else
-    @include('component.navigation.__not-auth')
+    @include('component.navigation.auth.__not-auth')
 @endif
