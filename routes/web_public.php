@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\common\ProductController;
@@ -56,6 +57,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/email/verification-notification', 'resendVerification')->middleware(['throttle:6,1'])->name('verification.send');
     });
 });
+
+Route::get('language/{locale}', function ($locale) {
+    App::setLocale($locale);
+    session(['locale' => $locale]);
+
+    return redirect()->back();
+})->name('toggleLanguage');
 
 Route::fallback(function () {
     return view('errors.404');
