@@ -42,7 +42,7 @@ class ProductController extends Controller implements StatusInterface
 
         [$product, $productImgs] = $productService->getProduct($product_serial);
 
-        return view('product', compact('product', 'productImgs'));
+        return view('product.index', compact('product', 'productImgs'));
     }
 
     /**

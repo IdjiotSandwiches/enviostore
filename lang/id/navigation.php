@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'profile' => 'Profil',
+    'logout' => 'Keluar',
+    'settings' => 'Pengaturan',
+
     'resources' => 'Sumber',
     'resources.goals' => 'Tujuan Pembangunan Berkelanjutan',
     'resources.supply' => 'Transparansi Pasokan',

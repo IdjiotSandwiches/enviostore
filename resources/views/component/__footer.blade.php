@@ -11,31 +11,31 @@
             <div class="grid grid-cols-1 gap-8 sm:gap-6 sm:grid-cols-2 md:grid-cols-3 text-sm md:pl-8">
                 {{-- Resources --}}
                 <div>
-                    <h2 class="mb-4 text-md font-semibold text-gray-900 uppercase">{{ __('footer.resources') }}</h2>
+                    <h2 class="mb-4 text-md font-semibold text-gray-900 uppercase">{{ __('navigation.resources') }}</h2>
                     <ul class="text-gray-900 font-medium">
                         <li class="mb-4">
-                            <a href="#" class="hover:underline">{{ __('footer.resources.goals') }}</a>
+                            <a href="#" class="hover:underline">{{ __('navigation.resources.goals') }}</a>
                         </li>
                         <li>
-                            <a href="#" class="hover:underline">{{ __('footer.resources.supply') }}</a>
+                            <a href="#" class="hover:underline">{{ __('navigation.resources.supply') }}</a>
                         </li>
                     </ul>
                 </div>
                 {{-- Legal and Notices --}}
                 <div>
-                    <h2 class="mb-4 text-md font-semibold text-gray-900 uppercase">{{ __('footer.legal') }}</h2>
+                    <h2 class="mb-4 text-md font-semibold text-gray-900 uppercase">{{ __('navigation.legal') }}</h2>
                     <ul class="text-gray-900 font-medium">
                         <li class="mb-4">
-                            <a href="#" class="hover:underline">{{ __('footer.legal.privacy') }}</a>
+                            <a href="#" class="hover:underline">{{ __('navigation.legal.privacy') }}</a>
                         </li>
                         <li>
-                            <a href="#" class="hover:underline">{{ __('footer.legal.terms') }}</a>
+                            <a href="#" class="hover:underline">{{ __('navigation.legal.terms') }}</a>
                         </li>
                     </ul>
                 </div>
                 {{-- Social Media --}}
                 <div>
-                    <h2 class="mb-4 text-md font-semibold text-gray-900 uppercase">{{ __('footer.social') }}</h2>
+                    <h2 class="mb-4 text-md font-semibold text-gray-900 uppercase">{{ __('navigation.social') }}</h2>
                     <ul class="text-gray-900 font-medium">
                         <li class="mb-4">
                             <a href="#" class="hover:underline">Github</a>
@@ -50,7 +50,7 @@
         {{-- Copy Right --}}
         <hr class="my-6 border-gray-900 sm:mx-auto lg:my-8" />
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <span class="text-sm text-gray-900 sm:text-center">© 2024 <a href="#" class="hover:underline">EnviroStore</a>. {{ __('footer.rights') }}.</span>
+            <span class="text-sm text-gray-900 sm:text-center">© 2024 <a href="#" class="hover:underline">EnviroStore</a>. {{ __('navigation.rights') }}.</span>
         </div>
     </div>
 </footer>
