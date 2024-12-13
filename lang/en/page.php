@@ -16,4 +16,6 @@ return [
     'cart.summary' => 'Summary',
     'cart.total_items' => 'Total Items',
     'cart.quantity' => 'Quantity',
+    'cart.empty' => 'Your cart is empty.',
+    'cart.button' => 'Explore our products',
 ];

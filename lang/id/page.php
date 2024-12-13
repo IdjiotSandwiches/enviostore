@@ -16,4 +16,6 @@ return [
     'cart.summary' => 'Rincian',
     'cart.total_items' => 'Total Barang',
     'cart.quantity' => 'Jumlah',
+    'cart.empty' => 'Keranjang anda kosong.',
+    'cart.button' => 'Telusuri produk kami',
 ];
