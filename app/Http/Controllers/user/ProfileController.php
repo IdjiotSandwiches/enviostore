@@ -20,7 +20,13 @@ class ProfileController extends Controller
     public function index()
     {
         //
-        return view('profile.index');
+        $identity = session('identity');
+
+        if (!$identity) {
+            return redirect()->route('login')->with('error', 'Please log in to access your profile.');
+        }
+    
+        return view('profile.index', compact('identity'));
     }
 
     /**
