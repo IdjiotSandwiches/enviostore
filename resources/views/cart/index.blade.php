@@ -1,5 +1,5 @@
 @extends('layout.layout')
-@section('title', __('cart.cart'))
+@section('title', __('title.cart'))
 
 @section('content')
 <section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
