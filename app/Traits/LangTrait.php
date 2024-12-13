@@ -18,6 +18,6 @@ trait LangTrait
             return $this->{"{$base}_id"};
         }
 
-        return empty($this->{"{$base}_id"}) ? $this->{"{$base}_en"} : $this->{"{$base}_id"};
+        return $this->{"{$base}_en"};
     }
 }

@@ -1,7 +1,7 @@
 <div class="inline-flex items-center gap-2">
-    @if (\Illuminate\Support\Facades\App::getLocale() === 'id')
+    @if (\Illuminate\Support\Facades\App::isLocale(\App\Interfaces\LocaleInterface::ID))
         @include('component.navigation.locale.__ID')
-    @elseif (\Illuminate\Support\Facades\App::getLocale() === 'en')
+    @else
         @include('component.navigation.locale.__EN')
     @endif
 </div>
