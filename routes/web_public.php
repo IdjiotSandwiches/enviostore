@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LocaleController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
@@ -58,12 +59,7 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::get('language/{locale}', function ($locale) {
-    App::setLocale($locale);
-    session(['locale' => $locale]);
-
-    return redirect()->back();
-})->name('toggleLanguage');
+Route::get('language/{locale}', [LocaleController::class, 'setLocale'])->name('toggleLanguage');
 
 Route::fallback(function () {
     return view('errors.404');
