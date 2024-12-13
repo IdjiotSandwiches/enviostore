@@ -35,7 +35,7 @@
             </div>
         @else
             <div class="py-4 px-4">
-                @include('component.navigation.__not-auth')
+                @include('component.navigation.auth.__not-auth')
             </div>
         @endif
 
