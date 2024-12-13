@@ -14,7 +14,7 @@
             </div>
             <div class="text-sm text-font_secondary">
                 <p>{{ __('header.category') }}: {{ $category }}</p>
-                <p>{{ __('cart.quantity') }}: {{ $quantity }}</p>
+                <p>{{ __('page.cart.quantity') }}: {{ $quantity }}</p>
             </div>
         </div>
         <div class="flex justify-end">
