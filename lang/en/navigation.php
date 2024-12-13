@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'profile' => 'Profile',
+    'logout' => 'Logout',
+    'settings' => 'Settings',
+
     'resources' => 'Resources',
     'resources.goals' => 'Sustainable Development Goals',
     'resources.supply' => 'Supply Chain Transparency',
