@@ -2,6 +2,9 @@
 
 namespace App\Traits;
 
+use App\Interfaces\LocaleInterface;
+use Illuminate\Support\Facades\App;
+
 trait LangTrait 
 {
     /**
@@ -11,7 +14,7 @@ trait LangTrait
      */
     public function getLangVariant($base)
     {
-        if (app()->isLocale('id')) {
+        if (App::isLocale(LocaleInterface::ID)) {
             return $this->{"{$base}_id"};
         }
 
