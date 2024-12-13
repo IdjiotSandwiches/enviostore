@@ -15,5 +15,7 @@ return [
     'verified' => 'Account has been verified.',
     'resent' => 'Verification link sent!',
     'add_to_cart' => 'Product added to cart.',
+    'exceeded_stock' => 'Your product amounts exceeded our stocks.',
+    'remove_item' => 'Item removed.',
     'not_found_title' => 'Not Found',
 ];

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Interfaces\StatusInterface;
 use App\Models\ErrorLog;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CartController extends Controller implements StatusInterface, SessionKeyInterface
 {
@@ -24,6 +25,69 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
     }
 
     /**
+     * Summary of index
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function index()
+    {
+        return view('cart.index');
+    }
+
+    /**
+     * Summary of delete
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function delete(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $this->cartService->delete($request);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+
+            $response = [
+                'status' => self::STATUS_ERROR,
+                'message' => $e->getMessage(),
+            ];
+
+            return back()->withInput()->with($response);
+        }
+
+        $response = [
+            'status' => self::STATUS_SUCCESS,
+            'message' => __('message.remove_item'),
+        ];
+
+        return back()->with($response);
+    }
+
+    /**
+     * Summary of getCartItems
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
+    public function getCartItems()
+    {
+        $cart = (object) [
+            'items' => $this->cartService->getCartItems(),
+            'summary' => $this->cartService->getCartSummary(),
+        ];
+
+        return response()->json([
+            'status' => self::STATUS_SUCCESS,
+            'message' => '',
+            'data' => $cart,
+        ], Response::HTTP_OK);
+    }
+
+    /**
      * Summary of addToCart
      * @param \App\Http\Requests\CartRequest $cartRequest
      * @return \Illuminate\Http\RedirectResponse
@@ -35,8 +99,7 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
         try {
             DB::beginTransaction();
             
-            [$product, $quantity] = $this->cartService->addToCart($item);
-            $this->cartService->updateStocks($product, $quantity);
+            $this->cartService->addToCart($item);
             
             DB::commit();
         } catch (\Exception $e) {
@@ -60,5 +123,12 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
         ];
 
         return back()->with($response);
+    }
+
+    public function checkout()
+    {
+        $cart = route('cart.getCartItems');
+        
+        return view('checkout.index')->with(['items' => $cart]);
     }
 }

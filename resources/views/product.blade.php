@@ -51,7 +51,7 @@
                 <p>25 Reviews</p>
                 <h3 class="font-bold text-xl md:text-3xl">Rp {{ $product->price }}</h3>
             </div>
-            <form action="{{ route('addToCart') }}" method="POST" class="grid gap-4">
+            <form action="{{ route('cart.addToCart') }}" method="POST" class="grid gap-4">
                 @csrf
                 @method('POST')
                 <input type="hidden" id="product_serial" name="product_serial" value="{{ $product->product_serial }}"
