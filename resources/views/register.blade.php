@@ -62,7 +62,7 @@
                 <div class="flex items-center">
                     <input id="checkbox" type="checkbox" name="terms_and_condition" class="w-4 h-4 text-button bg-gray-100 border-gray-300 rounded focus:ring-button/15" required />
                     <label for="checkbox" class="ms-2 text-sm font-medium text-font_primary">
-                        {{ __('form.agree') }} <a href="#" class="text-font_secondary lowercase hover:text-font_primary hover:underline">{{ __('footer.legal.terms') }}</a>
+                        {!! __('form.agree') !!}
                     </label>
                 </div>
                 @error('terms_and_condition')
