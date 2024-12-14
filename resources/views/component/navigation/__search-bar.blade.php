@@ -18,6 +18,6 @@
         <span class="sr-only">Search icon</span>
     </div>
     <input type="text" id="search-navbar"
-        class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+        class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-400 rounded-lg bg-gray-50 focus:ring-button/20 focus:border-button/20"
         placeholder="Search...">
 </div>
