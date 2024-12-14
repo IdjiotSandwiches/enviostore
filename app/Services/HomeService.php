@@ -46,7 +46,7 @@ class HomeService
             $name = $category->name;
             $url = $category->url;
             $image = $this->googleDriveUtility->getFile($url);
-            $link = route('categoryPage', $category->name);
+            $link = route('categoryPage', base64_encode($category->category_serial_code));
 
             return (object) compact('name', 'image', 'link');
         });

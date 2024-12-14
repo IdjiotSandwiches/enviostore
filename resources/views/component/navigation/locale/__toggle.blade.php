@@ -1,4 +1,4 @@
-<button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
+<button id="dropdownDefaultButton" data-dropdown-toggle="localeDropdown"
     class="text-black hover:bg-button/10 focus:ring-4 focus:outline-none focus:ring-button/20 font-medium rounded-lg text-sm px-2.5 py-1 text-center inline-flex items-center"
     type="button">
     @include('component.navigation.locale.__default')
@@ -7,7 +7,7 @@
     </svg>
 </button>
 
-<div id="dropdown" class="z-30 hidden bg-background divide-y divide-gray-100 rounded-lg shadow">
+<div id="localeDropdown" class="z-30 hidden bg-background divide-y divide-gray-100 rounded-lg shadow">
     <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
         @include('component.navigation.locale.__locales')
     </ul>
