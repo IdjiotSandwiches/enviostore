@@ -67,7 +67,7 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
      */
     public function convertItem($product)
     {
-        $name = $product->{'name_' . App::getLocale()};
+        $name = $product->name;
         $price = StringHelper::parseNumberFormat($product->price);
         $rating = $product->sustainability_score;
         $img = $product->productImage->first();

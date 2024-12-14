@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/category/{category_serial}/{sort}', [ProductController::class, 'sortProducts'])->name('sortProducts');
+Route::middleware('web')->get('/category/{category_serial}/{sort}', [ProductController::class, 'sortProducts'])->name('sortProducts');
