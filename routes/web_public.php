@@ -31,7 +31,7 @@ Route::middleware(['guest:admin'])->group(function () {
     });
 
     Route::controller(CategoryController::class)->group(function () {
-        Route::get('/category/{category}', 'index')->name('categoryPage');
+        Route::get('/category/{category_serial}', 'index')->name('categoryPage');
     });
 });
 
@@ -59,7 +59,7 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::get('language/{locale}', [LocaleController::class, 'setLocale'])->name('toggleLanguage');
+Route::get('/language/{locale}', [LocaleController::class, 'setLocale'])->name('toggleLanguage');
 
 Route::fallback(function () {
     return view('errors.404');

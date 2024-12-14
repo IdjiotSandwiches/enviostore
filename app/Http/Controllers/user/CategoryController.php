@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Models\Category;
+use App\Models\ErrorLog;
 use Illuminate\Http\Request;
 use App\Utilities\ProductsUtility;
 use App\Interfaces\CategoryInterface;
@@ -25,9 +26,19 @@ class CategoryController extends Controller implements CategoryInterface
      * @param string $category
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index($category)
+    public function index($category_serial)
     {
-        $category = Category::where('name', $category)->first();
+        try {
+            $category_serial = base64_decode($category_serial);
+        } catch (\Exception $e) {
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+
+            abort(404);
+        }
+
+        $category = Category::where('category_serial_code', $category_serial)->first();
 
         if (!$category) abort(404);
       
