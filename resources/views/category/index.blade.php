@@ -124,7 +124,7 @@
         let filterDropdown = document.querySelector('#filterDropdown span');
 
         const URL = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
-        let url = URL.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', 1);
+        let url = URL.replace('::CATEGORY::', '{{ $category->category_serial_code }}').replace('::SORT::', 1);
         fetchRequest(url);
 
         sortButtons.forEach(button => {

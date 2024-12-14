@@ -31,7 +31,7 @@ Route::middleware(['guest:admin'])->group(function () {
     });
 
     Route::controller(CategoryController::class)->group(function () {
-        Route::get('/category/{category}', 'index')->name('categoryPage');
+        Route::get('/category/{category_serial}', 'index')->name('categoryPage');
     });
 });
 
