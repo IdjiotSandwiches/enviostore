@@ -14,7 +14,7 @@
         </svg>
     </button>
 
-    <div id="filterDropdownItems" class="max-w-xs z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-72 dark:bg-gray-700">
+    <div id="filterDropdownItems" class="max-w-xs z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-72 dark:bg-gray-700 cursor-pointer">
         <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="filterDropdown">
             <li value="1" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ __('page.category.newest') }}</li>
             <li value="2" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ __('page.category.lowest') }}</li>
@@ -120,7 +120,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        let sortButtons = document.querySelectorAll('#dropdown ul li');
+        let sortButtons = document.querySelectorAll('#filterDropdownItems ul li');
         let filterDropdown = document.querySelector('#filterDropdown span');
 
         const URL = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
@@ -130,7 +130,7 @@
         sortButtons.forEach(button => {
             button.addEventListener('click', function() {
                 filterDropdown.textContent = this.textContent;
-                let url = URL.replace('::CATEGORY::', '{{ $category->name }}').replace('::SORT::', this.value);
+                let url = URL.replace('::CATEGORY::', '{{ $category->category_serial_code }}').replace('::SORT::', this.value);
                 fetchRequest(url);
             });
         });

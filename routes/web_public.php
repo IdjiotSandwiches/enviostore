@@ -59,7 +59,7 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::get('language/{locale}', [LocaleController::class, 'setLocale'])->name('toggleLanguage');
+Route::get('/language/{locale}', [LocaleController::class, 'setLocale'])->name('toggleLanguage');
 
 Route::fallback(function () {
     return view('errors.404');
