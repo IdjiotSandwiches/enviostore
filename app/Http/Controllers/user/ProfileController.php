@@ -19,7 +19,6 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        //
         $identity = session('identity');
 
         if (!$identity) {
