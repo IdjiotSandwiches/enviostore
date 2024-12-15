@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\user\CartController;
 use App\Http\Controllers\user\CheckoutController;
+use App\Http\Controllers\user\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "auth" middleware group. Make something great!
 |
 */
+Route::prefix('profile')
+    ->name('profile.')
+    ->controller(ProfileController::class)
+    ->group(function(){
+        Route::get('/', 'index')->name('index');
+        Route::get('/edit', 'edit')->name('edit');
+    });
+
 
 Route::prefix('cart')
     ->name('cart.')

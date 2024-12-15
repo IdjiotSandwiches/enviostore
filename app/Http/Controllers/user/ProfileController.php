@@ -43,8 +43,9 @@ class ProfileController extends Controller
     {
         $image = $profileRequest->validated()->file('image');
         $imageName = time() . '_' . $image->getClientOriginalName();
-        
 
+        $response = $this->googleDriveUtility->storeFile($imageName, $image);
+        return back()->with($response);
     }
 
     /**
@@ -56,11 +57,12 @@ class ProfileController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified res  ource.
      */
-    public function edit(string $id)
+    public function edit()
     {
-        //
+        
+        return view('profile.edit');
     }
 
     /**
