@@ -42,7 +42,7 @@ class ProductController extends Controller implements StatusInterface
 
         [$product, $productImgs] = $productService->getProduct($product_serial);
 
-        return view('product', compact('product', 'productImgs'));
+        return view('product.index', compact('product', 'productImgs'));
     }
 
     /**
@@ -52,11 +52,11 @@ class ProductController extends Controller implements StatusInterface
      * @param string $sort
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function sortProducts($category, $sort)
+    public function sortProducts($category_serial, $sort)
     {
         if (!request()->ajax()) abort(404);
 
-        $category = Category::where('name', $category)->first();
+        $category = Category::where('category_serial_code', $category_serial)->first();
 
         if (!$category) abort(404);
 

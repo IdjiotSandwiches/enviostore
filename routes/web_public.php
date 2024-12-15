@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\LocaleController;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\common\ProductController;
@@ -29,7 +31,7 @@ Route::middleware(['guest:admin'])->group(function () {
     });
 
     Route::controller(CategoryController::class)->group(function () {
-        Route::get('/category/{category}', 'index')->name('categoryPage');
+        Route::get('/category/{category_serial}', 'index')->name('categoryPage');
     });
 });
 
@@ -56,6 +58,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/email/verification-notification', 'resendVerification')->middleware(['throttle:6,1'])->name('verification.send');
     });
 });
+
+Route::get('/language/{locale}', [LocaleController::class, 'setLocale'])->name('toggleLanguage');
 
 Route::fallback(function () {
     return view('errors.404');

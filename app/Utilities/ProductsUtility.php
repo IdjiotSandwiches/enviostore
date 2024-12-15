@@ -8,6 +8,7 @@ use App\Utilities\GoogleDriveUtility;
 use App\Interfaces\SortInterface;
 use App\Interfaces\CategoryInterface;
 use App\Interfaces\SortDirectionInterface;
+use Illuminate\Support\Facades\App;
 
 class ProductsUtility implements SortInterface, SortDirectionInterface, CategoryInterface
 {
@@ -71,7 +72,7 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
         $rating = $product->sustainability_score;
         $img = $product->productImage->first();
         $img = $this->googleDriveUtility->getFile($img->url);
-        $link = route('getProduct', base64_encode("$product->product_serial_code"));
+        $link = route('getProduct', base64_encode($product->product_serial_code));
 
         return (object) compact('name', 'rating', 'price', 'img', 'link');
     }
