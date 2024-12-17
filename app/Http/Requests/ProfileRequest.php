@@ -11,7 +11,7 @@ class ProfileRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,12 +22,11 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'string',
-            'phone_number' => 'regex:/^(?:0|\+62)[0-9]{8,12}$/',  
-            'address' => 'string',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'password' => 'confirmed|min:8',
-            'password_confirm' => 'required',
+            'name' => 'nullable|string|max:255',
+            'phone_number' => 'nullable|regex:/^[0-9\-]+$/',
+            'address' => 'nullable|string|max:255',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'email' => 'nullable|email|unique:users,email,' . auth()->id(),
         ];
     }
 }

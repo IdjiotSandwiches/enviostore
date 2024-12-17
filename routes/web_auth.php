@@ -21,8 +21,8 @@ Route::prefix('profile')
     ->group(function(){
         Route::get('/', 'index')->name('index');
         Route::get('/edit', 'edit')->name('edit');
+        Route::put('/update', 'update')->name('update');
     });
-
 
 Route::prefix('cart')
     ->name('cart.')

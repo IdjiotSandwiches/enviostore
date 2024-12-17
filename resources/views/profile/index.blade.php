@@ -63,7 +63,7 @@
                     </a>
                 </div>
                 <div class="justify-center text-center m-8 border-solid border-2 border-button rounded-xl">
-                    <a href="#" class="p-3">
+                    <a href="{{ route('profile.edit') }}" class="p-3">
                         <p class="text-xl font-normal text-button">Edit Information</p>
                     </a>
                 </div>
