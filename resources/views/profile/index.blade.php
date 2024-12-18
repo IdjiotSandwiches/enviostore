@@ -7,7 +7,7 @@
         {{-- PP and Name --}}
         <div class="flex">
             <div class="aspect-square object-cover max-w-48">
-                <img src="{{ $identity->profile_picture ?? asset('img/0.png') }}" alt="..."
+                <img src="{{ $profilePicture ?? asset('img/0.png') }}" alt="..."
                     class="rounded-full aspect-square object-cover w-full h-full hover:bg-gray-400">
             </div>
             <div class="pt-14 pl-7">

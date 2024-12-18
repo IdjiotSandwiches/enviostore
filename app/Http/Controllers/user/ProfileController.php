@@ -24,8 +24,10 @@ class ProfileController extends Controller
     public function index()
     {
         $identity = auth()->user();
+        $profileUrl = $identity->profile_picture;
+        $profilePicture = $this->googleDriveUtility->getFile($profileUrl);
         // dd($identity);
-        return view('profile.index', compact('identity'));
+        return view('profile.index', compact('identity', 'profilePicture'));
     }
 
     /**
@@ -76,7 +78,7 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    const AVATAR_COLUMN = 'profile_picture';
+    const PROFILE_PICTURE_COLUMN = 'profile_picture';
     const NAME_COLUMN = 'username';
     const ADDRESS_COLUMN = 'address';
     const EMAIL_COLUMN = 'email';
@@ -95,7 +97,7 @@ class ProfileController extends Controller
                 self::ADDRESS_COLUMN,
                 self::EMAIL_COLUMN,
                 self::PHONE_COLUMN,
-                'profile_picture'
+                self::PROFILE_PICTURE_COLUMN,
             ];
 
             $hasUpdates = false;
@@ -113,23 +115,43 @@ class ProfileController extends Controller
                 ]);
             }
 
-            // Update name if provided
             if (!empty($validated[self::NAME_COLUMN])) {
                 $user->username = $validated[self::NAME_COLUMN];
             }
 
-            // Update address if provided
             if (!empty($validated[self::ADDRESS_COLUMN])) {
                 $user->address = $validated[self::ADDRESS_COLUMN];
             }
 
-            // Update email if provided
             if (!empty($validated[self::EMAIL_COLUMN])) {
                 $user->email = $validated[self::EMAIL_COLUMN];
             }
 
             if (!empty($validated[self::PHONE_COLUMN])) {
                 $user->phone_number = $validated[self::PHONE_COLUMN];
+            }
+
+            if ($profileRequest->hasFile(self::PROFILE_PICTURE_COLUMN)) {
+                $file = $profileRequest->file(self::PROFILE_PICTURE_COLUMN);
+                $fileExtension = $file->getClientOriginalExtension();
+                $timestamp = time();
+                $fileName = 'avatars/' . str_replace(' ', '_', $user->username) . '_' . $timestamp . '.' . $fileExtension;
+            
+                try {
+                    $fileUrl = $this->googleDriveUtility->storeFile($fileName, $file);
+            
+                    if ($fileUrl) {
+                        $user->profile_picture = $fileName;
+                    } else {
+                        return back()->withErrors([
+                            self::PROFILE_PICTURE_COLUMN => 'Failed to upload profile picture to Google Drive.',
+                        ]);
+                    }
+                } catch (\Exception $e) {
+                    return back()->withErrors([
+                        self::PROFILE_PICTURE_COLUMN => 'Error uploading profile picture: ' . $e->getMessage(),
+                    ]);
+                }
             }
 
             $user->save();
