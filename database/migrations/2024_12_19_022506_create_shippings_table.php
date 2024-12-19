@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('shipping_serial_code');
             $table->string('name');
+            $table->string('description');
             $table->float('fee');
             $table->timestamps();
         });
