@@ -129,6 +129,6 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
     {
         $cart = route('cart.getCartItems');
         
-        return view('checkout.index')->with(['items' => $cart]);
+        return to_route('checkout.index');
     }
 }
