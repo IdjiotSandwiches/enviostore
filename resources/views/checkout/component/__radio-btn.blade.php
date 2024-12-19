@@ -8,10 +8,10 @@
         <div class="flex items-center gap-4">
             @include($icon)
             <div>
-                <h2 class="text-xl">JNE</h2>
+                <h2 class="text-xl">{{ $radioItem->name }}</h2>
                 <p class="text-sm text-font_secondary">(5-7 Business Days)</p>
             </div>
         </div>
-        <div class="text-xl">Rp 3.000</div>
+        <div class="text-xl">Rp {{ $radioItem->fee }}</div>
     </label>
 </div>
