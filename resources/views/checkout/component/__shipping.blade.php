@@ -8,10 +8,10 @@
         <div class="flex items-center gap-4">
             @include("checkout.component.icon.$shipping->icon")
             <div>
-                <h2 class="text-xl">{{ $shipping->name }}</h2>
+                <h2 class="text-xl font-bold">{{ $shipping->name }}</h2>
                 <p class="text-sm text-font_secondary">({{ $shipping->description }})</p>
             </div>
         </div>
-        <div class="text-xl">Rp {{ $shipping->fee }}</div>
+        <div class="text-xl font-bold">Rp {{ $shipping->fee }}</div>
     </label>
 </div>

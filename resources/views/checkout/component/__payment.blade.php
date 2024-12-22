@@ -7,7 +7,7 @@
         class="flex items-center justify-between w-full px-4 py-6 ms-2 text-sm font-medium text-gray-900">
         <div class="flex items-center gap-4">
             @include("checkout.component.icon.$payment->icon")
-            <h2 class="text-xl">{{ $payment->name }}</h2>
+            <h2 class="text-xl font-bold">{{ $payment->name }}</h2>
         </div>
     </label>
 </div>

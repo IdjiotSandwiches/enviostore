@@ -125,10 +125,14 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
         return back()->with($response);
     }
 
+    /**
+     * Summary of checkout
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function checkout()
     {
         $cart = route('cart.getCartItems');
         
-        return to_route('checkout.index');
+        return to_route('checkout.index')->with(compact('cart'));
     }
 }

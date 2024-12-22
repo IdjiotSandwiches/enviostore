@@ -90,20 +90,16 @@
                         <span class="font-bold">{{ __('page.product.unavailable') }}</span>
                     </div>
                 @else
-                    <div class="grid gap-4">
-                        <button type="submit"
-                            class="flex items-center justify-center gap-2 text-center py-2 px-5 text-lg font-medium text-gray-900 focus:outline-none rounded-lg border border-button hover:bg-accent/10 hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15">
-                            <svg class="w-8 h-8 text-gray-800" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5"
-                                    d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
-                            </svg>
-                            + {{ __('page.product.add') }}
-                        </button>
-                        <a href="/"
-                            class="text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-lg px-4 md:px-5 py-1.5 md:py-2 text-nowrap">{{ __('page.product.buy') }}</a>
-                    </div>
+                    <button type="submit"
+                        class="flex items-center justify-center gap-2 text-center py-2 px-5 text-lg font-medium text-white rounded-lg bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15">
+                        <svg class="w-8 h-8" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                        </svg>
+                        + {{ __('page.product.add') }}
+                    </button>
                 @endif
             </form>
         </div>

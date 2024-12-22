@@ -23,7 +23,7 @@ Route::prefix('cart')
         Route::get('/cart-items', 'getCartItems')->name('getCartItems');
         Route::post('/add-to-cart', 'addToCart')->name('addToCart');
         Route::delete('/delete/{id}', 'delete')->name('deleteItem');
-        Route::post('/checkout', 'checkout')->name('checkout');
+        Route::post('/', 'checkout')->name('checkout');
     });
 
 Route::prefix('checkout')
