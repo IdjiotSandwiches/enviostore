@@ -28,3 +28,16 @@
     </form>
 </section>
 @endsection
+
+@section('extra-js')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let shipping = document.querySelectorAll('input[type="radio"][name="shippings"]');
+        // shipping.forEach(radio => {
+        //     radio.addEventListener('click', function() {
+        //         console.log(this.value)
+        //     })
+        // })
+    });
+</script>
+@endsection
