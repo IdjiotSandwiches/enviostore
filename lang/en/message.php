@@ -18,4 +18,5 @@ return [
     'exceeded_stock' => 'Your product amounts exceeded our stocks.',
     'remove_item' => 'Item removed.',
     'not_found_title' => 'Not Found',
+    'profile_update_success' => 'Profile updated successfully.',
 ];

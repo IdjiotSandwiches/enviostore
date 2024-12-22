@@ -3,74 +3,63 @@
 @section('title', 'Profile')
 
 @section('content')
-    <section class="max-w-screen-xl md:px-4 md:py-8 md:mx-auto">
-        {{-- PP and Name --}}
-        <div class="flex">
-            <div class="aspect-square object-cover max-w-48">
-                <img src="{{ $profilePicture ?? asset('img/0.png') }}" alt="..."
-                    class="rounded-full aspect-square object-cover w-full h-full hover:bg-gray-400">
+<section class="max-w-screen-xl px-4 py-8 mx-auto">
+    {{-- Profile Picture and Name --}}
+    <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+        <div class="w-36 h-36 md:w-48 md:h-48">
+            <img src="{{ $profilePicture ?? asset('img/0.png') }}" 
+                alt="Profile Picture" 
+                class="rounded-full object-cover w-full h-full hover:bg-gray-400">
+        </div>
+        <div class="pt-7 text-center md:text-left md:pt-7">
+            <h1 class="text-3xl md:text-5xl font-semibold">{{ $user->username ?? 'User Name' }}</h1>
+            <p class="text-lg md:text-xl mt-2">{{ $user->address ?? 'Unknown Address' }}</p>
+        </div>
+    </div>
+
+    {{-- User Information --}}
+    <div class="grid mt-8 gap-6 md:grid-cols-2">
+        {{-- User Info Card --}}
+        <div class="bg-primary rounded-lg shadow-md p-6">
+            <div class="mb-6">
+                <h1 class="text-2xl md:text-3xl font-semibold text-center">User Information</h1>
             </div>
-            <div class="pt-14 pl-7">
-                <h1 class="text-5xl font-semibold">{{ $identity->username ?? 'User Name' }}</h1>
-                <p class="text-xl mt-2">{{ $identity->address ?? 'Unknown Address' }}</p>
+            <hr class="bg-button">
+            <div class="grid grid-cols-2 gap-4 py-4">
+                <p class="text-lg md:text-xl font-normal text-accent">Name</p>
+                <p class="text-lg md:text-xl font-semibold text-right">{{ $user->username ?? 'Not Provided' }}</p>
+            </div>
+            <hr class="bg-button">
+            <div class="grid grid-cols-2 gap-4 py-4">
+                <p class="text-lg md:text-xl font-normal text-accent">Address</p>
+                <p class="text-lg md:text-xl font-semibold text-right">{{ $user->address ?? 'Unknown Address' }}</p>
+            </div>
+            <hr class="bg-button">
+            <div class="grid grid-cols-2 gap-4 py-4">
+                <p class="text-lg md:text-xl font-normal text-accent">Email</p>
+                <p class="text-lg md:text-xl font-semibold text-right">{{ $user->email }}</p>
+            </div>
+            <hr class="bg-button">
+            <div class="grid grid-cols-2 gap-4 py-4 mb-24">
+                <p class="text-lg md:text-xl font-normal text-accent">Phone Number</p>
+                <p class="text-lg md:text-xl font-semibold text-right">{{ $identity->phone_number ?? 'Not Provided' }}</p>
+            </div>
+            <div class="text-center mt-6">
+                <a href="#" class="block p-3 bg-button text-primary rounded-xl text-lg md:text-xl font-normal">
+                    Change Password
+                </a>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{{ route('profile.edit') }}" class="block p-3 border-2 border-button rounded-xl text-button text-lg md:text-xl font-normal">
+                    Edit Information
+                </a>
             </div>
         </div>
-        {{-- User Information --}}
-        <div class="flex mt-4">
-            <div class="w-1/2 bg-primary justify-center rounded-lg shadow-gray-400 shadow-sm">
-                <div class="m-7">
-                    <h1 class="text-3xl font-semibold text-center">User Information</h1>
-                </div>
-                <hr class="bg-button stroke-black">
-                <div class="flex md:gap-44">
-                    <div class="m-5 mr-1">
-                        <p class="text-xl font-normal text-accent">Name</p>
-                    </div>
-                    <div class="m-5 ml-1">
-                        <p class="text-xl font-semibold">{{ $identity->username ?? 'Not Provided' }}</p>
-                    </div>
-                </div>
-                <hr class="bg-button stroke-black">
-                <div class="flex md:gap-44">
-                    <div class="m-5 mr-1">
-                        <p class="text-xl font-normal text-accent">Address</p>
-                    </div>
-                    <div class="m-5 ml-1">
-                        <p class="text-xl font-semibold">{{ $identity->address ?? 'Unknown Address' }}</p>
-                    </div>
-                </div>
-                <hr class="bg-button stroke-black">
-                <div class="flex md:gap-44">
-                    <div class="m-5 mr-1">
-                        <p class="text-xl font-normal text-accent">Email</p>
-                    </div>
-                    <div class="m-5 ml-3">
-                        <p class="text-xl font-semibold">{{ $identity->email }}</p>
-                    </div>
-                </div>
-                <hr class="bg-button stroke-black">
-                <div class="flex md:gap-28 mb-32">
-                    <div class="mr-1 m-5">
-                        <p class="text-xl font-normal text-accent">Phone Number</p>
-                    </div>
-                    <div class="m-5 ml-1">
-                        <p class="text-xl font-semibold">{{ $identity->phone_number ?? 'Not Provided' }}</p>
-                    </div>
-                </div>
-                <div class="justify-center text-center m-8 mb-1 bg-button rounded-xl">
-                    <a href="#" class="p-3">
-                        <p class="text-xl font-normal text-primary">Change Password</p>
-                    </a>
-                </div>
-                <div class="justify-center text-center m-8 border-solid border-2 border-button rounded-xl">
-                    <a href="{{ route('profile.edit') }}" class="p-3">
-                        <p class="text-xl font-normal text-button">Edit Information</p>
-                    </a>
-                </div>
-            </div>
-            <div>
-                {{-- To Be Written --}}
-            </div>
+
+        {{-- Placeholder for Additional Section --}}
+        <div class="bg-gray-100 rounded-lg shadow-md p-6 flex items-center justify-center">
+
         </div>
-    </section>
+    </div>
+</section>
 @endsection

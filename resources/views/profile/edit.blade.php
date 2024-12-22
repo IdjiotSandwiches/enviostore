@@ -23,27 +23,27 @@
                 <hr class="bg-button stroke-black mb-5">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="name" class="block text-xl font-normal text-accent mb-2">Name</label>
-                        <input type="text" id="name" name="name" value="{{ $identity->name ?? '' }}"
+                        <label for="username" class="block text-xl font-normal text-accent mb-2">Name</label>
+                        <input type="text" id="username" name="username" value=""
                             class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring focus:ring-button"
                             placeholder="Enter your name">
                     </div>
                     <div>
                         <label for="address" class="block text-xl font-normal text-accent mb-2">Address</label>
-                        <input type="text" id="address" name="address" value="{{ $identity->address ?? '' }}"
+                        <input type="text" id="address" name="address" value=""
                             class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring focus:ring-button"
                             placeholder="Enter your address">
                     </div>
                     <div>
                         <label for="email" class="block text-xl font-normal text-accent mb-2">Email</label>
-                        <input type="email" id="email" name="email" value="{{ $identity->email ?? '' }}"
+                        <input type="email" id="email" name="email" value=""
                             class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring focus:ring-button"
                             placeholder="Enter your email">
                     </div>
                     <div>
                         <label for="phone_number" class="block text-xl font-normal text-accent mb-2">Phone Number</label>
                         <input type="text" id="phone_number" name="phone_number"
-                            value="{{ $identity->phone_number ?? '' }}"
+                            value=""
                             class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring focus:ring-button"
                             placeholder="Enter your phone number">
                     </div>
