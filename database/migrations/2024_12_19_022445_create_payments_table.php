@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('payment_serial_code');
             $table->string('name');
+            $table->string('icon');
             $table->timestamps();
         });
     }

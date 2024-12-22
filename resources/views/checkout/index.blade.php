@@ -17,9 +17,11 @@
                     @include('checkout.component.__shipping', ['shipping' => $shipping])
                 @endforeach
             </div>
-            <div>
+            <div class="grid gap-4">
                 <h1 class="font-bold text-3xl">Payment</h1>
-
+                @foreach ($payments as $payment)
+                    @include('checkout.component.__payment', ['payment' => $payment])
+                @endforeach
             </div>
         </section>
         <section class="md:w-1/3 lg:w-1/4">
