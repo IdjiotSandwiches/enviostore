@@ -4,4 +4,6 @@ return [
     'category' => 'Category',
     'recommended' => 'Recommended Product',
     'cart' => 'Your Cart',
+    'shipping' => 'Shipping',
+    'payment' => 'Payment',
 ];

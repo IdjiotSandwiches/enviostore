@@ -12,13 +12,13 @@
                 @include('component.__skeleton-item')
             </div>
             <div class="grid gap-4">
-                <h1 class="font-bold text-3xl">Shipping</h1>
+                <h1 class="font-bold text-3xl">{{ __('header.shipping') }}</h1>
                 @foreach ($shippings as $shipping)
                     @include('checkout.component.__shipping', ['shipping' => $shipping])
                 @endforeach
             </div>
             <div class="grid gap-4">
-                <h1 class="font-bold text-3xl">Payment</h1>
+                <h1 class="font-bold text-3xl">{{ __('header.payment') }}</h1>
                 @foreach ($payments as $payment)
                     @include('checkout.component.__payment', ['payment' => $payment])
                 @endforeach
@@ -29,17 +29,4 @@
         </section>
     </form>
 </section>
-@endsection
-
-@section('extra-js')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let shipping = document.querySelectorAll('input[type="radio"][name="shippings"]');
-        // shipping.forEach(radio => {
-        //     radio.addEventListener('click', function() {
-        //         console.log(this.value)
-        //     })
-        // })
-    });
-</script>
 @endsection
