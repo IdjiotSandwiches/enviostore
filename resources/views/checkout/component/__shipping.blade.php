@@ -6,7 +6,7 @@
     <label for="{{ $shipping->shipping_serial_code }}"
         class="flex items-center justify-between w-full py-6 ms-2 text-sm font-medium text-gray-900">
         <div class="flex items-center gap-4">
-            @include("checkout.component.$shipping->icon")
+            @include("checkout.component.icon.$shipping->icon")
             <div>
                 <h2 class="text-xl">{{ $shipping->name }}</h2>
                 <p class="text-sm text-font_secondary">({{ $shipping->description }})</p>
