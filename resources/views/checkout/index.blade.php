@@ -14,7 +14,7 @@
             <div class="grid gap-4">
                 <h1 class="font-bold text-3xl">Shipping</h1>
                 @foreach ($shippings as $shipping)
-                    @include('checkout.component.__radio-btn', ['radioItem' => $shipping, 'icon' => 'checkout.component.__jne-icon', 'name' => 'shippings'])
+                    @include('checkout.component.__shipping', ['shipping' => $shipping])
                 @endforeach
             </div>
             <div>
