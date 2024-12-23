@@ -5,10 +5,8 @@
         setTimeout(function() {
             if(cartContainer.textContent !== '' && summaryContainer.textContent !== '') return;
 
-            for (let i = 0; i < 3; i++) {
-                let item = `{!! view('component.__skeleton-item')->render() !!}`;
-                cartContainer.insertAdjacentHTML('beforeend', item);
-            }
+            let cart = `{!! view('component.__skeleton-item')->render() !!}`;
+            cartContainer.insertAdjacentHTML('beforeend', cart);
 
             let item = `{!! view('component.__skeleton-summary')->render() !!}`;
             summaryContainer.insertAdjacentHTML('beforeend', item);

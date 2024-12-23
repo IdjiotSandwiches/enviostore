@@ -15,12 +15,6 @@
                     @include('checkout.component.__shipping', ['shipping' => $shipping])
                 @endforeach
             </div>
-            <div class="grid gap-4">
-                <h1 class="font-bold text-3xl">{{ __('header.payment') }}</h1>
-                @foreach ($payments as $payment)
-                    @include('checkout.component.__payment', ['payment' => $payment])
-                @endforeach
-            </div>
         </section>
         <section id="summaryContainer" class="md:w-1/3 lg:w-1/4"></section>
     </form>
@@ -30,6 +24,28 @@
 @section('extra-js')
 @include('component.js.__card-replace-summary')
 <script>
+    function updateShipping(url) {
+        customFetch(url, {
+            method: 'POST',
+        }).then(response => {
+            if(!response.ok) {
+                throw new Error();
+            }
+
+            // emptyContent();
+            // return response.json();
+        }).then(response => {
+            // replaceContent(response);
+        }).catch(error => {
+            console.log(error)
+            let section = document.querySelector('section');
+            let item = `{!! view('component.__fetch-failed')->render() !!}`;
+            
+            section.replaceChildren();
+            section.insertAdjacentHTML('beforeend', item);
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         const URL = '{{ route('cart.getCartItems') }}';
         fetchRequest(URL);
@@ -39,9 +55,13 @@
             button.addEventListener('click', function() {
                 let url = '{{ route('cart.getCartItems', ['::SHIPPING_SERIAL::']) }}';
                 url = url.replace('::SHIPPING_SERIAL::', this.value);
-
                 fetchRequest(url);
-            })
+
+                let shippingUrl = '{{ route('checkout.updateShipping', [$order->id, '::SHIPPING_SERIAL::']) }}';
+                shippingUrl = shippingUrl.replace('::SHIPPING_SERIAL::', this.value);
+
+                updateShipping(shippingUrl);
+            });
         });
     });
 </script>

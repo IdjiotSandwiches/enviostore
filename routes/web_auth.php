@@ -32,4 +32,5 @@ Route::prefix('checkout')
     ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/', 'pay')->name('pay');
+        Route::post('/order/{id}/{shipping}', 'updateShipping')->name('updateShipping');
     });

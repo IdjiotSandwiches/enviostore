@@ -3,13 +3,14 @@
 namespace App\Services\Product;
 
 use App\Helpers\StringHelper;
+use App\Interfaces\FeeInterface;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Interfaces\SessionKeyInterface;
 use App\Models\Shipping;
 use App\Utilities\GoogleDriveUtility;
 
-class CartService implements SessionKeyInterface
+class CartService implements SessionKeyInterface, FeeInterface
 {
     private $googleDriveUtility;
 
@@ -76,7 +77,7 @@ class CartService implements SessionKeyInterface
             });
 
         $shippingFee = optional(Shipping::where('shipping_serial_code', $shipping)->first())->fee ?? 0;
-        $adminFee = 1000;
+        $adminFee = self::TRANSACTION_FEE;
         $subtotal = $items->sum('subtotal');
         $total = $shippingFee + $adminFee + $subtotal;
 
