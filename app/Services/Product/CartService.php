@@ -6,6 +6,7 @@ use App\Helpers\StringHelper;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Interfaces\SessionKeyInterface;
+use App\Models\Shipping;
 use App\Utilities\GoogleDriveUtility;
 
 class CartService implements SessionKeyInterface
@@ -52,9 +53,10 @@ class CartService implements SessionKeyInterface
 
     /**
      * Summary of getCartSummary
+     * @param string $shipping
      * @return object
      */
-    public function getCartSummary()
+    public function getCartSummary($shipping)
     {
         /**
          * @var \App\Models\User $user
@@ -73,8 +75,8 @@ class CartService implements SessionKeyInterface
                 ];
             });
 
-        $shippingFee = 5000;
-        $adminFee = 2000;
+        $shippingFee = optional(Shipping::where('shipping_serial_code', $shipping)->first())->fee ?? 0;
+        $adminFee = 1000;
         $subtotal = $items->sum('subtotal');
         $total = $shippingFee + $adminFee + $subtotal;
 

@@ -20,7 +20,7 @@ Route::prefix('cart')
     ->controller(CartController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/cart-items', 'getCartItems')->name('getCartItems');
+        Route::get('/cart-items/{shipping?}', 'getCartItems')->name('getCartItems');
         Route::post('/add-to-cart', 'addToCart')->name('addToCart');
         Route::delete('/delete/{id}', 'delete')->name('deleteItem');
         Route::post('/', 'checkout')->name('checkout');

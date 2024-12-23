@@ -28,95 +28,21 @@
 @endsection
 
 @section('extra-js')
+@include('component.js.__card-replace-summary')
 <script>
-    function fetchRequest(url) {
-        emptyContent();
-
-        setTimeout(function() {
-            if(cartContainer.textContent !== '' && summaryContainer.textContent !== '') return;
-
-            for (let i = 0; i < 3; i++) {
-                let item = `{!! view('component.__skeleton-item')->render() !!}`;
-                cartContainer.insertAdjacentHTML('beforeend', item);
-            }
-
-            let item = `{!! view('component.__skeleton-summary')->render() !!}`;
-            summaryContainer.insertAdjacentHTML('beforeend', item);
-        },200);
-
-        customFetch(url, {
-            method: 'GET',
-        }).then(response => {
-            if(!response.ok) {
-                throw new Error();
-            }
-
-            emptyContent();
-            return response.json();
-        }).then(response => {
-            replaceContent(response);
-        }).catch(error => {
-            let section = document.querySelector('section');
-            let item = `{!! view('component.__fetch-failed')->render() !!}`;
-            
-            section.replaceChildren();
-            section.insertAdjacentHTML('beforeend', item);
-        });
-    }
-
-    function replaceContent(response) {
-        emptyContent();
-        
-        let items = response.data.items;
-        if(items.length === 0) {
-            let container = document.querySelector('#container');
-            container.replaceChildren();
-
-            let item = `{!! view('component.__empty-card')->render() !!}`;
-            container.insertAdjacentHTML('beforeend', item);
-        }
-        items.forEach(item => {
-            let card = `{!! view('component.__item-card', [
-                'link' => '::LINK::',
-                'image' => '::IMAGE::',
-                'name' => '::NAME::',
-                'price' => '::PRICE::',
-                'quantity' => '::QUANTITY::',
-                'category' => '::CATEGORY::',
-                'delete' => '::DELETE::',
-            ])->render() !!}`;
-
-            card = card.replace('::LINK::', item.link)
-                .replace('::IMAGE::', item.img)
-                .replaceAll('::NAME::', item.productName)
-                .replace('::PRICE::', item.price)
-                .replace('::QUANTITY::', item.quantity)
-                .replace('::CATEGORY::', item.categoryName)
-                .replace('::DELETE::', item.delete);
-            
-            cartContainer.insertAdjacentHTML('beforeend', card);
-        });
-
-        let summary = response.data.summary;
-        let card = `{!! view('checkout.component.__summary-card', [
-            'subtotal' => '::SUBTOTAL::',
-            'quantity' => '::QUANTITY::',
-        ])->render() !!}`;
-
-        card = card.replace('::SUBTOTAL::', summary.subtotal ?? '-')
-            .replace('::QUANTITY::', summary.quantity ?? '-');
-        
-        summaryContainer.insertAdjacentHTML('beforeend', card);
-    }
-
-    function emptyContent() {
-        cartContainer.replaceChildren();
-        summaryContainer.replaceChildren();
-    }
-
     document.addEventListener('DOMContentLoaded', function () {
         const URL = '{{ route('cart.getCartItems') }}';
         fetchRequest(URL);
+
+        const shippingButtons = document.querySelectorAll('input[type="radio"][name="shippings"]');
+        shippingButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                let url = '{{ route('cart.getCartItems', ['::SHIPPING_SERIAL::']) }}';
+                url = url.replace('::SHIPPING_SERIAL::', this.value);
+
+                fetchRequest(url);
+            })
+        });
     });
 </script>
 @endsection

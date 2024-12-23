@@ -71,18 +71,19 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
 
     /**
      * Summary of getCartItems
+     * @param string|null $shipping
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function getCartItems()
+    public function getCartItems($shipping = null)
     {
         $cart = (object) [
             'items' => $this->cartService->getCartItems(),
-            'summary' => $this->cartService->getCartSummary(),
+            'summary' => $this->cartService->getCartSummary($shipping),
         ];
 
         return response()->json([
             'status' => self::STATUS_SUCCESS,
-            'message' => '',
+            'message' => 'Fetch Data Success!',
             'data' => $cart,
         ], Response::HTTP_OK);
     }
@@ -131,8 +132,6 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
      */
     public function checkout()
     {
-        $cart = route('cart.getCartItems');
-        
-        return to_route('checkout.index')->with(compact('cart'));
+        return to_route('checkout.index');
     }
 }

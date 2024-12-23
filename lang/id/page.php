@@ -18,4 +18,8 @@ return [
     'cart.quantity' => 'Jumlah',
     'cart.empty' => 'Keranjang anda kosong.',
     'cart.button' => 'Telusuri produk kami',
+
+    'checkout.pay' => 'Bayar',
+    'checkout.transaction_fee' => 'Biaya Transaksi',
+    'checkout.shipping_fee' => 'Biaya Pengiriman',
 ];
