@@ -111,8 +111,10 @@ class CartService implements SessionKeyInterface, FeeInterface
             throw new \Exception(__('message.invalid'));
         }
 
-        $cart = Cart::firstOrNew(['product_id' => $product->id]);
-        $cart->user_id = $user->id;
+        $cart = Cart::firstOrNew([
+            'product_id' => $product->id,
+            'user_id' => $user->id,
+        ]);
         $cart->product_id = $product->id;
         $cart->quantity = ($cart->exists() ? $cart->quantity : 0) + $item['quantity'];
         

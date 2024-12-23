@@ -42,6 +42,8 @@
 
             let item = `{!! view('component.__empty-card')->render() !!}`;
             container.insertAdjacentHTML('beforeend', item);
+
+            return;
         }
         items.forEach(item => {
             let card = `{!! view('component.__item-card', [

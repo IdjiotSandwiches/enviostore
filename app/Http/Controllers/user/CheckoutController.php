@@ -27,6 +27,7 @@ class CheckoutController extends Controller implements SessionKeyInterface
      */
     public function index()
     {
+        logger('Refresh');
         $shippings = $this->checkoutService->getCheckoutCredentials();
         $order = $this->checkoutService->createOrder();
 
