@@ -23,7 +23,7 @@
     <div class="grid py-4 overflow-y-auto divide-y">
         @if (session(App\Interfaces\SessionKeyInterface::SESSION_IS_LOGGED_IN))
             <div class="flex items-center gap-4 px-4 py-2">
-                <img type="button" class="block w-14 h-14 rounded-full cursor-pointer" aria-hidden="true" src="#"
+                <img type="button" class="block w-14 h-14 rounded-full cursor-pointer" aria-hidden="true" src="{{ asset('img/0.png') }}"
                     alt="User dropdown">
                 <p class="font-semibold">
                     {{ session(App\Interfaces\SessionKeyInterface::SESSION_IDENTITY)->username }}
