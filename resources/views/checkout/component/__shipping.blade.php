@@ -5,13 +5,15 @@
         class="w-4 h-4 text-black bg-gray-100 border-black focus:ring-black">
     <label for="{{ $shipping->shipping_serial_code }}"
         class="flex items-center justify-between w-full px-4 py-6 ms-2 text-sm font-medium text-gray-900">
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-4 w-full">
             @include("checkout.component.icon.$shipping->icon")
-            <div>
-                <h2 class="text-xl font-bold">{{ $shipping->name }}</h2>
-                <p class="text-sm text-font_secondary">({{ $shipping->description }})</p>
+            <div class="md:flex w-full justify-between">
+                <div>
+                    <h2 class="text-lg font-bold">{{ $shipping->name }}</h2>
+                    <p class="text-xs text-font_secondary">({{ $shipping->description }})</p>
+                </div>
+                <div class="text-lg font-bold">Rp {{ $shipping->fee }}</div>
             </div>
         </div>
-        <div class="text-xl font-bold">Rp {{ $shipping->fee }}</div>
     </label>
 </div>
