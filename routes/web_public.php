@@ -22,17 +22,9 @@ use App\Http\Controllers\user\HomeController;
 */
 
 Route::middleware(['guest:admin'])->group(function () {
-    Route::controller(HomeController::class)->group(function(){
-        Route::get('/', 'index')->name('home');
-    });
-
-    Route::controller(ProductController::class)->group(function () {
-        Route::get('/products/{product_serial}', 'getProduct')->name('getProduct');
-    });
-
-    Route::controller(CategoryController::class)->group(function () {
-        Route::get('/category/{category_serial}', 'index')->name('categoryPage');
-    });
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/products/{product_serial}', [ProductController::class, 'getProduct'])->name('getProduct');
+    Route::get('/category/{category_serial}', [CategoryController::class, 'index'])->name('categoryPage');
 });
 
 Route::middleware(['guest:web,admin'])->group(function () {
@@ -47,18 +39,13 @@ Route::middleware(['guest:web,admin'])->group(function () {
     });
 });
 
-Route::middleware(['auth:web,admin'])->group(function () {
-    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-});
+Route::controller(EmailVerificationController::class)->group(function () {
+    Route::get('/email/verify', 'verificationNotice')->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', 'verifyEmail')->middleware(['signed'])->name('verification.verify');
+    Route::post('/email/verification-notification', 'resendVerification')->middleware(['throttle:6,1'])->name('verification.send');
+})->middleware(['auth']);
 
-Route::middleware(['auth'])->group(function () {
-    Route::controller(EmailVerificationController::class)->group(function () {
-        Route::get('/email/verify', 'verificationNotice')->name('verification.notice');
-        Route::get('/email/verify/{id}/{hash}', 'verifyEmail')->middleware(['signed'])->name('verification.verify');
-        Route::post('/email/verification-notification', 'resendVerification')->middleware(['throttle:6,1'])->name('verification.send');
-    });
-});
-
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout')->middleware(['auth:web,admin']);
 Route::get('/language/{locale}', [LocaleController::class, 'setLocale'])->name('toggleLanguage');
 
 Route::fallback(function () {

@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Midtrans\Config;
 use Midtrans\Snap;
+use Str;
 
 class CheckoutService implements SessionKeyInterface, FeeInterface
 {
@@ -61,22 +62,18 @@ class CheckoutService implements SessionKeyInterface, FeeInterface
         try {
             DB::beginTransaction();
 
-            // $order = new Order();
-            // $order->user_id = $user->id;
-            // $order->address = '';
-            // $order->amount = $subtotal;
-            // $order->transaction_fee = self::TRANSACTION_FEE;
-            // $order->payment_status = 'pending';
-            // $order->save();
-
-            logger('Step 1: Creating order instance.');
             $order = new Order();
-            logger('Step 2: Assigning values.');
-            $order->user_id = 1;
+            $order->user_id = $user->id;
+            $order->address = '';
+            $order->amount = $subtotal;
+            $order->transaction_fee = self::TRANSACTION_FEE;
             $order->payment_status = 'pending';
-            logger('Step 3: Saving order.');
             $order->save();
-            logger('Order saved with ID: ' . $order->id);
+
+            $token = session('page_token', Str::random(10));
+            session(['page_token' => $token]);
+            logger('Refresh', ['token' => session('page_token')]);
+            session()->forget('page_token');
 
             DB::commit();
         } catch (\Exception $e) {
