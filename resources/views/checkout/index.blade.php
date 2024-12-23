@@ -35,7 +35,7 @@
         setTimeout(function() {
             if(cartContainer.textContent !== '' && summaryContainer.textContent !== '') return;
 
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 3; i++) {
                 let item = `{!! view('component.__skeleton-item')->render() !!}`;
                 cartContainer.insertAdjacentHTML('beforeend', item);
             }
@@ -72,11 +72,11 @@
             let container = document.querySelector('#container');
             container.replaceChildren();
 
-            let item = `{!! view('cart.component.__empty-card')->render() !!}`;
+            let item = `{!! view('component.__empty-card')->render() !!}`;
             container.insertAdjacentHTML('beforeend', item);
         }
         items.forEach(item => {
-            let card = `{!! view('cart.component.__item-card', [
+            let card = `{!! view('component.__item-card', [
                 'link' => '::LINK::',
                 'image' => '::IMAGE::',
                 'name' => '::NAME::',
@@ -98,7 +98,7 @@
         });
 
         let summary = response.data.summary;
-        let card = `{!! view('cart.component.__summary-card', [
+        let card = `{!! view('checkout.component.__summary-card', [
             'subtotal' => '::SUBTOTAL::',
             'quantity' => '::QUANTITY::',
         ])->render() !!}`;
