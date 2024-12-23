@@ -31,4 +31,5 @@ Route::prefix('checkout')
     ->controller(CheckoutController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::post('/', 'pay')->name('pay');
     });

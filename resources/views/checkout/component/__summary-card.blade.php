@@ -1,6 +1,6 @@
 @props(['subtotal', 'quantity', 'transaction', 'shipping', 'total'])
 
-<form action="{{ route('cart.checkout') }}" method="POST">
+<form action="{{ route('checkout.pay') }}" method="POST">
     @csrf
     @method('POST')
     <div class="divide-y bg-white h-fit rounded-lg">
