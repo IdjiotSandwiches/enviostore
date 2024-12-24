@@ -5,6 +5,8 @@ namespace App\Http\Controllers\user;
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
 use App\Models\ErrorLog;
+use App\Models\Order;
+use App\Models\User;
 use App\Services\CheckoutService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -22,18 +24,17 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
     {
         $this->checkoutService = new CheckoutService();
     }
-    
-    /**
-     * Summary of index
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    // public function index()
-    // {
-    //     $shippings = $this->checkoutService->getCheckoutCredentials();
-    //     $order = $this->checkoutService->createOrderFromCart();
 
-    //     return view('checkout.index', compact('shippings', 'order'));
-    // }
+    public function getOrder($id)
+    {
+        $order = Order::find($id);
+
+        return response()->json([
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Order Retrieved!',
+            'data' => $order,
+        ], Response::HTTP_OK);
+    }
 
     /**
      * Summary of createOrderFromCart
@@ -63,7 +64,7 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
             return back()->withInput()->with($response);
         }
 
-        return view('checkout.index', compact('shippings', 'order'));
+        return view('checkout.cart', compact('shippings', 'order'));
     }
 
     /**

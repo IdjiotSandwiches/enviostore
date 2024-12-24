@@ -75,11 +75,11 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
      * @param string|null $shipping
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function getCartItems(CartUtility $cartUtility, $shipping = null)
+    public function getCartItems($shipping = null)
     {
         $cart = (object) [
-            'items' => $cartUtility->getCartItems(),
-            'summary' => $cartUtility->getCartSummary($shipping),
+            'items' => $this->cartService->getCartItems(),
+            'summary' => $this->cartService->getCartSummary($shipping),
         ];
 
         return response()->json([
