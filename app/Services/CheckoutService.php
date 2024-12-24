@@ -5,16 +5,17 @@ namespace App\Services;
 use App\Helpers\StringHelper;
 use App\Interfaces\FeeInterface;
 use App\Interfaces\SessionKeyInterface;
+use App\Interfaces\StatusInterface;
 use App\Models\Cart;
+use App\Models\ErrorLog;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Midtrans\Config;
 use Midtrans\Snap;
-use Str;
 
-class CheckoutService implements SessionKeyInterface, FeeInterface
+class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterface
 {
     public function __construct()
     {
@@ -38,7 +39,7 @@ class CheckoutService implements SessionKeyInterface, FeeInterface
         return $shippings;
     }
 
-    public function createOrder()
+    public function createOrderFromCart()
     {
         /**
          * @var \App\Models\User $user
@@ -59,39 +60,30 @@ class CheckoutService implements SessionKeyInterface, FeeInterface
 
         $subtotal = $cartItems->sum('subtotal');
 
-        try {
-            DB::beginTransaction();
-
-            $order = new Order();
-            $order->user_id = $user->id;
-            $order->address = '';
-            $order->amount = $subtotal;
-            $order->transaction_fee = self::TRANSACTION_FEE;
-            $order->payment_status = 'pending';
-            $order->save();
-
-            $token = session('page_token', Str::random(10));
-            session(['page_token' => $token]);
-            logger('Refresh', ['token' => session('page_token')]);
-            session()->forget('page_token');
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            dd($e->getMessage());
-        }
+        $order = Order::create([
+            'user_id' => $user->id,
+            'address' => $user->address,
+            'amount' => $subtotal,
+            'transaction_fee' => self::TRANSACTION_FEE,
+            'payment_status' => 'pending',
+        ]);
 
         return $order;
     }
 
+    /**
+     * Summary of updateShipping
+     * @param int $id
+     * @param string $shipping
+     * @return void
+     */
     public function updateShipping($id, $shipping)
     {
         /**
          * @var \App\Models\User $user
          */
         $user = session(self::SESSION_IDENTITY);
-        $user = User::where('id', $user->id)->first();
+        $user = User::find($user->id);
         $order = Order::find($id);
         $shipping = Shipping::where('shipping_serial_code', $shipping)->first();
         
@@ -112,6 +104,6 @@ class CheckoutService implements SessionKeyInterface, FeeInterface
 
         $snapToken = Snap::getSnapToken($params);
         $order->snap_token = $snapToken;
-        // $order->save();
+        $order->save();
     }
 }

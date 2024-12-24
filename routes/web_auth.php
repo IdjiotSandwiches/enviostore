@@ -30,7 +30,7 @@ Route::prefix('checkout')
     ->name('checkout.')
     ->controller(CheckoutController::class)
     ->group(function () {
-        Route::get('/', 'index')->name('index');
+        Route::get('/cart-order', 'createOrderFromCart')->name('createOrderFromCart');
         Route::post('/', 'pay')->name('pay');
         Route::post('/order/{id}/{shipping}', 'updateShipping')->name('updateShipping');
     });

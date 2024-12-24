@@ -31,13 +31,7 @@
             if(!response.ok) {
                 throw new Error();
             }
-
-            // emptyContent();
-            // return response.json();
-        }).then(response => {
-            // replaceContent(response);
         }).catch(error => {
-            console.log(error)
             let section = document.querySelector('section');
             let item = `{!! view('component.__fetch-failed')->render() !!}`;
             

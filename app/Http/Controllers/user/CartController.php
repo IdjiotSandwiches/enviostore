@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CartRequest;
 use App\Interfaces\SessionKeyInterface;
 use App\Services\Product\CartService;
+use App\Utilities\CartUtility;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\StatusInterface;
 use App\Models\ErrorLog;
@@ -74,11 +75,11 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
      * @param string|null $shipping
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function getCartItems($shipping = null)
+    public function getCartItems(CartUtility $cartUtility, $shipping = null)
     {
         $cart = (object) [
-            'items' => $this->cartService->getCartItems(),
-            'summary' => $this->cartService->getCartSummary($shipping),
+            'items' => $cartUtility->getCartItems(),
+            'summary' => $cartUtility->getCartSummary($shipping),
         ];
 
         return response()->json([
@@ -132,6 +133,6 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
      */
     public function checkout()
     {
-        return to_route('checkout.index');
+        return to_route('checkout.createOrderFromCart');
     }
 }
