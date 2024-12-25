@@ -7,12 +7,7 @@
     <div class="flex flex-col md:flex-row justify-between gap-4">
         <section class="grid gap-4 flex-1">
             <div id="cartContainer" class="grid gap-4 flex-1"></div>
-            <div class="grid gap-4">
-                <h1 class="font-bold text-3xl">{{ __('header.shipping') }}</h1>
-                @foreach ($shippings as $shipping)
-                    @include('checkout.component.__shipping', ['shipping' => $shipping])
-                @endforeach
-            </div>
+            <div id="shippingContainer" class="grid gap-4"></div>
         </section>
         <section id="summaryContainer" class="md:w-1/3 lg:w-1/4"></section>
     </div>
@@ -20,10 +15,33 @@
 @endsection
 
 @section('extra-js')
-@yield('js')
-
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
 <script>
+    const cartContainer = document.querySelector('#cartContainer');
+    const summaryContainer = document.querySelector('#summaryContainer');
+    const shippingContainer = document.querySelector('#shippingContainer');
+    const shippings = {!! $shippings !!};
+
+    function radioInputListener() {
+        const shippingButtons = document.querySelectorAll('input[type="radio"][name="shippings"]');
+        shippingButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                let shippingUrl = '{{ route('checkout.updateShipping', [$order->id, '::SHIPPING_SERIAL::']) }}';
+                shippingUrl = shippingUrl.replace('::SHIPPING_SERIAL::', this.value);
+
+                updateShipping(shippingUrl);
+
+                let shipping = document.querySelector('#shipping-fee');
+                shippingFee = shippings.find(s => s.shipping_serial_code === this.value)['fee'];
+                shipping.textContent = shippingFee;
+
+                let total = document.querySelector('#total');
+                let totalNum = totalPrice + parseFloat(shippingFee.replaceAll('.', ''));
+                total.textContent = totalNum.toLocaleString('id-ID');
+            });
+        });
+    }
+
     function updateShipping(url) {
         customFetch(url, {
             method: 'POST',
@@ -40,6 +58,31 @@
         });
     }
 
+    function midtransSnap(response) {
+        let order = response.data
+        snap.pay(order.snap_token, {
+            onSuccess: function (result) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '';
+                const csrfToken = document.createElement('input');
+                csrfToken.type = 'hidden';
+                csrfToken.name = '_token';
+                csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                form.appendChild(csrfToken);
+                document.body.appendChild(form);
+                form.submit();
+                document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+            },
+            onPending: function (result) {
+                document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+            },
+            onError: function (result) {
+                document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+            }
+        });
+    }
+
     function getOrder() {
         let url = '{{ route('checkout.getOrder', [$order->id]) }}';
         customFetch(url, {
@@ -51,28 +94,7 @@
 
             return response.json();
         }).then(response => {
-            let order = response.data;
-            snap.pay(order.snap_token, {
-                onSuccess: function (result) {
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = '';
-                    const csrfToken = document.createElement('input');
-                    csrfToken.type = 'hidden';
-                    csrfToken.name = '_token';
-                    csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                    form.appendChild(csrfToken);
-                    document.body.appendChild(form);
-                    form.submit();
-                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                },
-                onPending: function (result) {
-                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                },
-                onError: function (result) {
-                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                }
-            });
+            midtransSnap(response);
         }).catch(error => {
             let section = document.querySelector('section');
             let item = `{!! view('component.__fetch-failed')->render() !!}`;
@@ -88,16 +110,8 @@
                 getOrder();
             }
         });
-
-        const shippingButtons = document.querySelectorAll('input[type="radio"][name="shippings"]');
-        shippingButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                let shippingUrl = '{{ route('checkout.updateShipping', [$order->id, '::SHIPPING_SERIAL::']) }}';
-                shippingUrl = shippingUrl.replace('::SHIPPING_SERIAL::', this.value);
-
-                updateShipping(shippingUrl);
-            });
-        });
     });
 </script>
+
+@yield('js')
 @endsection

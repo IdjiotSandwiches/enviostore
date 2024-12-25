@@ -7,14 +7,20 @@ use App\Interfaces\FeeInterface;
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
 use App\Models\Cart;
+use App\Models\Product;
 use App\Models\Shipping;
 
 class CartUtility implements SessionKeyInterface, StatusInterface, FeeInterface
 {
+    /**
+     * @var \App\Models\User $user
+     */
+    private $user;
     private $googleDriveUtility;
 
     public function __construct()
     {
+        $this->user = session(self::SESSION_IDENTITY);
         $this->googleDriveUtility = new GoogleDriveUtility();
     }
 
@@ -24,13 +30,8 @@ class CartUtility implements SessionKeyInterface, StatusInterface, FeeInterface
      */
     public function getCartItems()
     {
-        /**
-         * @var \App\Models\User $user
-         */
-        $user = session(self::SESSION_IDENTITY);
-
         $items = Cart::with(['product', 'product.category', 'product.productImage'])
-            ->where('user_id', $user->id)
+            ->where('user_id', $this->user->id)
             ->get()
             ->map(function ($item) {
                 $img = $item->product->productImage->first();
@@ -58,13 +59,8 @@ class CartUtility implements SessionKeyInterface, StatusInterface, FeeInterface
      */
     public function getCartSummary($shipping)
     {
-        /**
-         * @var \App\Models\User $user
-         */
-        $user = session(self::SESSION_IDENTITY);
-
         $items = Cart::with(['product'])
-            ->where('user_id', $user->id)
+            ->where('user_id', $this->user->id)
             ->get()
             ->map(function ($item) {
                 $subtotal = $item->quantity * $item->product->price;

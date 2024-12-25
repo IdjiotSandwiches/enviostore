@@ -1,4 +1,6 @@
 <script>
+    let totalPrice = null;
+    
     function fetchRequest(url) {
         emptyContent();
 
@@ -23,6 +25,7 @@
             return response.json();
         }).then(response => {
             replaceContent(response);
+            radioInputListener();
         }).catch(error => {
             let section = document.querySelector('section');
             let item = `{!! view('component.__fetch-failed')->render() !!}`;
@@ -90,9 +93,14 @@
                 .replace('::TRANSACTION::', summary.adminFee ?? '-')
                 .replace('::SHIPPING::', summary.shippingFee ?? '-')
                 .replace('::TOTAL::', summary.total ?? '-');
+
+            totalPrice = parseFloat(summary.total.replaceAll('.', ''));
         @endif
         
         summaryContainer.insertAdjacentHTML('beforeend', card);
+        
+        let shippingRadio = `{!! view('checkout.component.__shipping', ['shippings' => $shippings])->render() !!}`;
+        shippingContainer.insertAdjacentHTML('beforeend', shippingRadio);
     }
 
     function emptyContent() {
