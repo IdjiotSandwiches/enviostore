@@ -18,4 +18,5 @@ return [
     'exceeded_stock' => 'Jumlah produk anda melebihi stok kami.',
     'remove_item' => 'Barang dihapus',
     'not_found_title' => 'Tidak Ditemukan',
+    'shipping_not_selected' => 'Anda harus memilih kurir pengiriman!',
 ];

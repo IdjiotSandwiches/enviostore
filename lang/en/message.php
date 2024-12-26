@@ -18,4 +18,5 @@ return [
     'exceeded_stock' => 'Your product amounts exceeded our stocks.',
     'remove_item' => 'Item removed.',
     'not_found_title' => 'Not Found',
+    'shipping_not_selected' => 'You must select shipping courier!',
 ];

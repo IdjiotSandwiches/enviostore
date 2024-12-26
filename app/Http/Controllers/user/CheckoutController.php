@@ -37,6 +37,14 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
 
         $order = Order::find($id);
 
+        if (!$order->snap_token) {
+            return response()->json([
+                'status' => self::STATUS_WARNING,
+                'message' => __('message.shipping_not_selected'),
+                'data' => [],
+            ], Response::HTTP_OK);
+        }
+
         return response()->json([
             'status' => self::STATUS_SUCCESS,
             'message' => 'Order Retrieved!',

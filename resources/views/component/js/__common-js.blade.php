@@ -1,4 +1,9 @@
 <script>
+    let successToast;
+    let errorToast;
+    let infoToast;
+    let warningToast;
+
     function customFetch(url, options = {}) {
         options.headers = {
             ...options.headers,
@@ -49,19 +54,19 @@
             }
         });
 
-        const successToast = baseToast.mixin({
+        successToast = baseToast.mixin({
             background: '#22c55e',
         });
 
-        const errorToast = baseToast.mixin({
+        errorToast = baseToast.mixin({
             background: '#ef4444',
         });
 
-        const infoToast = baseToast.mixin({
+        infoToast = baseToast.mixin({
             background: '#3b82f6',
         });
 
-        const warningToast = baseToast.mixin({
+        warningToast = baseToast.mixin({
             background: '#eab308',
         });
 
