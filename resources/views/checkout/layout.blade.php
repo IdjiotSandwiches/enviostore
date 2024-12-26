@@ -7,6 +7,7 @@
     <div class="flex flex-col lg:flex-row justify-between gap-4">
         <section class="grid gap-4 flex-1">
             <div id="cartContainer" class="grid gap-4 flex-1"></div>
+            <div id="addressContainer" class="grid gap-4"></div>
             <div id="shippingContainer" class="grid gap-4"></div>
         </section>
         <section id="summaryContainer" class="lg:w-1/3 xl:w-1/4"></section>
@@ -27,6 +28,7 @@
     const cartContainer = document.querySelector('#cartContainer');
     const summaryContainer = document.querySelector('#summaryContainer');
     const shippingContainer = document.querySelector('#shippingContainer');
+    const addressContainer = document.querySelector('#addressContainer');
     const shippings = {!! $shippings !!};
     let totalPrice;
 
@@ -94,8 +96,15 @@
         
         insertCard(items);
         insertSummary(summary);
+        insertAddress();
         insertShippingRadio();
         radioInputListener();
+    }
+
+    function insertAddress()
+    {
+        let card = `{!! view('checkout.component.__address', ['address' => $address])->render() !!}`;
+        addressContainer.insertAdjacentHTML('beforeend', card);
     }
 
     function insertSummary(summary) {
@@ -113,20 +122,20 @@
             .replace('::SHIPPING::', summary.shippingFee ?? '-')
             .replace('::TOTAL::', summary.total ?? '-');
 
-        totalPrice = parseFloat(summary.total.replaceAll('.', ''));
-
         card = card.replace('::SUBTOTAL::', summary.subtotal ?? '-')
             .replace('::QUANTITY::', summary.quantity ?? '-');
         
         summaryContainer.insertAdjacentHTML('beforeend', card);
         document.querySelector('#pay-btn').addEventListener('click', function() {
             getOrder();
-        })
+        });
+
+        totalPrice = parseFloat(summary.total.replaceAll('.', ''));
     }
 
     function insertShippingRadio() {
-        let shippingRadio = `{!! view('checkout.component.__shipping', ['shippings' => $shippings])->render() !!}`;
-        shippingContainer.insertAdjacentHTML('beforeend', shippingRadio);
+        let card = `{!! view('checkout.component.__shipping', ['shippings' => $shippings])->render() !!}`;
+        shippingContainer.insertAdjacentHTML('beforeend', card);
     }
 
     function changeResult(type, data) {

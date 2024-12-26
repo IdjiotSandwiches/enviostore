@@ -22,4 +22,5 @@ return [
     'checkout.pay' => 'Bayar',
     'checkout.transaction_fee' => 'Biaya Transaksi',
     'checkout.shipping_fee' => 'Biaya Pengiriman',
+    'checkout.address' => 'Dikirim ke',
 ];

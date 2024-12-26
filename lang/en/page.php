@@ -22,4 +22,5 @@ return [
     'checkout.pay' => 'Pay',
     'checkout.transaction_fee' => 'Transaction Fee',
     'checkout.shipping_fee' => 'Shipping Fee',
+    'checkout.address' => 'Shipped to',
 ];

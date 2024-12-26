@@ -63,6 +63,7 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
 
             $shippings = $this->checkoutService->getCheckoutCredentials();
             $order = $this->checkoutService->createOrderFromCart();
+            $address = $this->checkoutService->getUserAddress();
 
             DB::commit();
         } catch (\Exception $e) {
@@ -80,13 +81,14 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
             return back()->withInput()->with($response);
         }
 
-        return view('checkout.cart', compact('shippings', 'order'));
+        return view('checkout.cart', compact('shippings', 'order', 'address'));
     }
 
     /**
      * Summary of updateShipping
+     * @param int $id
      * @param string $shipping
-     * @return mixed|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function updateShipping($id, $shipping)
     {

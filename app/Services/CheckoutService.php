@@ -20,6 +20,9 @@ class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterf
 {
     private $cartUtility;
 
+    /**
+     * Summary of __construct
+     */
     public function __construct()
     {
         Config::$serverKey = config('midtrans.server_key');
@@ -28,6 +31,21 @@ class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterf
         Config::$is3ds = config('midtrans.is_3ds');
 
         $this->cartUtility = new CartUtility();
+    }
+
+    /**
+     * Summary of getUserAddress
+     * @return string
+     */
+    public function getUserAddress()
+    {
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = session(self::SESSION_IDENTITY);
+        $address = User::find($user->id)->address;
+
+        return $address;
     }
 
     /**
