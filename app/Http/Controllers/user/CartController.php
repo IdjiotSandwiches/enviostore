@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CartRequest;
 use App\Interfaces\SessionKeyInterface;
 use App\Services\Product\CartService;
-use App\Utilities\CartUtility;
+use App\Utilities\ErrorUtility;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\StatusInterface;
 use App\Models\ErrorLog;
@@ -16,6 +16,7 @@ use Illuminate\Http\Response;
 class CartController extends Controller implements StatusInterface, SessionKeyInterface
 {
     private $cartService;
+    private $errorUtility;
 
     /**
      * Summary of __construct
@@ -23,6 +24,7 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
     public function __construct()
     {
         $this->cartService = new CartService();
+        $this->errorUtility = new ErrorUtility();
     }
 
     /**
@@ -50,9 +52,7 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
         } catch (\Exception $e) {
             DB::rollBack();
 
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
+            $this->errorUtility->errorLog($e->getMessage());
 
             $response = [
                 'status' => self::STATUS_ERROR,
@@ -107,9 +107,7 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
         } catch (\Exception $e) {
             DB::rollBack();
 
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
+            $this->errorUtility->errorLog($e->getMessage());
 
             $response = [
                 'status' => self::STATUS_ERROR,

@@ -7,8 +7,8 @@ use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
 use App\Models\ErrorLog;
 use App\Models\Order;
-use App\Models\User;
 use App\Services\CheckoutService;
+use App\Utilities\ErrorUtility;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +17,7 @@ use Illuminate\Http\Response;
 class CheckoutController extends Controller implements SessionKeyInterface, StatusInterface
 {
     private $checkoutService;
+    private $errorUtility;
 
     /**
      * Summary of __construct
@@ -24,6 +25,7 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
     public function __construct()
     {
         $this->checkoutService = new CheckoutService();
+        $this->errorUtility = new ErrorUtility();
     }
 
     /**
@@ -69,9 +71,7 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         } catch (\Exception $e) {
             DB::rollBack();
 
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
+            $this->errorUtility->errorLog($e->getMessage());
 
             $response = [
                 'status' => self::STATUS_ERROR,
@@ -103,9 +103,7 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         } catch (\Exception $e) {
             DB::rollBack();
 
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
+            $this->errorUtility->errorLog($e->getMessage());
 
             return response()->json([
                 'status' => self::STATUS_ERROR,
@@ -121,10 +119,26 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         ], Response::HTTP_OK);
     }
 
+    /**
+     * Summary of pay
+     * @param \App\Http\Requests\PaymentRequest $paymentRequest
+     * @param int $id
+     * @return void
+     */
     public function pay(PaymentRequest $paymentRequest, $id)
     {
-        $order = Order::find($id);
-        $order->payment_status = $paymentRequest->result_type;
-        $order->save();
+        try {
+            DB::beginTransaction();
+
+            $order = Order::find($id);
+            $order->payment_status = $paymentRequest->result_type;
+            $order->save();
+            
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $this->errorUtility->errorLog($e->getMessage());
+        }
     }
 }
