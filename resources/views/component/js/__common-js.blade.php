@@ -6,7 +6,17 @@
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         }
 
-        return fetch(url, options);
+        return fetch(url, options)
+            .then(response => {
+                if(!response.ok) throw new Error();
+                return response.json();
+            }).catch(error => {
+                let section = document.querySelector('section');
+                let item = `{!! view('component.__fetch-failed')->render() !!}`;
+                
+                section.replaceChildren();
+                section.insertAdjacentHTML('beforeend', item);
+            });
     }
 
     document.addEventListener('DOMContentLoaded', function() {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\user;
 
+use App\Http\Requests\PaymentRequest;
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
 use App\Models\ErrorLog;
@@ -25,8 +26,15 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         $this->checkoutService = new CheckoutService();
     }
 
+    /**
+     * Summary of getOrder
+     * @param mixed $id
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function getOrder($id)
     {
+        if (!request()->ajax()) abort(404);
+
         $order = Order::find($id);
 
         return response()->json([
@@ -69,9 +77,8 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
 
     /**
      * Summary of updateShipping
-     * @param string $id
      * @param string $shipping
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @return mixed|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function updateShipping($id, $shipping)
     {
@@ -90,12 +97,11 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
             $errorLog->error = $e->getMessage();
             $errorLog->save();
 
-            $response = [
+            return response()->json([
                 'status' => self::STATUS_ERROR,
-                'message' => __('message.invalid'),
-            ];
-
-            return back()->withInput()->with($response);
+                'message' => $e->getMessage(),
+                'data' => [],
+            ], Response::HTTP_OK);
         }
 
         return response()->json([
@@ -105,11 +111,10 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         ], Response::HTTP_OK);
     }
 
-    // public function pay()
-    // {
-    //     if (!session(self::SESSION_CHECKOUT)) abort(404);
-    //     session()->forget(self::SESSION_CHECKOUT);
-
-        
-    // }
+    public function pay(PaymentRequest $paymentRequest, $id)
+    {
+        $order = Order::find($id);
+        $order->payment_status = $paymentRequest->result_type;
+        $order->save();
+    }
 }

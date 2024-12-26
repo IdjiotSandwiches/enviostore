@@ -14,6 +14,51 @@
 @section('extra-js')
 @include('component.js.__card-replace-summary')
 <script>
+    function replaceContent(response) {
+        emptyContent();
+        
+        let items = response.data.items;
+        if(items.length === 0) {
+            renderEmptyCart();
+            return;
+        }
+        
+        let summary = response.data.summary;
+        
+        insertCard(items);
+        insertSummary(summary);
+    }
+
+    function insertSummary(summary) {
+        @if (request()->routeIs('cart.index'))
+            let card = `{!! view('cart.component.__summary-card', [
+                'subtotal' => '::SUBTOTAL::',
+                'quantity' => '::QUANTITY::',
+            ])->render() !!}`;
+
+            card = card.replace('::SUBTOTAL::', summary.subtotal ?? '-')
+                .replace('::QUANTITY::', summary.quantity ?? '-');
+        @else
+            let card = `{!! view('checkout.component.__summary-card', [
+                'subtotal' => '::SUBTOTAL::',
+                'quantity' => '::QUANTITY::',
+                'transaction' => '::TRANSACTION::',
+                'shipping' => '::SHIPPING::',
+                'total' => '::TOTAL::'
+            ])->render() !!}`;
+
+            card = card.replace('::SUBTOTAL::', summary.subtotal ?? '-')
+                .replace('::QUANTITY::', summary.quantity ?? '-')
+                .replace('::TRANSACTION::', summary.adminFee ?? '-')
+                .replace('::SHIPPING::', summary.shippingFee ?? '-')
+                .replace('::TOTAL::', summary.total ?? '-');
+
+            totalPrice = parseFloat(summary.total.replaceAll('.', ''));
+        @endif
+        
+        summaryContainer.insertAdjacentHTML('beforeend', card);
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         const URL = '{{ route('cart.getCartItems') }}';
         fetchRequest(URL);

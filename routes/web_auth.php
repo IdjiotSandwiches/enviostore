@@ -32,6 +32,6 @@ Route::prefix('checkout')
     ->group(function () {
         Route::get('/cart-order', 'createOrderFromCart')->name('createOrderFromCart');
         Route::get('/order/{id}', 'getOrder')->name('getOrder');
-        Route::post('/', 'pay')->name('pay');
+        Route::post('/{id}', 'pay')->name('pay');
         Route::post('/order/{id}/{shipping}', 'updateShipping')->name('updateShipping');
     });

@@ -6,8 +6,6 @@
     document.addEventListener('DOMContentLoaded', function () {
         const URL = '{{ route('cart.getCartItems') }}';
         fetchRequest(URL);
-
-        
     });
 </script>
 @endsection

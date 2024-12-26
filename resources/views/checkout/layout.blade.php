@@ -11,6 +11,13 @@
         </section>
         <section id="summaryContainer" class="md:w-1/3 lg:w-1/4"></section>
     </div>
+
+    <form id="payment-form" method="POST" action="{{ route('checkout.pay', [$order->id]) }}">
+        @csrf
+        @method('POST')
+        <input type="hidden" name="result_type" id="result-type" value=""></div>
+        <input type="hidden" name="result_data" id="result-data" value=""></div>
+    </form>
 </section>
 @endsection
 
@@ -21,6 +28,22 @@
     const summaryContainer = document.querySelector('#summaryContainer');
     const shippingContainer = document.querySelector('#shippingContainer');
     const shippings = {!! $shippings !!};
+    let totalPrice = null;
+
+    function getOrder() {
+        let url = '{{ route('checkout.getOrder', [$order->id]) }}';
+        customFetch(url, {
+            method: 'GET',
+        }).then(response => {
+            midtransSnap(response);
+        });
+    }
+
+    function updateShipping(url) {
+        customFetch(url, {
+            method: 'POST',
+        });
+    }
 
     function radioInputListener() {
         const shippingButtons = document.querySelectorAll('input[type="radio"][name="shippings"]');
@@ -42,65 +65,72 @@
         });
     }
 
-    function updateShipping(url) {
-        customFetch(url, {
-            method: 'POST',
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error();
-            }
-        }).catch(error => {
-            let section = document.querySelector('section');
-            let item = `{!! view('component.__fetch-failed')->render() !!}`;
+    function replaceContent(response) {
+        emptyContent();
+        
+        let items = response.data.items;
+        let summary = response.data.summary;
+        if(items.length === 0) {
+            renderEmptyCart();
+            return;
+        }
+        
+        insertCard(items);
+        insertSummary(summary);
+        insertShippingRadio();
+        radioInputListener();
+    }
 
-            section.replaceChildren();
-            section.insertAdjacentHTML('beforeend', item);
-        });
+    function insertSummary(summary) {
+        let card = `{!! view('checkout.component.__summary-card', [
+            'subtotal' => '::SUBTOTAL::',
+            'quantity' => '::QUANTITY::',
+            'transaction' => '::TRANSACTION::',
+            'shipping' => '::SHIPPING::',
+            'total' => '::TOTAL::'
+        ])->render() !!}`;
+
+        card = card.replace('::SUBTOTAL::', summary.subtotal ?? '-')
+            .replace('::QUANTITY::', summary.quantity ?? '-')
+            .replace('::TRANSACTION::', summary.adminFee ?? '-')
+            .replace('::SHIPPING::', summary.shippingFee ?? '-')
+            .replace('::TOTAL::', summary.total ?? '-');
+
+        totalPrice = parseFloat(summary.total.replaceAll('.', ''));
+
+        card = card.replace('::SUBTOTAL::', summary.subtotal ?? '-')
+            .replace('::QUANTITY::', summary.quantity ?? '-');
+        
+        summaryContainer.insertAdjacentHTML('beforeend', card);
+    }
+
+    function insertShippingRadio() {
+        let shippingRadio = `{!! view('checkout.component.__shipping', ['shippings' => $shippings])->render() !!}`;
+        shippingContainer.insertAdjacentHTML('beforeend', shippingRadio);
+    }
+
+    function changeResult(type, data) {
+        document.querySelector('#result-type').value = type;
+        document.querySelector('#result-data').value = JSON.stringify(data);
     }
 
     function midtransSnap(response) {
-        let order = response.data
+        let order = response.data;
+        const form = document.querySelector('#payment-form');
+
         snap.pay(order.snap_token, {
             onSuccess: function (result) {
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '';
-                const csrfToken = document.createElement('input');
-                csrfToken.type = 'hidden';
-                csrfToken.name = '_token';
-                csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                form.appendChild(csrfToken);
-                document.body.appendChild(form);
+                changeResult('success', result);
                 form.submit();
-                document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
             },
             onPending: function (result) {
-                document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                changeResult('pending', result);
+                form.submit();
             },
             onError: function (result) {
-                document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                changeResult('error', result);
+                form.submit();
             }
-        });
-    }
-
-    function getOrder() {
-        let url = '{{ route('checkout.getOrder', [$order->id]) }}';
-        customFetch(url, {
-            method: 'GET',
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error();
-            }
-
-            return response.json();
-        }).then(response => {
-            midtransSnap(response);
-        }).catch(error => {
-            let section = document.querySelector('section');
-            let item = `{!! view('component.__fetch-failed')->render() !!}`;
-
-            section.replaceChildren();
-            section.insertAdjacentHTML('beforeend', item);
         });
     }
 

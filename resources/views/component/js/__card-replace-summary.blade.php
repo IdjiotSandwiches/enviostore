@@ -1,7 +1,13 @@
 <script>
-    let totalPrice = null;
-    
-    function fetchRequest(url) {
+    function renderEmptyCart() {
+        let container = document.querySelector('#container');
+        container.replaceChildren();
+
+        let item = `{!! view('component.__empty-card')->render() !!}`;
+        container.insertAdjacentHTML('beforeend', item);
+    }
+
+    function showSkeleton() {
         emptyContent();
 
         setTimeout(function() {
@@ -13,41 +19,19 @@
             let item = `{!! view('component.__skeleton-summary')->render() !!}`;
             summaryContainer.insertAdjacentHTML('beforeend', item);
         },200);
+    }
 
+    function fetchRequest(url) {
+        showSkeleton();
         customFetch(url, {
             method: 'GET',
         }).then(response => {
-            if(!response.ok) {
-                throw new Error();
-            }
-
             emptyContent();
-            return response.json();
-        }).then(response => {
             replaceContent(response);
-            radioInputListener();
-        }).catch(error => {
-            let section = document.querySelector('section');
-            let item = `{!! view('component.__fetch-failed')->render() !!}`;
-            
-            section.replaceChildren();
-            section.insertAdjacentHTML('beforeend', item);
         });
     }
 
-    function replaceContent(response) {
-        emptyContent();
-        
-        let items = response.data.items;
-        if(items.length === 0) {
-            let container = document.querySelector('#container');
-            container.replaceChildren();
-
-            let item = `{!! view('component.__empty-card')->render() !!}`;
-            container.insertAdjacentHTML('beforeend', item);
-
-            return;
-        }
+    function insertCard(items) {
         items.forEach(item => {
             let card = `{!! view('component.__item-card', [
                 'link' => '::LINK::',
@@ -69,38 +53,6 @@
             
             cartContainer.insertAdjacentHTML('beforeend', card);
         });
-
-        let summary = response.data.summary;
-        @if (request()->routeIs('cart.index'))
-            let card = `{!! view('cart.component.__summary-card', [
-                'subtotal' => '::SUBTOTAL::',
-                'quantity' => '::QUANTITY::',
-            ])->render() !!}`;
-
-            card = card.replace('::SUBTOTAL::', summary.subtotal ?? '-')
-                .replace('::QUANTITY::', summary.quantity ?? '-');
-        @else
-            let card = `{!! view('checkout.component.__summary-card', [
-                'subtotal' => '::SUBTOTAL::',
-                'quantity' => '::QUANTITY::',
-                'transaction' => '::TRANSACTION::',
-                'shipping' => '::SHIPPING::',
-                'total' => '::TOTAL::'
-            ])->render() !!}`;
-
-            card = card.replace('::SUBTOTAL::', summary.subtotal ?? '-')
-                .replace('::QUANTITY::', summary.quantity ?? '-')
-                .replace('::TRANSACTION::', summary.adminFee ?? '-')
-                .replace('::SHIPPING::', summary.shippingFee ?? '-')
-                .replace('::TOTAL::', summary.total ?? '-');
-
-            totalPrice = parseFloat(summary.total.replaceAll('.', ''));
-        @endif
-        
-        summaryContainer.insertAdjacentHTML('beforeend', card);
-        
-        let shippingRadio = `{!! view('checkout.component.__shipping', ['shippings' => $shippings])->render() !!}`;
-        shippingContainer.insertAdjacentHTML('beforeend', shippingRadio);
     }
 
     function emptyContent() {

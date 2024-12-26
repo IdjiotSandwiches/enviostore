@@ -11,18 +11,23 @@ use App\Models\ErrorLog;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\Models\User;
+use App\Utilities\CartUtility;
 use Illuminate\Support\Facades\DB;
 use Midtrans\Config;
 use Midtrans\Snap;
 
 class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterface
 {
+    private $cartUtility;
+
     public function __construct()
     {
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
         Config::$isSanitized = config('midtrans.is_sanitized');
         Config::$is3ds = config('midtrans.is_3ds');
+
+        $this->cartUtility = new CartUtility();
     }
 
     /**
@@ -39,6 +44,10 @@ class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterf
         return $shippings;
     }
 
+    /**
+     * Summary of createOrderFromCart
+     * @return Order|\Illuminate\Database\Eloquent\Model
+     */
     public function createOrderFromCart()
     {
         /**
@@ -86,20 +95,34 @@ class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterf
         $user = User::find($user->id);
         $order = Order::find($id);
         $shipping = Shipping::where('shipping_serial_code', $shipping)->first();
-        
+
         $order->shipping = $shipping->name;
         $order->shipping_fee = $shipping->fee;
+
+        $items = $this->cartUtility->getCartItems();
+        $items = $this->cartUtility->addFee($shipping, $items);
 
         $params = [
             'transaction_details' => [
                 'order_id' => 'ORDER_' . rand(),
-                'gross_amount' => $order->subtotal + $shipping->fee + self::TRANSACTION_FEE,
+                'gross_amount' => $order->amount + $shipping->fee + self::TRANSACTION_FEE,
             ],
             'customer_details' => [
-                'username' => $user->username,
-                'address' => $user->address,
+                'first_name' => $user->username,
                 'email' => $user->email,
-            ]
+                'phone' => $user->phone_number,
+                'billing_adress' => [
+                    'first_name' => $user->username,
+                    'phone' => $user->phone_number,
+                    'address' => $user->address,
+                ],
+                'shipping_address' => [
+                    'first_name' => $user->username,
+                    'phone' => $user->phone_number,
+                    'address' => $user->address,
+                ],
+            ],
+            'item_details' => $items,
         ];
 
         $snapToken = Snap::getSnapToken($params);

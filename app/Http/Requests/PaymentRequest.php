@@ -22,7 +22,8 @@ class PaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'shippings' => 'required|in:SHIPPING_001,SHIPPING_002,SHIPPING_003',
+            'result_type' => 'required',
+            'result_data' => 'required',
         ];
     }
 }
