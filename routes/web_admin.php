@@ -16,10 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(AdminController::class)
     ->group(function () {
-        Route::get('/', 'index')->name('home'); 
+        Route::get('/', 'index')->name('home');
+        Route::get('/products', 'productIndex')->name('products');
+        Route::get('/categories', 'categoryIndex')->name('categories'); 
     });
-
-// Route::get('/', function () {
-//     // Change this if already works in admin related route (this only testing)
-//     // return view('welcome');
-// })->name('dashboard');

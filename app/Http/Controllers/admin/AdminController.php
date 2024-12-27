@@ -15,6 +15,16 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
+    public function productIndex()
+    {
+        return view('admin.product');
+    }
+
+    public function categoryIndex()
+    {
+        return view('admin.category');
+    }
+
     /**
      * Show the form for creating a new resource.
      */
