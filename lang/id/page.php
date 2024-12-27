@@ -23,4 +23,5 @@ return [
     'profile.phone_number' => 'Nomor Telepon',
     'profile.change_password' => 'Ubah Kata Sandi',
     'profile.edit_information' => 'Edit Informasi',
+    'profile.upload_image' => 'Unggah Gambar Baru',
 ];

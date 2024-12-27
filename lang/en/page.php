@@ -23,4 +23,5 @@ return [
     'profile.phone_number' => 'Phone Number',
     'profile.change_password' => 'Change Password',
     'profile.edit_information' => 'Edit Information',
+    'profile.upload_image' => 'Upload New Image',
 ];

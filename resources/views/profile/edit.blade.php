@@ -1,61 +1,86 @@
 @extends('layout.layout')
+@section('title', __('title.edit_profile'))
 
 @section('content')
-    <section class="max-w-screen-xl md:px-4 md:py-8 md:mx-auto">
-        <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="m-7">
-            @csrf
-            @method('PUT')
-            <div class="flex items-center mb-6">
-                <div class="aspect-square object-cover max-w-48">
-                    <img src="{{ $identity->profile_picture ?? asset('img/0.png') }}" alt="Profile Picture"
-                        class="rounded-full aspect-square object-cover w-full h-full hover:bg-gray-400">
+<section class="max-w-screen-xl px-4 py-8 mx-auto">
+    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        <div class="flex flex-col items-center gap-4">
+            <div class="w-36 h-36" id="profile-picture-placeholder"></div>
+            <label for="profile-picture-input"
+                class="cursor-pointer text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg px-4 md:px-5 py-1.5 md:py-2 text-nowrap">
+                {{ __('page.profile.upload_image') }}
+            </label>
+            <input type="file" name="profile_picture" id="profile-picture-input" accept="image/*" class="hidden">
+            @error('profile_picture')
+                <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="bg-primary rounded-lg shadow border border-gray-200 p-4 sm:p-6 md:p-8 mt-4">
+            <div class="space-y-4 grid gap-4">
+                <h1 class="text-3xl font-semibold text-center">{{ __('page.profile.edit_information') }}</h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div>
+                        <label for="username" class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.profile.name') }}</label>
+                        <input type="text" name="username" id="username" @class([
+                            "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5",
+                            "border-red-500" => $errors->has('username'),
+                        ]) placeholder="Enter your name" value="{{ old('username') }}" />
+                        @error('username')
+                            <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="address" class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.profile.address') }}</label>
+                        <input type="text" id="address" name="address" @class([
+                            "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5",
+                            "border-red-500" => $errors->has('address'),
+                        ]) placeholder="Enter your address" value="{{ old('address') }}" />
+                        @error('address')
+                            <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+                        <input type="email" name="email" id="email" @class([
+                            "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5",
+                            "border-red-500" => $errors->has('email')
+                        ]) placeholder="Enter your email" value="{{ old('email') }}" />
+                        @error('email')
+                            <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="phone_number" class="block mb-2 text-sm font-medium text-gray-900">{{ __('page.profile.phone_number') }}</label>
+                        <input type="tel" name="phone_number" id="phone-number" minlength="8" maxlength="12" pattern="[0-9]{8,12}" @class([
+                            "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5",
+                            "border-red-500" => $errors->has('phone_number')
+                        ]) placeholder="Enter your phone number" value="{{ old('phone_number') }}" />
+                        @error('phone_number')
+                            <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
-                <div class="pl-7">
-                    <label for="profile_picture"
-                        class="cursor-pointer px-4 py-2 bg-black text-white rounded-lg shadow-md hover:bg-gray-200">
-                        Upload New Image
-                    </label>
-                    <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="hidden">
-                </div>
+                <button type="submit"
+                    class="text-sm text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg px-4 md:px-5 py-1.5 md:py-2 text-nowrap">
+                    Save Changes
+                </button>
             </div>
-            <div class="w-full bg-primary justify-center rounded-lg shadow-gray-400 shadow-sm p-6">
-                <h1 class="text-3xl font-semibold text-center mb-5">Edit Information</h1>
-                <hr class="bg-button stroke-black mb-5">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="username" class="block text-xl font-normal text-accent mb-2">Name</label>
-                        <input type="text" id="username" name="username" value=""
-                            class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring focus:ring-button"
-                            placeholder="Enter your name">
-                    </div>
-                    <div>
-                        <label for="address" class="block text-xl font-normal text-accent mb-2">Address</label>
-                        <input type="text" id="address" name="address" value=""
-                            class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring focus:ring-button"
-                            placeholder="Enter your address">
-                    </div>
-                    <div>
-                        <label for="email" class="block text-xl font-normal text-accent mb-2">Email</label>
-                        <input type="email" id="email" name="email" value=""
-                            class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring focus:ring-button"
-                            placeholder="Enter your email">
-                    </div>
-                    <div>
-                        <label for="phone_number" class="block text-xl font-normal text-accent mb-2">Phone Number</label>
-                        <input type="text" id="phone_number" name="phone_number"
-                            value=""
-                            class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring focus:ring-button"
-                            placeholder="Enter your phone number">
-                    </div>
-                </div>
-                <hr class="bg-button stroke-black my-5">
-                <div class="text-center">
-                    <button type="submit"
-                        class="px-6 py-2 bg-button text-primary rounded shadow-md hover:bg-opacity-80 focus:outline-none focus:ring focus:ring-gray-200">
-                        Save Changes
-                    </button>
-                </div>
-            </div>
-        </form>
-    </section>
+        </div>
+    </form>
+</section>
+@endsection
+
+@section('extra-js')
+@include('profile.component.__change-profile')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchRequest();
+        document.querySelector('#profile-picture-input').addEventListener('change', function(e) {
+            let imgUrl = URL.createObjectURL(e.target.files[0]);
+            document.querySelector('#profile-picture').src = imgUrl;
+        });
+    });
+</script>
 @endsection

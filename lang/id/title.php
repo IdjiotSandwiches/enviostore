@@ -6,4 +6,6 @@ return [
     'login' => 'Masuk',
     'register' => 'Daftar',
     'profile' => 'Profil',
+    'edit_profile' => 'Edit Profil',
+    'change_password' => 'Ubah Password',
 ];
