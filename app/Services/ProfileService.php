@@ -9,27 +9,48 @@ use App\Utilities\GoogleDriveUtility;
 class ProfileService implements SessionKeyInterface
 {
     private $googleDriveUtility;
+
+    /**
+     * Summary of __construct
+     */
     public function __construct()
     {
         $this->googleDriveUtility = new GoogleDriveUtility();
     }
 
+    /**
+     * Summary of getUser
+     * @return array
+     */
     public function getUser()
     {
         /**
-         * @var User
+         * @var \App\Models\User $user
+         */
+        $user = session(self::SESSION_IDENTITY);
+        $user = User::find($user->id);
+        // $profilePicture = $this->googleDriveUtility->getFile($url);
+
+        // return [$user, $profilePicture];
+        return $user;
+    }
+
+    public function getProfilePicture()
+    {
+        /**
+         * @var \App\Models\User $user
          */
         $user = session(self::SESSION_IDENTITY);
         $url = User::find($user->id)->profile_picture;
         $profilePicture = $this->googleDriveUtility->getFile($url);
 
-        return [$user, $profilePicture];
+        return $profilePicture;
     }
 
     public function updateProfile($profileRequest)
     {
         /**
-         * @var User id
+         * @var \App\Models\User $user
          */
         $user = session(self::SESSION_IDENTITY);
         $validate = $profileRequest->validated();
@@ -64,7 +85,5 @@ class ProfileService implements SessionKeyInterface
         }
 
         $user->save();
-
-        return $user;
     }
 }

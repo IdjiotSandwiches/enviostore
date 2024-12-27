@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\user;
 
-use App\Models\User;
+use App\Models\ErrorLog;
 use App\Services\ProfileService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -11,30 +11,62 @@ use App\Http\Requests\ProfileRequest;
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
 use App\Utilities\GoogleDriveUtility;
-
-use function PHPUnit\Framework\isNull;
+use Illuminate\Http\Response;
 
 class ProfileController extends Controller implements StatusInterface, SessionKeyInterface
 {
     private $googleDriveUtility;
     private $profileService;
+
+    /**
+     * Summary of __construct
+     */
     public function __construct()
     {
         $this->googleDriveUtility = new GoogleDriveUtility();
         $this->profileService = new ProfileService();
     }
+
     /**
-     * Display a listing of the resource.
+     * Summary of index
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        [$user, $profilePicture] = $this->profileService->getUser();
+        // [$user, $profilePicture] = $this->profileService->getUser();
+        $user = $this->profileService->getUser();
 
-        return view('profile.index', compact('user', 'profilePicture'));
+        return view('profile.index', compact('user'));
+    }
+
+    public function getProfilePicture()
+    {
+        if (!request()->ajax()) abort(404);
+
+        try {
+            $profilePicture = $this->profileService->getProfilePicture();
+        } catch (\Exception $e) {
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+
+            return response()->json([
+                'status' => self::STATUS_ERROR,
+                'message' => 'Invalid operation.',
+                'data' => []
+            ], Response::HTTP_OK);
+        }
+
+        return response()->json([
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Data fetch successfully.',
+            'data' => $profilePicture,
+        ], Response::HTTP_OK);
     }
 
     /**
-     * Show the form for editing the specified res  ource.
+     * Summary of edit
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit()
     {
@@ -44,14 +76,16 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
     }
 
     /**
-     * Update the specified resource in storage.
+     * Summary of update
+     * @param \App\Http\Requests\ProfileRequest $profileRequest
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ProfileRequest $profileRequest)
     {
         try {
             DB::beginTransaction();
 
-            $user = $this->profileService->updateProfile($profileRequest);
+            $this->profileService->updateProfile($profileRequest);
 
             DB::commit();
         } catch (\Exception $e) {

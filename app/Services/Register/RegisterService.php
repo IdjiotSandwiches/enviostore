@@ -17,6 +17,7 @@ class RegisterService
     {
         $user = new User();
         $user->uuid = Str::uuid();
+        $user->profile_picture = 'avatars/default_user.png';
         $user->username = $validated['username'];
         $user->email = $validated['email'];
         $user->password = Hash::make($validated['password']);

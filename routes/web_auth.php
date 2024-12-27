@@ -22,6 +22,7 @@ Route::prefix('profile')
         Route::get('/', 'index')->name('index');
         Route::get('/edit', 'edit')->name('edit');
         Route::put('/update', 'update')->name('update');
+        Route::get('/profile-picture', 'getProfilePicture')->name('getProfilePicture');
     });
 
 Route::prefix('cart')

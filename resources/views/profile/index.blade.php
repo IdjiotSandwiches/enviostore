@@ -1,16 +1,11 @@
 @extends('layout.layout')
-
 @section('title', 'Profile')
 
 @section('content')
 <section class="max-w-screen-xl px-4 py-8 mx-auto">
     {{-- Profile Picture and Name --}}
     <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-        <div class="w-36 h-36 md:w-48 md:h-48">
-            <img src="{{ $profilePicture ?? asset('img/0.png') }}" 
-                alt="Profile Picture" 
-                class="rounded-full object-cover w-full h-full hover:bg-gray-400">
-        </div>
+        <div class="w-36 h-36 md:w-48 md:h-48" id="profile-picture"></div>
         <div class="pt-7 text-center md:text-left md:pt-7">
             <h1 class="text-3xl md:text-5xl font-semibold">{{ $user->username ?? 'User Name' }}</h1>
             <p class="text-lg md:text-xl mt-2">{{ $user->address ?? 'Unknown Address' }}</p>
@@ -42,7 +37,7 @@
             <hr class="bg-button">
             <div class="grid grid-cols-2 gap-4 py-4 mb-24">
                 <p class="text-lg md:text-xl font-normal text-accent">Phone Number</p>
-                <p class="text-lg md:text-xl font-semibold text-right">{{ $identity->phone_number ?? 'Not Provided' }}</p>
+                <p class="text-lg md:text-xl font-semibold text-right">{{ $user->phone_number ?? 'Not Provided' }}</p>
             </div>
             <div class="text-center mt-6">
                 <a href="#" class="block p-3 bg-button text-primary rounded-xl text-lg md:text-xl font-normal">
@@ -62,4 +57,46 @@
         </div>
     </div>
 </section>
+@endsection
+
+@section('extra-js')
+<script>
+    const profilePicturePlaceholder = document.querySelector('#profile-picture');
+
+    function fetchRequest() {
+        let url = '{{ route('profile.getProfilePicture') }}';
+
+        customFetch(url, {
+            method: 'GET',
+        }).then(response => {
+            if(!response.ok) {
+                throw new Error();
+            }
+
+            return response.json();
+        }).then(response => {
+            replaceProfilePicture(response);
+        }).catch(error => {
+            let section = document.querySelector('section');
+            let item = `{!! view('component.__fetch-failed')->render() !!}`;
+            
+            section.replaceChildren();
+            section.insertAdjacentHTML('beforeend', item);
+        });
+    }
+
+    function replaceProfilePicture(response) {
+        const profilePicture = response.data;
+        let card = `{!! view('profile.component.__profile-picture', [
+            'profilePicture' => '::PROFILE_PICTURE::'
+        ])->render() !!}`;
+
+        card = card.replace('::PROFILE_PICTURE::', profilePicture);
+        profilePicturePlaceholder.insertAdjacentHTML('beforeend', card);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchRequest();
+    });
+</script>
 @endsection
