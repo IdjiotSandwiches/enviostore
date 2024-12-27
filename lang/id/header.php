@@ -3,5 +3,6 @@
 return [
     'category' => 'Kategori',
     'recommended' => 'Rekomendasi Produk',
-    'cart' => 'Keranjang Anda'
+    'cart' => 'Keranjang Anda',
+    'welcome' => 'Selamat datang,',
 ];
