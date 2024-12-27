@@ -15,26 +15,22 @@
     {{-- User Information --}}
     <div class="grid mt-8 gap-6 md:grid-cols-2">
         {{-- User Info Card --}}
-        <div class="bg-primary rounded-lg shadow-md p-6">
+        <div class="bg-primary rounded-lg shadow-md p-6 divide-y-2">
             <div class="mb-6">
                 <h1 class="text-2xl md:text-3xl font-semibold text-center">User Information</h1>
             </div>
-            <hr class="bg-button">
             <div class="grid grid-cols-2 gap-4 py-4">
                 <p class="text-lg md:text-xl font-normal text-accent">Name</p>
                 <p class="text-lg md:text-xl font-semibold text-right">{{ $user->username ?? 'Not Provided' }}</p>
             </div>
-            <hr class="bg-button">
             <div class="grid grid-cols-2 gap-4 py-4">
                 <p class="text-lg md:text-xl font-normal text-accent">Address</p>
                 <p class="text-lg md:text-xl font-semibold text-right">{{ $user->address ?? 'Unknown Address' }}</p>
             </div>
-            <hr class="bg-button">
             <div class="grid grid-cols-2 gap-4 py-4">
                 <p class="text-lg md:text-xl font-normal text-accent">Email</p>
                 <p class="text-lg md:text-xl font-semibold text-right">{{ $user->email }}</p>
             </div>
-            <hr class="bg-button">
             <div class="grid grid-cols-2 gap-4 py-4 mb-24">
                 <p class="text-lg md:text-xl font-normal text-accent">Phone Number</p>
                 <p class="text-lg md:text-xl font-semibold text-right">{{ $user->phone_number ?? 'Not Provided' }}</p>
@@ -66,6 +62,13 @@
     function fetchRequest() {
         let url = '{{ route('profile.getProfilePicture') }}';
 
+        setTimeout(function() {
+            if(profilePicturePlaceholder.textContent !== '') return;
+
+            let card = `{!! view('component.__profile-skeleton')->render() !!}`;
+            profilePicturePlaceholder.insertAdjacentHTML('beforeend', card);
+        },200);
+
         customFetch(url, {
             method: 'GET',
         }).then(response => {
@@ -73,6 +76,7 @@
                 throw new Error();
             }
 
+            profilePicturePlaceholder.replaceChildren();
             return response.json();
         }).then(response => {
             replaceProfilePicture(response);
