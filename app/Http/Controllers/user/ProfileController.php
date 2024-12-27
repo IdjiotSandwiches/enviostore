@@ -82,10 +82,12 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
      */
     public function update(ProfileRequest $profileRequest)
     {
+        $validated = $profileRequest->validated();
+
         try {
             DB::beginTransaction();
 
-            $this->profileService->updateProfile($profileRequest);
+            $this->profileService->updateProfile($validated);
 
             DB::commit();
         } catch (\Exception $e) {
@@ -110,7 +112,6 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
 
         return back()->with($response);
     }
-
 
     /**
      * Remove the specified resource from storage.

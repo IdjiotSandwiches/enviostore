@@ -12,7 +12,7 @@
                 class="cursor-pointer text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg px-4 md:px-5 py-1.5 md:py-2 text-nowrap">
                 {{ __('page.profile.upload_image') }}
             </label>
-            <input type="file" name="profile_picture" id="profile-picture-input" accept="image/*" class="hidden">
+            <input type="file" name="profile_picture" id="profile-picture-input" accept="image/jpeg, image/png, image/jpg" class="hidden">
             @error('profile_picture')
                 <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
             @enderror

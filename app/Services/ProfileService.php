@@ -34,6 +34,10 @@ class ProfileService implements SessionKeyInterface, StatusInterface
         return $user;
     }
 
+    /**
+     * Summary of getProfilePicture
+     * @return array|string
+     */
     public function getProfilePicture()
     {
         /**
@@ -46,27 +50,30 @@ class ProfileService implements SessionKeyInterface, StatusInterface
         return $profilePicture;
     }
 
-    public function updateProfile($profileRequest)
+    /**
+     * Summary of updateProfile
+     * @param array $validated
+     * @return void
+     */
+    public function updateProfile($validated)
     {
         /**
          * @var \App\Models\User $user
          */
         $user = session(self::SESSION_IDENTITY);
-        $validate = $profileRequest->validated();
         $user = User::find($user->id);
 
-        foreach ($validate as $key => $value) {
+        foreach ($validated as $key => $value) {
             if (!is_null($value)) {
                 $user->$key = $value;
             }
         }
 
-        if ($profileRequest->hasFile('profile_picture')) {
-            $file = $profileRequest->file('profile_picture');
-            $fileExtension = $file->getClientOriginalExtension();
+        if ($validated['profile_picture']) {
+            $fileExtension = $validated['profile_picture']->getClientOriginalExtension();
             $fileName = 'avatars/' . str_replace(' ', '_', $user->uuid) . '.' . $fileExtension;
 
-            $this->googleDriveUtility->storeFile($fileName, $file);
+            $this->googleDriveUtility->storeFile($fileName, $validated['profile_picture']);
             
             $user->profile_picture = $fileName;
         }

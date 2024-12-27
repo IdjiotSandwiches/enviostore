@@ -5,6 +5,8 @@
         let url = '{{ route('profile.getProfilePicture') }}';
         profilePicturePlaceholder.replaceChildren();
 
+        console.log(profilePicturePlaceholder);
+
         setTimeout(function() {
             if(profilePicturePlaceholder.textContent !== '') return;
 
@@ -18,9 +20,10 @@
             if(!response.ok) {
                 throw new Error();
             }
+            
+            profilePicturePlaceholder.replaceChildren();
             return response.json();
         }).then(response => {
-            profilePicturePlaceholder.replaceChildren();
             replaceProfilePicture(response);
         }).catch(error => {
             let section = document.querySelector('section');
@@ -33,6 +36,8 @@
 
     function replaceProfilePicture(response) {
         const profilePicture = response.data;
+        profilePicturePlaceholder.replaceChildren();
+
         let card = `{!! view('profile.component.__profile-picture', [
             'profilePicture' => '::PROFILE_PICTURE::'
         ])->render() !!}`;
