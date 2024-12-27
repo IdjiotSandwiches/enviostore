@@ -91,7 +91,9 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Profile update error: ' . $e->getMessage());
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
 
             $response = [
                 'status' => self::STATUS_ERROR,

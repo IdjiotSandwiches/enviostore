@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Interfaces\SessionKeyInterface;
+use App\Interfaces\StatusInterface;
+use App\Models\ErrorLog;
 use App\Models\User;
 use App\Utilities\GoogleDriveUtility;
 
-class ProfileService implements SessionKeyInterface
+class ProfileService implements SessionKeyInterface, StatusInterface
 {
     private $googleDriveUtility;
 
@@ -29,9 +31,6 @@ class ProfileService implements SessionKeyInterface
          */
         $user = session(self::SESSION_IDENTITY);
         $user = User::find($user->id);
-        // $profilePicture = $this->googleDriveUtility->getFile($url);
-
-        // return [$user, $profilePicture];
         return $user;
     }
 
@@ -67,23 +66,11 @@ class ProfileService implements SessionKeyInterface
             $fileExtension = $file->getClientOriginalExtension();
             $fileName = 'avatars/' . str_replace(' ', '_', $user->uuid) . '.' . $fileExtension;
 
-            try {
-                $fileUrl = $this->googleDriveUtility->storeFile($fileName, $file);
-
-                if ($fileUrl) {
-                    $user->profile_picture = $fileName;
-                } else {
-                    return back()->withErrors([
-                        'profile_picture' => 'Failed to upload profile picture to Google Drive.',
-                    ]);
-                }
-            } catch (\Exception $e) {
-                return back()->withErrors([
-                    'profile_picture' => 'Error uploading profile picture: ' . $e->getMessage(),
-                ]);
-            }
+            $this->googleDriveUtility->storeFile($fileName, $file);
+            
+            $user->profile_picture = $fileName;
         }
-
+        
         $user->save();
     }
 }
