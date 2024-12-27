@@ -36,11 +36,11 @@
                 </div>
             </div>
             <div class="grid text-center gap-4">
-                <a href="#" class="flex items-center justify-center gap-2 text-center py-2 px-5 text-lg font-medium text-gray-900 focus:outline-none rounded-lg border border-button hover:bg-accent/10 hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15">
-                    {{ __('page.profile.change_password') }}
-                </a>
                 <a href="{{ route('profile.edit') }}" class="text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-lg px-4 md:px-5 py-1.5 md:py-2 text-nowrap">
                     {{ __('page.profile.edit_information') }}
+                </a>
+                <a href="#" class="flex items-center justify-center gap-2 text-center py-2 px-5 text-lg font-medium text-gray-900 focus:outline-none rounded-lg border border-button hover:bg-accent/10 hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15">
+                    {{ __('page.profile.change_password') }}
                 </a>
             </div>
         </div>
