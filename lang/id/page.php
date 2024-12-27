@@ -16,4 +16,11 @@ return [
     'cart.summary' => 'Rincian',
     'cart.total_items' => 'Total Barang',
     'cart.quantity' => 'Jumlah',
+
+    'profile.user_information' => 'Informasi Pengguna',
+    'profile.name' => 'Nama',
+    'profile.address' => 'Alamat',
+    'profile.phone_number' => 'Nomor Telepon',
+    'profile.change_password' => 'Ubah Kata Sandi',
+    'profile.edit_information' => 'Edit Informasi',
 ];

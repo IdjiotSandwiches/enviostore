@@ -16,4 +16,11 @@ return [
     'cart.summary' => 'Summary',
     'cart.total_items' => 'Total Items',
     'cart.quantity' => 'Quantity',
+
+    'profile.user_information' => 'User Information',
+    'profile.name' => 'Name',
+    'profile.address' => 'Address',
+    'profile.phone_number' => 'Phone Number',
+    'profile.change_password' => 'Change Password',
+    'profile.edit_information' => 'Edit Information',
 ];
