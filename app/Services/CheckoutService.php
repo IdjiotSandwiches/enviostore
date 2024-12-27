@@ -147,4 +147,25 @@ class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterf
         $order->snap_token = $snapToken;
         $order->save();
     }
+
+    /**
+     * Summary of updateStocks
+     * @param \App\Models\Product $product
+     * @param int $quantity
+     * @throws \Exception
+     * @return void
+     */
+    // Dipake pas bayar
+    // public function updateStocks($product, $quantity)
+    // {
+    //     $currentStock = $product->stocks;
+
+        // if (!$this->isAvailable($currentStock, $quantity)) {
+        //     throw new \Exception(__('message.invalid'));
+        // }
+
+    //     $updatedStock = $currentStock - $quantity;
+    //     $product->stocks = $updatedStock;
+    //     $product->save();
+    // }
 }
