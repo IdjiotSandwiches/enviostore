@@ -49,7 +49,7 @@ class MenuServiceProvider extends ServiceProvider implements SessionKeyInterface
         $categories = Category::all()->map(function ($category) {
             return (object) [
                 'name' => ucwords($category->name),
-                'route' => route('categoryPage', base64_decode($category->category_serial_code)),
+                'route' => route('categoryPage', base64_encode($category->category_serial_code)),
             ];
         });
 
