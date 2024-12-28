@@ -45,5 +45,3 @@ Route::prefix('checkout')
     ->group(function () {
         
     });
-
-Route::get('/profile-picture/{path}', [ProfilePictureController::class, 'getProfilePicture'])->name('getProfilePicture');

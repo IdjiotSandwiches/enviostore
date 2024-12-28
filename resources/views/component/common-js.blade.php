@@ -9,25 +9,6 @@
         return fetch(url, options);
     }
 
-    function fetchProfilePicture() {
-        let url = '{{ route('getProfilePicture', [$userInformation->profilePicture]) }}';
-
-        customFetch(url, {
-            method: 'GET'
-        }).then(response => {
-            if(!response.ok) throw new Error();
-            return response.json();
-        }).then(response => {
-
-        }).catch(error => {
-            let section = document.querySelector('section');
-            let item = `{!! view('component.__fetch-failed')->render() !!}`;
-            
-            section.replaceChildren();
-            section.insertAdjacentHTML('beforeend', item);
-        });
-    }
-    
     function checkPlaceholder(placeholder) {
         return placeholder.hasChildNodes();
     }
