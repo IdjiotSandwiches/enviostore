@@ -27,6 +27,10 @@
             section.insertAdjacentHTML('beforeend', item);
         });
     }
+    
+    function checkPlaceholder(placeholder) {
+        return placeholder.hasChildNodes();
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.querySelector('form');
