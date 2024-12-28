@@ -2,11 +2,24 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Product;
+use App\Utilities\ProductsUtility;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Utilities\GoogleDriveUtility;
 
 class AdminController extends Controller
 {
+    private $googleDriveUtility;
+    private $productsUtility;
+    /**
+     * Summary of __construct
+     */
+    public function __construct()
+    {
+        $this->googleDriveUtility = new GoogleDriveUtility();
+        $this->productsUtility = new ProductsUtility();
+    }
     /**
      * Display a listing of the resource.
      */
@@ -17,12 +30,23 @@ class AdminController extends Controller
 
     public function productIndex()
     {
-        return view('admin.product');
+        $products = Product::with('productImage', 'category')
+            ->get()
+            ->map(function($product) {
+                return $this->productsUtility->convertAdminItem($product);
+            });
+        
+        return view('admin.product.products', compact('products'));
+    }
+
+    public function addProductIndex()
+    {
+        return view('admin.product.add');
     }
 
     public function categoryIndex()
     {
-        return view('admin.category');
+        return view('admin.category.category');
     }
 
     /**

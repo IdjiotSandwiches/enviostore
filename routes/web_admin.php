@@ -19,4 +19,5 @@ Route::controller(AdminController::class)
         Route::get('/', 'index')->name('home');
         Route::get('/products', 'productIndex')->name('products');
         Route::get('/categories', 'categoryIndex')->name('categories'); 
+        Route::get('/products/add', 'addProductIndex')->name('addProduct');
     });

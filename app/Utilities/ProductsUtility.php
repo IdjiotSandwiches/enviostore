@@ -76,4 +76,22 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
 
         return (object) compact('name', 'rating', 'price', 'img', 'link');
     }
+    
+    /**
+     * Summary of convertAdminItem
+     * @param mixed $product
+     * @return object
+     */
+    public function convertAdminItem($product)
+    {
+        $name = $product->name;
+        $price = StringHelper::parseNumberFormat($product->price);
+        $rating = $product->sustainability_score;
+        $img = $product->productImage->first();
+        $img = $this->googleDriveUtility->getFile($img->url);
+        $stocks = $product->stocks;
+        $category_name = $product->category ? $product->category->name : 'Unknown'; 
+
+        return (object) compact('name', 'rating', 'price', 'img', 'stocks', 'category_name');
+    }
 }
