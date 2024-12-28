@@ -21,6 +21,8 @@ Route::prefix('profile')
     ->group(function(){
         Route::get('/', 'index')->name('index');
         Route::get('/edit', 'edit')->name('edit');
+        Route::get('/change-password', 'changePassword')->name('changePassword');
+        Route::put('/change-password', 'attemptChangePassword')->name('attemptChangePassword');
         Route::put('/update', 'update')->name('update');
         Route::get('/profile-picture', 'getProfilePicture')->name('getProfilePicture');
     });

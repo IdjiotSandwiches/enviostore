@@ -41,6 +41,8 @@ class GoogleDriveUtility implements StatusInterface
             $errorLog = new ErrorLog();
             $errorLog->error = $e->getMessage();
             $errorLog->save();
+
+            abort(500);
         }
     }
 
@@ -85,6 +87,8 @@ class GoogleDriveUtility implements StatusInterface
             $errorLog = new ErrorLog();
             $errorLog->error = $e->getMessage();
             $errorLog->save();
+
+            abort(500);
         }
     }
 

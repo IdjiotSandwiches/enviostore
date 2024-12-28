@@ -21,7 +21,11 @@ return [
     'profile.name' => 'Nama',
     'profile.address' => 'Alamat',
     'profile.phone_number' => 'Nomor Telepon',
+    'profile.password' => 'Kata Sandi',
+    'profile.password_confirmation' => 'Konfirmasi Kata Sandi',
+    'profile.old_password' => 'Kata Sandi Lama',
     'profile.change_password' => 'Ubah Kata Sandi',
     'profile.edit_information' => 'Edit Informasi',
     'profile.upload_image' => 'Unggah Gambar Baru',
+    'profile.save_changes' => 'Simpan Perubahan',
 ];

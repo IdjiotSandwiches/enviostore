@@ -7,6 +7,7 @@ use App\Interfaces\StatusInterface;
 use App\Models\ErrorLog;
 use App\Models\User;
 use App\Utilities\GoogleDriveUtility;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileService implements SessionKeyInterface, StatusInterface
 {
@@ -22,7 +23,7 @@ class ProfileService implements SessionKeyInterface, StatusInterface
 
     /**
      * Summary of getUser
-     * @return array
+     * @return array|User|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
      */
     public function getUser()
     {
@@ -57,11 +58,7 @@ class ProfileService implements SessionKeyInterface, StatusInterface
      */
     public function updateProfile($validated)
     {
-        /**
-         * @var \App\Models\User $user
-         */
-        $user = session(self::SESSION_IDENTITY);
-        $user = User::find($user->id);
+        $user = $this->getUser();
 
         foreach ($validated as $key => $value) {
             if (!is_null($value)) {
@@ -69,15 +66,36 @@ class ProfileService implements SessionKeyInterface, StatusInterface
             }
         }
 
-        if ($validated['profile_picture']) {
+        if (isset($validated['profile_picture'])) {
             $fileExtension = $validated['profile_picture']->getClientOriginalExtension();
             $fileName = 'avatars/' . str_replace(' ', '_', $user->uuid) . '.' . $fileExtension;
 
             $this->googleDriveUtility->storeFile($fileName, $validated['profile_picture']);
-            
             $user->profile_picture = $fileName;
         }
         
+        $user->save();
+    }
+
+    /**
+     * Summary of attemptChangePassword
+     * @param array $validated
+     * @throws \Exception
+     * @return void
+     */
+    public function attemptChangePassword($validated)
+    {
+        $user = $this->getUser();
+
+        if (!Hash::check($validated['old_password'], $user->password)) {
+            throw new \Exception(__('message.wrong_password'));
+        }
+
+        if (Hash::check($validated['password'], $user->password)) {
+            throw new \Exception(__('message.same_password'));
+        }
+
+        $user->password = Hash::make($validated['password']);
         $user->save();
     }
 }

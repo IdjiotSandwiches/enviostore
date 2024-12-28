@@ -18,5 +18,8 @@ return [
     'exceeded_stock' => 'Jumlah produk anda melebihi stok kami.',
     'remove_item' => 'Barang dihapus',
     'not_found_title' => 'Tidak Ditemukan',
-    'profile_update_success' => 'Profil sukses diupadate'
+    'profile_update_success' => 'Profil sukses diupadate',
+    'wrong_password' => 'Kata sandi saat ini tidak cocok dengan data kami.',
+    'same_password' => 'Kata sandi baru tidak boleh sama dengan kata sandi saat ini.',
+    'change_password_success' => 'Kata sandi berhasil diubah.',
 ];

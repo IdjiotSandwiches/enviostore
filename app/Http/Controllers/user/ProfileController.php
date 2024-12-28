@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers\user;
 
+use App\Http\Requests\ChangePasswordRequest;
 use App\Models\ErrorLog;
 use App\Services\ProfileService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileRequest;
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
-use App\Utilities\GoogleDriveUtility;
 use Illuminate\Http\Response;
 
 class ProfileController extends Controller implements StatusInterface, SessionKeyInterface
 {
-    private $googleDriveUtility;
     private $profileService;
 
     /**
@@ -23,7 +21,6 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
      */
     public function __construct()
     {
-        $this->googleDriveUtility = new GoogleDriveUtility();
         $this->profileService = new ProfileService();
     }
 
@@ -33,7 +30,6 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
      */
     public function index()
     {
-        // [$user, $profilePicture] = $this->profileService->getUser();
         $user = $this->profileService->getUser();
 
         return view('profile.index', compact('user'));
@@ -53,7 +49,7 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
             return response()->json([
                 'status' => self::STATUS_ERROR,
                 'message' => 'Invalid operation.',
-                'data' => []
+                'data' => [],
             ], Response::HTTP_OK);
         }
 
@@ -107,7 +103,54 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
 
         $response = [
             'status' => self::STATUS_SUCCESS,
-            'message' => __('message.profile_update_success')
+            'message' => __('message.profile_update_success'),
+        ];
+
+        return back()->with($response);
+    }
+
+    /**
+     * Summary of changePassword
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function changePassword()
+    {
+        return view('profile.change-password');
+    }
+
+    /**
+     * Summary of attemptChangePassword
+     * @param \App\Http\Requests\ChangePasswordRequest $changePasswordRequest
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function attemptChangePassword(ChangePasswordRequest $changePasswordRequest)
+    {
+        $validated = $changePasswordRequest->validated();
+
+        try {
+            DB::beginTransaction();
+
+            $this->profileService->attemptChangePassword($validated);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+
+            $response = [
+                'status' => self::STATUS_ERROR,
+                'message' => $e->getMessage(),
+            ];
+
+            return back()->with($response);
+        }
+
+        $response = [
+            'status' => self::STATUS_SUCCESS,
+            'message' => __('message.change_password_success'),
         ];
 
         return back()->with($response);
