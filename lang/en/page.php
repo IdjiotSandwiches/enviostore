@@ -16,4 +16,15 @@ return [
     'cart.summary' => 'Summary',
     'cart.total_items' => 'Total Items',
     'cart.quantity' => 'Quantity',
+
+    'admin.product.name_en' => 'Product Name',
+    'admin.product.name_id' => 'Product Name(ID)',
+    'admin.product.description_en' => 'Product Description',
+    'admin.product.description_id' => 'Product Description(ID)',
+    'admin.product.price' => 'Price',
+    'admin.product.stocks' => 'Stocks',
+    'admin.product.category' => 'Category',
+    'admin.product.sustainability_score' => 'Sustainability Score',
+    'admin.product.image' => 'Upload Image',
+    'admin.product.submit_changes' => 'Add Product',
 ];

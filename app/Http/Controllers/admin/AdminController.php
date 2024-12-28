@@ -28,33 +28,17 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
-    public function productIndex()
-    {
-        $products = Product::with('productImage', 'category')
-            ->get()
-            ->map(function($product) {
-                return $this->productsUtility->convertAdminItem($product);
-            });
-        
-        return view('admin.product.products', compact('products'));
-    }
-
-    public function addProductIndex()
-    {
-        return view('admin.product.add');
-    }
-
     public function categoryIndex()
     {
-        return view('admin.category.category');
+        return view('admin.category.categories');
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function addProduct()
     {
-        //
+        
     }
 
     /**

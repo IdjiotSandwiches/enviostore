@@ -5,7 +5,7 @@
             <a href="{{ route('admin.products') }}" class="text-gray-900 hover:underline">Products</a>
         </li>
         <li>
-            <a href="{{ route('admin.categories') }}" class="text-gray-900 hover:underline">Category</a>
+            <a href="{{ route('admin.categories') }}" class="text-gray-900 hover:underline">Categories</a>
         </li>
     </ul>
 </div>

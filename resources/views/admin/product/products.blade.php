@@ -5,7 +5,7 @@
     <section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
         <div class="flex items-center justify-between">
             <h1 class="font-bold text-3xl">{{ __('header.productManagement') }}</h1>
-            <a href="{{ route('admin.addProduct') }}" class="px-4 py-2 bg-button text-white rounded-lg hover:bg-accent">
+            <a href="{{ route('admin.addProductIndex') }}" class="px-4 py-2 bg-button text-white rounded-lg hover:bg-accent">
                 Add Product
             </a>
         </div>
