@@ -34,31 +34,40 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 @endsection
 
 @section('extra-js')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const carousel = new Glide('.glide_carousel', {
-            type: 'carousel',
-            startAt: 0,
-            autoplay: 3000,
-            animationDuration: 1000,
-            hoverpause: true,
-        });
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = new Glide('.glide_carousel', {
+                type: 'carousel',
+                startAt: 0,
+                autoplay: 3000,
+                animationDuration: 1000,
+                hoverpause: true,
+            });
 
-        const slider = new Glide('.glide_slider', {
-            type: 'slider',
-            startAt: 0,
-            animationDuration: 350,
-            perView: 4,
-            bound: true,
-            rewind: false,
-        });
+            const slider = new Glide('.glide_slider', {
+                type: 'slider',
+                startAt: 0,
+                animationDuration: 350,
+                perView: 4,
+                bound: true,
+                rewind: false,
+            });
 
-        carousel.mount({ Controls, Breakpoints, Swipe, Autoplay });
-        slider.mount({ Controls, Breakpoints, Swipe });
-    });
-</script>
+            carousel.mount({
+                Controls,
+                Breakpoints,
+                Swipe,
+                Autoplay
+            });
+            slider.mount({
+                Controls,
+                Breakpoints,
+                Swipe
+            });
+        });
+    </script>
 @endsection
