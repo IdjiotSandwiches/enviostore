@@ -23,10 +23,10 @@
     <div class="grid py-4 overflow-y-auto divide-y">
         @if (session(App\Interfaces\SessionKeyInterface::SESSION_IS_LOGGED_IN))
             <div class="flex items-center gap-4 px-4 py-2">
-                <img type="button" class="block w-14 h-14 rounded-full cursor-pointer" src="{{ $userInformation->profilePicture }}"
+                <img type="button" class="block w-14 h-14 rounded-full cursor-pointer" src="{{ @$userInformation->profilePicture }}"
                     alt="User dropdown">
                 <p class="font-semibold">
-                    {{ $userInformation->username }}
+                    {{ @$userInformation->username }}
                 </p>
             </div>
             <div>

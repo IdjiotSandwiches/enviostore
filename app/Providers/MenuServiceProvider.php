@@ -30,7 +30,7 @@ class MenuServiceProvider extends ServiceProvider implements SessionKeyInterface
             function ($view) {
                 $isAdmin = session(self::SESSION_IS_ADMIN);
                 $view = $isAdmin ? $this->adminMenu() : $this->userMenu();
-                $user = $this->getUserInformation();
+                $user = session(self::SESSION_IS_LOGGED_IN) ? $this->getUserInformation() : '';
 
                 View::share([
                     'menus' => $view,
