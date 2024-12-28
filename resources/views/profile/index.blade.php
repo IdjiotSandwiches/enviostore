@@ -53,9 +53,4 @@
 
 @section('extra-js')
 @include('profile.component.__change-profile')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetchRequest();
-    });
-</script>
 @endsection

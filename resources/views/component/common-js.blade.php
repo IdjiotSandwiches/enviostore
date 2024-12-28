@@ -9,6 +9,10 @@
         return fetch(url, options);
     }
 
+    function checkEmptyPlaceholder(placeholder) {
+        return placeholder.hasChildNodes();
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.querySelector('form');
 

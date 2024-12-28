@@ -76,7 +76,6 @@
 @include('profile.component.__change-profile')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        fetchRequest();
         document.querySelector('#profile-picture-input').addEventListener('change', function(e) {
             let imgUrl = URL.createObjectURL(e.target.files[0]);
             document.querySelector('#profile-picture').src = imgUrl;

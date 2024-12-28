@@ -5,10 +5,8 @@
         let url = '{{ route('profile.getProfilePicture') }}';
         profilePicturePlaceholder.replaceChildren();
 
-        console.log(profilePicturePlaceholder);
-
         setTimeout(function() {
-            if(profilePicturePlaceholder.textContent !== '') return;
+            if(checkEmptyPlaceholder(profilePicturePlaceholder)) return;
 
             let card = `{!! view('component.__profile-skeleton')->render() !!}`;
             profilePicturePlaceholder.insertAdjacentHTML('beforeend', card);
@@ -45,4 +43,8 @@
         card = card.replace('::PROFILE_PICTURE::', profilePicture);
         profilePicturePlaceholder.insertAdjacentHTML('beforeend', card);
     }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchRequest();
+    });
 </script>
