@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfilePictureController;
 use App\Http\Controllers\user\CartController;
 use App\Http\Controllers\user\CheckoutController;
 use App\Http\Controllers\user\ProfileController;
