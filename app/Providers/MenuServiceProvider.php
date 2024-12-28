@@ -15,7 +15,9 @@ class MenuServiceProvider extends ServiceProvider implements SessionKeyInterface
      */
     public function register(): void
     {
-        //
+        $this->app->bind('GoogleDriveUtility', function ($app) {
+            return new \App\Utilities\GoogleDriveUtility;
+        });
     }
 
     /**
@@ -74,6 +76,10 @@ class MenuServiceProvider extends ServiceProvider implements SessionKeyInterface
         return $menus;
     }
 
+    /**
+     * Summary of getUserInformation
+     * @return object
+     */
     private function getUserInformation()
     {
         /**
@@ -81,10 +87,11 @@ class MenuServiceProvider extends ServiceProvider implements SessionKeyInterface
          */
         $user = session(self::SESSION_IDENTITY);
         $user = User::find($user->id);
+        $googleDriveUtility = $this->app->make('GoogleDriveUtility');
 
         return (object) [
             'username' => $user->username,
-            'profilePicture' => $user->avatar,
+            'profilePicture' => $googleDriveUtility->getFile($user->profile_picture),
         ];
     }
 }
