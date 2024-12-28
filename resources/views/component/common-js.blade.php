@@ -9,7 +9,7 @@
         return fetch(url, options);
     }
 
-    function checkEmptyPlaceholder(placeholder) {
+    function checkPlaceholder(placeholder) {
         return placeholder.hasChildNodes();
     }
 

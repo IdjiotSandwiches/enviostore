@@ -6,7 +6,7 @@
         profilePicturePlaceholder.replaceChildren();
 
         setTimeout(function() {
-            if(checkEmptyPlaceholder(profilePicturePlaceholder)) return;
+            if(checkPlaceholder(profilePicturePlaceholder)) return;
 
             let card = `{!! view('component.__profile-skeleton')->render() !!}`;
             profilePicturePlaceholder.insertAdjacentHTML('beforeend', card);

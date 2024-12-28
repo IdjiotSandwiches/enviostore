@@ -26,7 +26,7 @@
                         <input type="text" name="username" id="username" @class([
                             "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5",
                             "border-red-500" => $errors->has('username'),
-                        ]) placeholder="Enter your name" value="{{ old('username') }}" />
+                        ]) placeholder="{{ $user->username }}" value="{{ old('username') }}" />
                         @error('username')
                             <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
                         @enderror
@@ -36,7 +36,7 @@
                         <input type="text" id="address" name="address" @class([
                             "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5",
                             "border-red-500" => $errors->has('address'),
-                        ]) placeholder="Enter your address" value="{{ old('address') }}" />
+                        ]) placeholder="{{ $user->address }}" value="{{ old('address') }}" />
                         @error('address')
                             <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
                         @enderror
@@ -46,7 +46,7 @@
                         <input type="email" name="email" id="email" @class([
                             "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5",
                             "border-red-500" => $errors->has('email')
-                        ]) placeholder="Enter your email" value="{{ old('email') }}" />
+                        ]) placeholder="{{ $user->email }}" value="{{ old('email') }}" />
                         @error('email')
                             <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
                         @enderror
@@ -56,7 +56,7 @@
                         <input type="tel" name="phone_number" id="phone-number" minlength="8" maxlength="12" pattern="[0-9]{8,12}" @class([
                             "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5",
                             "border-red-500" => $errors->has('phone_number')
-                        ]) placeholder="Enter your phone number" value="{{ old('phone_number') }}" />
+                        ]) placeholder="{{ $user->phone_number }}" value="{{ old('phone_number') }}" />
                         @error('phone_number')
                             <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
                         @enderror

@@ -70,9 +70,9 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
      */
     public function edit()
     {
-        [$user, $profilePicture] = $this->profileService->getUser();
+        $user = $this->profileService->getUser();
 
-        return view('profile.edit', compact('profilePicture'));
+        return view('profile.edit', compact('user'));
     }
 
     /**
