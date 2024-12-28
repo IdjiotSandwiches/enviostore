@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Interfaces\SessionKeyInterface;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 
@@ -23,15 +24,24 @@ class MenuServiceProvider extends ServiceProvider implements SessionKeyInterface
     public function boot(): void
     {
         view()->composer(
-            'component.navigation.__sub-menu',
+            'component.navigation.navbar',
             function ($view) {
                 $isAdmin = session(self::SESSION_IS_ADMIN);
                 $view = $isAdmin ? $this->adminMenu() : $this->userMenu();
-                View::share('menus', $view);
+                $user = $this->getUserInformation();
+
+                View::share([
+                    'menus' => $view,
+                    'userInformation' => $user,
+                ]);
             }
         );
     }
 
+    /**
+     * Summary of userMenu
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     */
     private function userMenu() 
     {
         $categories = Category::all()->map(function ($category) {
@@ -44,6 +54,10 @@ class MenuServiceProvider extends ServiceProvider implements SessionKeyInterface
         return $categories;
     }
 
+    /**
+     * Summary of adminMenu
+     * @return \Illuminate\Support\Collection
+     */
     private function adminMenu() 
     {
         $menus = collect([
@@ -58,5 +72,19 @@ class MenuServiceProvider extends ServiceProvider implements SessionKeyInterface
         ]);
 
         return $menus;
+    }
+
+    private function getUserInformation()
+    {
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = session(self::SESSION_IDENTITY);
+        $user = User::find($user->id);
+
+        return (object) [
+            'username' => $user->username,
+            'profilePicture' => $user->avatar,
+        ];
     }
 }

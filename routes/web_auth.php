@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfilePictureController;
 use App\Http\Controllers\user\CartController;
 use App\Http\Controllers\user\CheckoutController;
 use Illuminate\Support\Facades\Route;
@@ -32,3 +33,5 @@ Route::prefix('checkout')
     ->group(function () {
         
     });
+
+Route::get('/profile-picture/{path}', [ProfilePictureController::class, 'getProfilePicture'])->name('getProfilePicture');
