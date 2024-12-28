@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfilePictureController;
 use Illuminate\Support\Facades\Route;
 
 /*

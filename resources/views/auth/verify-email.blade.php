@@ -14,7 +14,7 @@
         </div>
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
-            <button type="submit" class="w-full text-white bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-button dark:hover:bg-button/80 dark:focus:ring-button/15">{{ __('verification.resend') }}</button>
+            <button type="submit" class="w-full text-white bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-sm px-5 py-2.5 text-center">{{ __('verification.resend') }}</button>
         </form>
         @if (session('message'))
             <div>

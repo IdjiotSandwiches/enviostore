@@ -57,6 +57,11 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'password' => 'Kata Sandi',
+        'phone_number' => 'Nomor Telepon',
+        'password_confirmation' => 'Konfirmasi Kata Sandi',
+        'old_password' => 'Kata Sandi Lama',
+    ],
 
 ];
