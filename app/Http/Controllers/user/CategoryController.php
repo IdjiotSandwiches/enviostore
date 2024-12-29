@@ -4,6 +4,7 @@ namespace App\Http\Controllers\user;
 
 use App\Models\Category;
 use App\Models\ErrorLog;
+use App\Utilities\ErrorUtility;
 use Illuminate\Http\Request;
 use App\Utilities\ProductsUtility;
 use App\Interfaces\CategoryInterface;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Controller;
 class CategoryController extends Controller implements CategoryInterface
 {
     private $productUtility;
+    private $errorUtility;
 
     /**
      * Summary of __construct
@@ -19,6 +21,7 @@ class CategoryController extends Controller implements CategoryInterface
     public function __construct()
     {
         $this->productUtility = new ProductsUtility();
+        $this->errorUtility = new ErrorUtility();
     }
 
     /**
@@ -31,9 +34,7 @@ class CategoryController extends Controller implements CategoryInterface
         try {
             $category_serial = base64_decode($category_serial);
         } catch (\Exception $e) {
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
+            $this->errorUtility->errorLog($e->getMessage());
 
             abort(404);
         }

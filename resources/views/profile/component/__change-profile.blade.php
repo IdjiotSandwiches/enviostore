@@ -15,20 +15,8 @@
         customFetch(url, {
             method: 'GET',
         }).then(response => {
-            if(!response.ok) {
-                throw new Error();
-            }
-            
             profilePicturePlaceholder.replaceChildren();
-            return response.json();
-        }).then(response => {
             replaceProfilePicture(response);
-        }).catch(error => {
-            let section = document.querySelector('section');
-            let item = `{!! view('component.__fetch-failed')->render() !!}`;
-            
-            section.replaceChildren();
-            section.insertAdjacentHTML('beforeend', item);
         });
     }
 
