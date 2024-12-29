@@ -1,4 +1,9 @@
 <script>
+    let successToast;
+    let errorToast;
+    let infoToast;
+    let warningToast;
+
     function customFetch(url, options = {}) {
         options.headers = {
             ...options.headers,
@@ -6,7 +11,17 @@
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         }
 
-        return fetch(url, options);
+        return fetch(url, options)
+            .then(response => {
+                if(!response.ok) throw new Error();
+                return response.json();
+            }).catch(error => {
+                let section = document.querySelector('section');
+                let item = `{!! view('component.__fetch-failed')->render() !!}`;
+                
+                section.replaceChildren();
+                section.insertAdjacentHTML('beforeend', item);
+            });
     }
 
     function checkPlaceholder(placeholder) {
@@ -43,19 +58,19 @@
             }
         });
 
-        const successToast = baseToast.mixin({
+        successToast = baseToast.mixin({
             background: '#22c55e',
         });
 
-        const errorToast = baseToast.mixin({
+        errorToast = baseToast.mixin({
             background: '#ef4444',
         });
 
-        const infoToast = baseToast.mixin({
+        infoToast = baseToast.mixin({
             background: '#3b82f6',
         });
 
-        const warningToast = baseToast.mixin({
+        warningToast = baseToast.mixin({
             background: '#eab308',
         });
 

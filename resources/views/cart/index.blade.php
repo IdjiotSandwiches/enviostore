@@ -20,7 +20,7 @@
         emptyContent();
 
         setTimeout(function() {
-            if(cartContainer.textContent !== '' && summaryContainer.textContent !== '') return;
+            if(checkPlaceholder(cartContainer) && checkPlaceholder(summaryContainer)) return;
 
             for (let i = 0; i < 8; i++) {
                 let item = `{!! view('component.__skeleton-item')->render() !!}`;
@@ -34,20 +34,8 @@
         customFetch(url, {
             method: 'GET',
         }).then(response => {
-            if(!response.ok) {
-                throw new Error();
-            }
-
             emptyContent();
-            return response.json();
-        }).then(response => {
             replaceContent(response);
-        }).catch(error => {
-            let section = document.querySelector('section');
-            let item = `{!! view('component.__fetch-failed')->render() !!}`;
-            
-            section.replaceChildren();
-            section.insertAdjacentHTML('beforeend', item);
         });
     }
 
