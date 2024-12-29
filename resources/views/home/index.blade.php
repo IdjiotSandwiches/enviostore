@@ -3,24 +3,14 @@
 
 @section('content')
 <div id="carousel"></div>
-<section class="max-w-screen-xl mx-auto">
-    <div class="flex justify-center p-9 md:text-2xl sm:text-lg">
-        <h1 class="text-5xl font-secondary">
-            {{ __('header.category') }}
-        </h1>
+<section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-8">
+    <div class="grid gap-4">
+        <h1 class="text-4xl md:text-5xl text-center font-secondary">{{ __('header.category') }}</h1>
+        <div id="bannerContainer"></div>
+        <div id="categoryContainer" class="flex flex-shrink-0 overflow-auto gap-8"></div>
     </div>
-    <div id="bannerContainer" class="flex justify-center pb-9">
-        <img class="h-auto max-w-full" src="{{ asset('img/Example Banner.png') }}" alt="image description">
-    </div>
-    <div id="categoryContainer" class="mx-auto px-4 flex flex-shrink-0 overflow-auto gap-8">
-        @include('home.component.__slider-skeleton')
-    </div>
-    <div class="flex justify-center p-9">
-        <h1 class="text-5xl font-secondary">
-            {{ __('header.recommended') }}
-        </h1>
-    </div>
-    <div class="mx-auto px-4 pb-9">
+    <div class="grid gap-4">
+        <h1 class="text-4xl md:text-5xl text-center font-secondary">{{ __('header.recommended') }}</h1>
         <div id="productContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"></div>
     </div>
 </section>
@@ -29,18 +19,20 @@
 @section('extra-js')
 <script>
     const productContainer = document.querySelector('#productContainer');
-    const carouselPlaceholder = document.querySelector('#carousel');
-    const categoryPlaceholder = document.querySelector('#categoryContainer');
+    const carouselContainer = document.querySelector('#carousel');
+    const categoryContainer = document.querySelector('#categoryContainer');
+    const bannerContainer = document.querySelector('#bannerContainer');
 
     function emptyContent() {
         productContainer.replaceChildren();
-        carouselPlaceholder.replaceChildren();
-        categoryPlaceholder.replaceChildren();
+        carouselContainer.replaceChildren();
+        categoryContainer.replaceChildren();
+        bannerContainer.replaceChildren();
     }
 
     function renderCarousel(carouselImg) {
         let carouselGlide = `{!! view('home.component.__carousel')->render() !!}`;
-        carouselPlaceholder.insertAdjacentHTML('beforeend', carouselGlide);
+        carouselContainer.insertAdjacentHTML('beforeend', carouselGlide);
 
         let glideSlides = document.querySelector('.glide_carousel .glide__slides');
         let glideBullets = document.querySelector('.glide_carousel .glide__bullets');
@@ -74,7 +66,7 @@
 
     function renderSlider(categories) {
         let glideSlider = `{!! view('home.component.__slider')->render() !!}`;
-        categoryPlaceholder.insertAdjacentHTML('beforeend', glideSlider);
+        categoryContainer.insertAdjacentHTML('beforeend', glideSlider);
 
         let glideSlides = document.querySelector('.glide_slider .glide__slides');
 
@@ -128,6 +120,13 @@
         });
     }
 
+    function renderBanner(banner) {
+        let card = `{!! view('home.component.__banner', ['banner' => '::BANNER::'])->render() !!}`;
+        card = card.replace('::BANNER::', banner);
+
+        bannerContainer.insertAdjacentHTML('beforeend', card);
+    }
+
     function showSkeleton() {
         for (let i = 0; i < 8; i++) {
             let card = `{!! view('component.__skeleton-card')->render() !!}`;
@@ -135,11 +134,12 @@
         }
 
         let carouselSkeleton = `{!! view('home.component.__carousel-skeleton')->render() !!}`;
-        carousel.insertAdjacentHTML('beforeend', carouselSkeleton);
+        carouselContainer.insertAdjacentHTML('beforeend', carouselSkeleton);
+        bannerContainer.insertAdjacentHTML('beforeend', carouselSkeleton);
 
         for (let i = 0; i < 4; i++) {
             let card = `{!! view('home.component.__slider-skeleton')->render() !!}`;
-            categoryPlaceholder.insertAdjacentHTML('beforeend', card);
+            categoryContainer.insertAdjacentHTML('beforeend', card);
         }
     }
 
@@ -148,9 +148,7 @@
         emptyContent();
 
         setTimeout(function () {
-            if (checkPlaceholder(productContainer) && 
-            checkPlaceholder(carouselImgPlaceholder) && 
-            checkPlaceholder(carouselButtonPlaceholder)) return;
+            if (checkPlaceholder(productContainer)) return;
 
             showSkeleton();
         }, 200);
@@ -165,6 +163,7 @@
             renderProducts(data.products);
             renderCarousel(data.carouselImg);
             renderSlider(data.categories);
+            renderBanner(data.banner);
         });
     }
 
