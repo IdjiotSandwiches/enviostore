@@ -11,6 +11,7 @@ class HomeService
 {
     private $googleDriveUtility;
     private $productsUtility;
+    
     /**
      * Summary of __construct
      */
@@ -43,7 +44,7 @@ class HomeService
     public function getCategories()
     {
         $categories = Category::all()->map(function($category){
-            $name = $category->name;
+            $name = ucwords($category->name);
             $url = $category->url;
             $image = $this->googleDriveUtility->getFile($url);
             $link = route('categoryPage', base64_encode($category->category_serial_code));
@@ -54,19 +55,19 @@ class HomeService
         return $categories;
     }
 
-    // Take all item inside the folder
     /**
-     * Summary of getBanner
-     * @return string[]
+     * Summary of getImgs
+     * @param string $path
+     * @return array
      */
-    public function getBanner()
+    public function getImgs($path)
     {
-        $bannerUrls = $this->googleDriveUtility->getAllFilePaths('home_carousel_images');
-        $banners = [];
-        foreach($bannerUrls as $url){
-            $banners[] = $this->googleDriveUtility->getFile($url);
+        $urls = $this->googleDriveUtility->getAllFilePaths($path);
+        $imgs = [];
+        foreach($urls as $url){
+            $imgs[] = $this->googleDriveUtility->getFile($url);
         }
 
-        return $banners;
+        return $imgs;
     }
 }
