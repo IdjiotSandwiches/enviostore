@@ -30,31 +30,13 @@
     }
 
     function insertSummary(summary) {
-        @if (request()->routeIs('cart.index'))
-            let card = `{!! view('cart.component.__summary-card', [
-                'subtotal' => '::SUBTOTAL::',
-                'quantity' => '::QUANTITY::',
-            ])->render() !!}`;
+        let card = `{!! view('cart.component.__summary-card', [
+            'subtotal' => '::SUBTOTAL::',
+            'quantity' => '::QUANTITY::',
+        ])->render() !!}`;
 
-            card = card.replace('::SUBTOTAL::', summary.subtotal ?? '-')
-                .replace('::QUANTITY::', summary.quantity ?? '-');
-        @else
-            let card = `{!! view('checkout.component.__summary-card', [
-                'subtotal' => '::SUBTOTAL::',
-                'quantity' => '::QUANTITY::',
-                'transaction' => '::TRANSACTION::',
-                'shipping' => '::SHIPPING::',
-                'total' => '::TOTAL::'
-            ])->render() !!}`;
-
-            card = card.replace('::SUBTOTAL::', summary.subtotal ?? '-')
-                .replace('::QUANTITY::', summary.quantity ?? '-')
-                .replace('::TRANSACTION::', summary.adminFee ?? '-')
-                .replace('::SHIPPING::', summary.shippingFee ?? '-')
-                .replace('::TOTAL::', summary.total ?? '-');
-
-            totalPrice = parseFloat(summary.total.replaceAll('.', ''));
-        @endif
+        card = card.replace('::SUBTOTAL::', summary.subtotal ?? '-')
+            .replace('::QUANTITY::', summary.quantity ?? '-');
         
         summaryContainer.insertAdjacentHTML('beforeend', card);
     }

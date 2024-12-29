@@ -5,6 +5,7 @@ namespace App\Http\Controllers\user;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Models\ErrorLog;
 use App\Services\ProfileService;
+use App\Utilities\ErrorUtility;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileRequest;
@@ -15,6 +16,7 @@ use Illuminate\Http\Response;
 class ProfileController extends Controller implements StatusInterface, SessionKeyInterface
 {
     private $profileService;
+    private $errorUtility;
 
     /**
      * Summary of __construct
@@ -22,6 +24,7 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
     public function __construct()
     {
         $this->profileService = new ProfileService();
+        $this->errorUtility = new ErrorUtility();
     }
 
     /**
@@ -42,9 +45,7 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
         try {
             $profilePicture = $this->profileService->getProfilePicture();
         } catch (\Exception $e) {
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
+            $this->errorUtility->errorLog($e->getMessage());
 
             return response()->json([
                 'status' => self::STATUS_ERROR,
