@@ -13,8 +13,8 @@
 
 @section('extra-js')
 <script>
-    let cartContainer = document.querySelector('#cartContainer');
-    let summaryContainer = document.querySelector('#summaryContainer');
+    const cartContainer = document.querySelector('#cartContainer');
+    const summaryContainer = document.querySelector('#summaryContainer');
     
     function fetchRequest(url) {
         emptyContent();
