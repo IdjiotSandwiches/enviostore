@@ -23,7 +23,7 @@
     </div>
 
     <div class="grid gap-4">
-        <div id="productContainer" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+        <div id="productContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
         <div id="pagination" class="flex items-center md:justify-between"></div>
     </div>
 </section>
