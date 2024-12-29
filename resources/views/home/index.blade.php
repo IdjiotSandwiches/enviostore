@@ -33,7 +33,7 @@
             @endforeach
         </div>
     </div>
-</div>
+    </div>
 @endsection
 
 @section('extra-js')

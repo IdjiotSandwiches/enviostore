@@ -186,6 +186,11 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'password' => 'Password',
+        'phone_number' => 'Phone Number',
+        'password_confirmation' => 'Confirmation Password',
+        'old_password' => 'Old Password'
+    ],
 
 ];

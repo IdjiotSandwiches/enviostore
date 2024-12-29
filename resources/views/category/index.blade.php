@@ -31,9 +31,9 @@
 
 @section('extra-js')
 <script>
+    const productContainer = document.querySelector('#productContainer')
     function replaceProducts(response) {
         let data = response.data;
-        let productContainer = document.querySelector('#productContainer');
         productContainer.replaceChildren();
 
         let products = data.products;
@@ -87,11 +87,10 @@
     }
 
     function fetchRequest(url) {
-        let productContainer = document.querySelector('#productContainer');
         productContainer.replaceChildren();
 
         setTimeout(function() {
-            if(productContainer.textContent !== '') return;
+            if(checkPlaceholder(productContainer) !== '') return;
 
             for (let i = 0; i < 8; i++) {
                 let item = `{!! view('component.__skeleton-card')->render() !!}`;
@@ -102,20 +101,8 @@
         customFetch(url, {
             method: 'GET',
         }).then(response => {
-            if(!response.ok) {
-                throw new Error();
-            }
-
             productContainer.replaceChildren();
-            return response.json();
-        }).then(response => {
             replaceProducts(response);
-        }).catch(error => {
-            let section = document.querySelector('section');
-            let item = `{!! view('component.__fetch-failed')->render() !!}`;
-            
-            section.replaceChildren();
-            section.insertAdjacentHTML('beforeend', item);
         });
     }
 
