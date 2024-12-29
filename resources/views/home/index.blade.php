@@ -156,10 +156,9 @@
         customFetch(url, {
             method: 'GET',
         }).then(response => {
-            let data = response.data;
-            console.log(data);
             emptyContent();
-
+            let data = response.data;
+            
             renderProducts(data.products);
             renderCarousel(data.carouselImg);
             renderSlider(data.categories);
