@@ -1,5 +1,5 @@
 <div role="status" class="flex flex-shrink-0 overflow-auto space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center">
-    <div class="flex items-center justify-center w-40 h-40 md:w-60 md:h-60 lg:w-72 lg:h-72 bg-gray-200 rounded-lg">
+    <div class="flex items-center justify-center w-40 h-40 md:w-60 md:h-60 lg:w-[19rem] lg:h-[19rem] bg-gray-200 rounded-lg">
         <svg class="w-10 h-10 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
             viewBox="0 0 20 18">
             <path

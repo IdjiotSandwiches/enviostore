@@ -7,7 +7,7 @@
     <div class="grid gap-4">
         <h1 class="text-4xl md:text-5xl text-center font-secondary">{{ __('header.category') }}</h1>
         <div id="bannerContainer"></div>
-        <div id="categoryContainer" class="flex flex-shrink-0 overflow-auto gap-8"></div>
+        <div id="categoryContainer" class="flex flex-shrink-0 overflow-auto gap-4"></div>
     </div>
     <div class="grid gap-4">
         <h1 class="text-4xl md:text-5xl text-center font-secondary">{{ __('header.recommended') }}</h1>
@@ -38,12 +38,12 @@
         let glideBullets = document.querySelector('.glide_carousel .glide__bullets');
 
         carouselImg.forEach((value, index) => {
-            let banner = `{!! view('home.component.__carousel-slide', [
-                'banner' => '::BANNER::',
+            let carousel = `{!! view('home.component.__carousel-slide', [
+                'carousel' => '::CAROUSEL::',
             ])->render() !!}`;
 
-            banner = banner.replace('::BANNER::', value);
-            glideSlides.insertAdjacentHTML('beforeend', banner);
+            carousel = carousel.replace('::CAROUSEL::', value);
+            glideSlides.insertAdjacentHTML('beforeend', carousel);
 
             let bullet = `{!! view('home.component.__carousel-bullet', [
                 'key' => '::KEY::',
