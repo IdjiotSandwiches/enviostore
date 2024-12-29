@@ -11,7 +11,7 @@
         emptyContent();
 
         setTimeout(function() {
-            if(cartContainer.textContent !== '' && summaryContainer.textContent !== '') return;
+            if(checkPlaceholder(cartContainer) && checkPlaceholder(summaryContainer)) return;
 
             let cart = `{!! view('component.__skeleton-item')->render() !!}`;
             cartContainer.insertAdjacentHTML('beforeend', cart);

@@ -14,6 +14,9 @@
 @section('extra-js')
 @include('component.js.__card-replace-summary')
 <script>
+    const cartContainer = document.querySelector('#cartContainer');
+    const summaryContainer = document.querySelector('#summaryContainer');
+    
     function replaceContent(response) {
         emptyContent();
         
