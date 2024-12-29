@@ -23,6 +23,7 @@ use App\Http\Controllers\user\HomeController;
 Route::middleware(['guest:admin'])->group(function () {
     Route::controller(HomeController::class)->group(function(){
         Route::get('/', 'index')->name('home');
+        Route::get('/home-item', 'getHomeItems')->name('getHomeItems');
     });
 
     Route::controller(ProductController::class)->group(function () {

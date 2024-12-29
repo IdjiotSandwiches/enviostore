@@ -11,6 +11,7 @@ class HomeService
 {
     private $googleDriveUtility;
     private $productsUtility;
+    
     /**
      * Summary of __construct
      */
@@ -54,7 +55,6 @@ class HomeService
         return $categories;
     }
 
-    // Take all item inside the folder
     /**
      * Summary of getBanner
      * @return string[]
