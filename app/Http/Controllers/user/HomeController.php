@@ -27,7 +27,8 @@ class HomeController extends Controller implements StatusInterface
             'status' => self::STATUS_SUCCESS,
             'message' => 'Data retrieved.',
             'data' => [
-                'banners' => $homeService->getBanner(),
+                'carouselImg' => $homeService->getImgs('home_carousel_images'),
+                'banner' => $homeService->getImgs('banner_images'),
                 'categories' => $homeService->getCategories(),
                 'products' => $homeService->getHomeProduct(),
             ],

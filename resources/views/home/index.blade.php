@@ -12,8 +12,8 @@
     <div id="bannerContainer" class="flex justify-center pb-9">
         <img class="h-auto max-w-full" src="{{ asset('img/Example Banner.png') }}" alt="image description">
     </div>
-    <div class="mx-auto px-4">
-        
+    <div id="categoryContainer" class="mx-auto px-4 flex flex-shrink-0 overflow-auto gap-8">
+        @include('home.component.__slider-skeleton')
     </div>
     <div class="flex justify-center p-9">
         <h1 class="text-5xl font-secondary">
@@ -30,20 +30,22 @@
 <script>
     const productContainer = document.querySelector('#productContainer');
     const carouselPlaceholder = document.querySelector('#carousel');
+    const categoryPlaceholder = document.querySelector('#categoryContainer');
 
     function emptyContent() {
         productContainer.replaceChildren();
         carouselPlaceholder.replaceChildren();
+        categoryPlaceholder.replaceChildren();
     }
 
-    function renderCarousel(banners) {
+    function renderCarousel(carouselImg) {
         let carouselGlide = `{!! view('home.component.__carousel')->render() !!}`;
         carouselPlaceholder.insertAdjacentHTML('beforeend', carouselGlide);
 
-        let glideSlides = document.querySelector('.glide__slides');
-        let glideBullets = document.querySelector('.glide__bullets');
+        let glideSlides = document.querySelector('.glide_carousel .glide__slides');
+        let glideBullets = document.querySelector('.glide_carousel .glide__bullets');
 
-        banners.forEach((value, index) => {
+        carouselImg.forEach((value, index) => {
             let banner = `{!! view('home.component.__carousel-slide', [
                 'banner' => '::BANNER::',
             ])->render() !!}`;
@@ -67,15 +69,29 @@
             hoverpause: true,
         });
 
-        carousel.mount({
-            Controls,
-            Breakpoints,
-            Swipe,
-            Autoplay
-        });
+        carousel.mount({ Controls, Breakpoints, Swipe, Autoplay });
     }
 
     function renderSlider(categories) {
+        let glideSlider = `{!! view('home.component.__slider')->render() !!}`;
+        categoryPlaceholder.insertAdjacentHTML('beforeend', glideSlider);
+
+        let glideSlides = document.querySelector('.glide_slider .glide__slides');
+
+        categories.forEach(category => {
+            let slide = `{!! view('home.component.__category-tiles', [
+                'route' => '::ROUTE::',
+                'image' => '::IMAGE::',
+                'name' => '::NAME::',
+            ])->render() !!}`;
+
+            slide = slide.replace('::ROUTE::', category.link)
+                .replace('::IMAGE::', category.image)
+                .replace('::NAME::', category.name);
+
+            glideSlides.insertAdjacentHTML('beforeend', slide);
+        });
+
         const slider = new Glide('.glide_slider', {
             type: 'slider',
             startAt: 0,
@@ -83,13 +99,13 @@
             perView: 4,
             bound: true,
             rewind: false,
+            breakpoints: {
+                768: { perView: 3 },
+                640: { perView: 2 },
+            }
         });
 
-        slider.mount({
-            Controls,
-            Breakpoints,
-            Swipe
-        });
+        slider.mount({ Controls, Breakpoints, Swipe });
     }
 
     function renderProducts(products) {
@@ -120,6 +136,11 @@
 
         let carouselSkeleton = `{!! view('home.component.__carousel-skeleton')->render() !!}`;
         carousel.insertAdjacentHTML('beforeend', carouselSkeleton);
+
+        for (let i = 0; i < 4; i++) {
+            let card = `{!! view('home.component.__slider-skeleton')->render() !!}`;
+            categoryPlaceholder.insertAdjacentHTML('beforeend', card);
+        }
     }
 
     function fetchRequest() {
@@ -142,14 +163,13 @@
             emptyContent();
 
             renderProducts(data.products);
-            renderCarousel(data.banners);
+            renderCarousel(data.carouselImg);
+            renderSlider(data.categories);
         });
     }
 
     document.addEventListener('DOMContentLoaded', function () {
         fetchRequest();
-
-       
     });
 </script>
 @endsection
