@@ -23,7 +23,7 @@
     </div>
 
     <div class="grid gap-4">
-        <div id="productContainer" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+        <div id="productContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
         <div id="pagination" class="flex items-center md:justify-between"></div>
     </div>
 </section>
@@ -31,7 +31,8 @@
 
 @section('extra-js')
 <script>
-    const productContainer = document.querySelector('#productContainer')
+    const productContainer = document.querySelector('#productContainer');
+    
     function replaceProducts(response) {
         let data = response.data;
         productContainer.replaceChildren();
@@ -90,7 +91,7 @@
         productContainer.replaceChildren();
 
         setTimeout(function() {
-            if(checkPlaceholder(productContainer) !== '') return;
+            if(checkPlaceholder(productContainer)) return;
 
             for (let i = 0; i < 8; i++) {
                 let item = `{!! view('component.__skeleton-card')->render() !!}`;

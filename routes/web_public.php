@@ -21,9 +21,18 @@ use App\Http\Controllers\user\HomeController;
 */
 
 Route::middleware(['guest:admin'])->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/products/{product_serial}', [ProductController::class, 'getProduct'])->name('getProduct');
-    Route::get('/category/{category_serial}', [CategoryController::class, 'index'])->name('categoryPage');
+    Route::controller(HomeController::class)->group(function(){
+        Route::get('/', 'index')->name('home');
+        Route::get('/home-item', 'getHomeItems')->name('getHomeItems');
+    });
+
+    Route::controller(ProductController::class)->group(function () {
+        Route::get('/products/{product_serial}', 'getProduct')->name('getProduct');
+    });
+
+    Route::controller(CategoryController::class)->group(function () {
+        Route::get('/category/{category_serial}', 'index')->name('categoryPage');
+    });
 });
 
 Route::middleware(['guest:web,admin'])->group(function () {
