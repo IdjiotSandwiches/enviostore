@@ -5,7 +5,6 @@ namespace App\Http\Controllers\user;
 use App\Http\Requests\PaymentRequest;
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
-use App\Models\ErrorLog;
 use App\Models\Order;
 use App\Services\CheckoutService;
 use App\Utilities\ErrorUtility;
@@ -55,10 +54,10 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
     }
 
     /**
-     * Summary of createOrderFromCart
+     * Summary of index
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function createOrderFromCart()
+    public function index()
     {
         try {
             DB::beginTransaction();
@@ -81,7 +80,7 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
             return back()->withInput()->with($response);
         }
 
-        return view('checkout.cart', compact('shippings', 'order', 'address'));
+        return view('checkout.index', compact('shippings', 'order', 'address'));
     }
 
     /**

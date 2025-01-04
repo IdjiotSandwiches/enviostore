@@ -23,6 +23,7 @@
 @endsection
 
 @section('extra-js')
+@include('component.js.__card-replace-summary')
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
 <script>
     const cartContainer = document.querySelector('#cartContainer');
@@ -69,7 +70,7 @@
             button.addEventListener('click', function () {
                 let shippingUrl = '{{ route('checkout.updateShipping', [$order->id, '::SHIPPING_SERIAL::']) }}';
                 shippingUrl = shippingUrl.replace('::SHIPPING_SERIAL::', this.value);
-                customFetch(url, {
+                customFetch(shippingUrl, {
                     method: 'POST',
                 });
 
@@ -101,8 +102,7 @@
         radioInputListener();
     }
 
-    function insertAddress()
-    {
+    function insertAddress() {
         let card = `{!! view('checkout.component.__address', ['address' => $address])->render() !!}`;
         addressContainer.insertAdjacentHTML('beforeend', card);
     }
@@ -161,7 +161,10 @@
             }
         });
     }
-</script>
 
-@yield('js')
+    document.addEventListener('DOMContentLoaded', function () {
+        const URL = '{{ route('cart.getCartItems') }}';
+        fetchRequest(URL);
+    });
+</script>
 @endsection
