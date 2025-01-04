@@ -76,4 +76,15 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
 
         return (object) compact('name', 'rating', 'price', 'img', 'link');
     }
+
+    /**
+     * Summary of isAvailable
+     * @param int $currentStock
+     * @param int $quantity
+     * @return bool
+     */
+    public function isAvailable($currentStock, $quantity)
+    {
+        return $currentStock >= $quantity;
+    }
 }

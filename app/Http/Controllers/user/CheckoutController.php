@@ -74,7 +74,7 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
 
             $response = [
                 'status' => self::STATUS_ERROR,
-                'message' => __('message.invalid'),
+                'message' => $e->getMessage(),
             ];
 
             return back()->withInput()->with($response);

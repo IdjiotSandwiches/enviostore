@@ -46,7 +46,7 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
         try {
             DB::beginTransaction();
 
-            $this->cartService->delete($request);
+            $this->cartService->delete($request->id);
 
             DB::commit();
         } catch (\Exception $e) {
@@ -72,14 +72,13 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
 
     /**
      * Summary of getCartItems
-     * @param string|null $shipping
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function getCartItems($shipping = null)
+    public function getCartItems()
     {
         $cart = (object) [
             'items' => $this->cartService->getCartItems(),
-            'summary' => $this->cartService->getCartSummary($shipping),
+            'summary' => $this->cartService->getCartSummary(),
         ];
 
         return response()->json([
@@ -131,6 +130,6 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
      */
     public function checkout()
     {
-        return to_route('checkout.createOrderFromCart');
+        return to_route('checkout.index');
     }
 }

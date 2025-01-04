@@ -7,16 +7,18 @@ use App\Interfaces\FeeInterface;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Interfaces\SessionKeyInterface;
-use App\Models\Shipping;
 use App\Utilities\GoogleDriveUtility;
+use App\Utilities\ProductsUtility;
 
 class CartService implements SessionKeyInterface, FeeInterface
 {
     private $googleDriveUtility;
+    private $productsUtility;
 
     public function __construct()
     {
         $this->googleDriveUtility = new GoogleDriveUtility();
+        $this->productsUtility = new ProductsUtility();
     }
 
     /**
@@ -34,11 +36,13 @@ class CartService implements SessionKeyInterface, FeeInterface
             ->where('user_id', $user->id)
             ->get()
             ->map(function ($item) {
+                $isAvailable = $this->productsUtility->isAvailable($item->product->stocks, $item->quantity);
                 $img = $item->product->productImage->first();
                 $img = $this->googleDriveUtility->getFile($img->url);
                 $price = $item->quantity * $item->product->price;
 
                 return (object) [
+                    'isAvailable' => $isAvailable,
                     'productName' => $item->product->name,
                     'quantity' => $item->quantity,
                     'price' => StringHelper::parseNumberFormat($price),
@@ -54,10 +58,9 @@ class CartService implements SessionKeyInterface, FeeInterface
 
     /**
      * Summary of getCartSummary
-     * @param string $shipping
      * @return object
      */
-    public function getCartSummary($shipping)
+    public function getCartSummary()
     {
         /**
          * @var \App\Models\User $user
@@ -68,23 +71,22 @@ class CartService implements SessionKeyInterface, FeeInterface
             ->where('user_id', $user->id)
             ->get()
             ->map(function ($item) {
+                $isAvailable = $this->productsUtility->isAvailable($item->product->stocks, $item->quantity);
                 $subtotal = $item->quantity * $item->product->price;
 
                 return (object) [
-                    'quantity' => $item->quantity,
-                    'subtotal' => $subtotal,
+                    'quantity' => $isAvailable ? $item->quantity : 0,
+                    'subtotal' => $isAvailable ? $subtotal : 0,
                 ];
             });
 
-        $shippingFee = optional(Shipping::where('shipping_serial_code', $shipping)->first())->fee ?? 0;
         $adminFee = self::TRANSACTION_FEE;
         $subtotal = $items->sum('subtotal');
-        $total = $shippingFee + $adminFee + $subtotal;
+        $total = $adminFee + $subtotal;
 
         $summary = (object) [
             'subtotal' => StringHelper::parseNumberFormat($subtotal),
             'quantity' => $items->sum('quantity'),
-            'shippingFee' => StringHelper::parseNumberFormat($shippingFee),
             'adminFee' => StringHelper::parseNumberFormat($adminFee),
             'total' => StringHelper::parseNumberFormat($total),
         ];
@@ -147,9 +149,8 @@ class CartService implements SessionKeyInterface, FeeInterface
      * @throws \Exception
      * @return void
      */
-    public function delete($request)
+    public function delete($id)
     {
-        $id = $request->id;
         $cart = Cart::find($id);
 
         if (!$cart) {

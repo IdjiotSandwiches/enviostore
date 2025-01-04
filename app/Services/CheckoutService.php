@@ -7,18 +7,18 @@ use App\Interfaces\FeeInterface;
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
 use App\Models\Cart;
-use App\Models\ErrorLog;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\Models\User;
 use App\Utilities\CartUtility;
-use Illuminate\Support\Facades\DB;
+use App\Utilities\ProductsUtility;
 use Midtrans\Config;
 use Midtrans\Snap;
 
 class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterface
 {
     private $cartUtility;
+    private $productsUtility;
 
     /**
      * Summary of __construct
@@ -31,6 +31,7 @@ class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterf
         Config::$is3ds = config('midtrans.is_3ds');
 
         $this->cartUtility = new CartUtility();
+        $this->productsUtility = new ProductsUtility();
     }
 
     /**
@@ -77,7 +78,10 @@ class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterf
             ->where('user_id', $user->id)
             ->get()
             ->map(function ($item) {
+                $isAvailable = $this->productsUtility->isAvailable($item->product->stocks, $item->quantity);
                 $subtotal = $item->quantity * $item->product->price;
+
+                if (!$isAvailable) throw new \Exception(__('remove_unavailable'));
 
                 return (object) [
                     'quantity' => $item->quantity,
