@@ -18,6 +18,7 @@ return [
     'cart.quantity' => 'Quantity',
     'cart.empty' => 'Your cart is empty.',
     'cart.button' => 'Explore our products',
+    'cart.out_of_stock' => 'Out of Stock',
 
     'checkout.pay' => 'Pay',
     'checkout.transaction_fee' => 'Transaction Fee',

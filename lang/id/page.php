@@ -18,6 +18,7 @@ return [
     'cart.quantity' => 'Jumlah',
     'cart.empty' => 'Keranjang anda kosong.',
     'cart.button' => 'Telusuri produk kami',
+    'cart.out_of_stock' => 'Stok Habis',
 
     'checkout.pay' => 'Bayar',
     'checkout.transaction_fee' => 'Biaya Transaksi',

@@ -2,12 +2,10 @@
 
 namespace App\Utilities;
 
-use App\Helpers\StringHelper;
 use App\Interfaces\FeeInterface;
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
 use App\Models\Cart;
-use App\Models\Shipping;
 
 class CartUtility implements SessionKeyInterface, StatusInterface, FeeInterface
 {

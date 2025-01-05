@@ -81,7 +81,7 @@ class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterf
                 $isAvailable = $this->productsUtility->isAvailable($item->product->stocks, $item->quantity);
                 $subtotal = $item->quantity * $item->product->price;
 
-                if (!$isAvailable) throw new \Exception(__('remove_unavailable'));
+                if (!$isAvailable) throw new \Exception(__('message.remove_unavailable'));
 
                 return (object) [
                     'quantity' => $item->quantity,

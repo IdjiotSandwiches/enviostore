@@ -50,6 +50,12 @@
                 .replace('::QUANTITY::', item.quantity)
                 .replace('::CATEGORY::', item.categoryName)
                 .replace('::DELETE::', item.delete);
+
+            card = item.isAvailable ? 
+                card.replaceAll('::OPACITY::', '')
+                    .replace('::HIDDEN::', 'hidden') : 
+                card.replaceAll('::OPACITY::', 'opacity-30')
+                    .replace('::HIDDEN::', '');
             
             cartContainer.insertAdjacentHTML('beforeend', card);
         });
