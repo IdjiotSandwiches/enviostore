@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Requests\PaymentRequest;
+use App\Http\Requests\ShippingRequest;
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
 use App\Models\Order;
@@ -27,35 +28,20 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         $this->errorUtility = new ErrorUtility();
     }
 
-    /**
-     * Summary of getOrder
-     * @param mixed $id
-     * @return mixed|\Illuminate\Http\JsonResponse
-     */
-    public function getOrder($id)
+
+    public function createOrder(ShippingRequest $shippingRequest)
     {
-        if (!request()->ajax()) abort(404);
+        $validated = $shippingRequest->validated();
 
-        $order = Order::find($id);
-
-        if (!$order->snap_token) {
+        if (!$this->checkoutService->hasAddress()) {
             return response()->json([
                 'status' => self::STATUS_WARNING,
-                'message' => __('message.shipping_not_selected'),
+                'message' => __('message.insert_address'),
                 'data' => [],
             ], Response::HTTP_OK);
         }
 
-        return response()->json([
-            'status' => self::STATUS_SUCCESS,
-            'message' => 'Order Retrieved!',
-            'data' => $order,
-        ], Response::HTTP_OK);
-    }
-
-    public function createOrder($shipping = null)
-    {
-        if (!$shipping) {
+        if (!isset($validated['shippings'])) {
             return response()->json([
                 'status' => self::STATUS_WARNING,
                 'message' => __('message.shipping_not_selected'),
@@ -66,7 +52,7 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         try {
             DB::beginTransaction();
 
-            $order = $this->checkoutService->createOrderFromCart($shipping);
+            $order = $this->checkoutService->createOrderFromCart($validated['shippings']);
             
             DB::commit();
         } catch (\Exception $e) {

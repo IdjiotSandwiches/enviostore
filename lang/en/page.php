@@ -24,6 +24,7 @@ return [
     'checkout.transaction_fee' => 'Transaction Fee',
     'checkout.shipping_fee' => 'Shipping Fee',
     'checkout.address' => 'Shipped to',
+    'checkout.add_address' => 'Add Address',
 
     'profile.user_information' => 'User Information',
     'profile.name' => 'Name',

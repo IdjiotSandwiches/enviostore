@@ -44,5 +44,5 @@ Route::prefix('checkout')
     ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/pay/{id}', 'pay')->name('pay');
-        Route::post('/create/{shipping?}', 'createOrder')->name('createOrder');
+        Route::post('/create', 'createOrder')->name('createOrder');
     });

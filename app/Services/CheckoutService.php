@@ -215,6 +215,20 @@ class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterf
     }
 
     /**
+     * Summary of hasAddress
+     * @return string
+     */
+    public function hasAddress()
+    {
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = session(self::SESSION_IDENTITY);
+        $user = User::find($user->id);
+        return $user->address;
+    }
+
+    /**
      * Summary of updateStocks
      * @param \App\Models\Product $product
      * @param int $quantity

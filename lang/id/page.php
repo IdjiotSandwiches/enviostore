@@ -24,6 +24,7 @@ return [
     'checkout.transaction_fee' => 'Biaya Transaksi',
     'checkout.shipping_fee' => 'Biaya Pengiriman',
     'checkout.address' => 'Dikirim ke',
+    'checkout.add_address' => 'Tambahkan Alamat',
 
     'profile.user_information' => 'Informasi Pengguna',
     'profile.name' => 'Nama',

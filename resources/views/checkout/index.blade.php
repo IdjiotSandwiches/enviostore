@@ -2,8 +2,8 @@
 @section('title', 'Checkout')
 
 @section('content')
-<section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
-    <form id="payment-form" method="POST" action="">
+<section class="max-w-screen-xl px-4 py-8 md:mx-auto">
+    <form id="payment-form" method="POST" action="" class="grid gap-4">
         @csrf
         @method('POST')
         <h1 class="font-bold text-3xl">Checkout</h1>
@@ -43,11 +43,10 @@
             spinner.classList.toggle('hidden');
         }
 
-        let url = '{{ route('checkout.createOrder', ['::SHIPPING::']) }}';
-        url = url.replace('::SHIPPING::', selectedShippingValue);
-
+        let url = '{{ route('checkout.createOrder') }}';
         customFetch(url, {
             method: 'POST',
+            body: JSON.stringify({ 'shippings': selectedShippingValue }),
         }).then(response => {
             let order = response.data;
             if(order.length === 0) {
