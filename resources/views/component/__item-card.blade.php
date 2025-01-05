@@ -3,7 +3,7 @@
 <div class="w-full h-fit flex bg-white rounded-lg">
     <a href="{{ $link }}" class="flex justify-center items-center rounded-l-lg aspect-square object-contain max-w-[8rem] md:max-w-[10rem]">
         <img class="w-full aspect-square object-contain p-2 ::OPACITY::" src="{{ $image }}" alt="{{ $name }}" />
-        <p class="absolute ::HIDDEN::">{{ __('page.cart.out_of_stock') }}</p>
+        <p class="absolute text-lg ::HIDDEN::">{{ __('page.cart.out_of_stock') }}</p>
     </a>
     <div class="p-2 md:p-5 flex flex-col justify-between w-full">
         <div class="flex flex-col gap-2 lg:gap-0 ::OPACITY::">
