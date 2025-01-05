@@ -3,19 +3,18 @@
 
 @section('content')
 <section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
-    <h1 class="font-bold text-3xl">Checkout</h1>
-    <div class="flex flex-col lg:flex-row justify-between gap-4">
-        <section class="grid gap-4 flex-1">
-            <div id="cartContainer" class="grid gap-4 flex-1"></div>
-            <div id="addressContainer" class="grid gap-4"></div>
-            <div id="shippingContainer" class="grid gap-4"></div>
-        </section>
-        <section id="summaryContainer" class="lg:w-1/3 xl:w-1/4"></section>
-    </div>
-
-    <form id="payment-form" method="POST" action="{{ route('checkout.pay', [$order->id]) }}">
+    <form id="payment-form" method="POST" action="">
         @csrf
         @method('POST')
+        <h1 class="font-bold text-3xl">Checkout</h1>
+        <div class="flex flex-col lg:flex-row justify-between gap-4">
+            <section class="grid gap-4 flex-1">
+                <div id="cartContainer" class="grid gap-4 flex-1"></div>
+                <div id="addressContainer" class="grid gap-4"></div>
+                <div id="shippingContainer" class="grid gap-4"></div>
+            </section>
+            <section id="summaryContainer" class="lg:w-1/3 xl:w-1/4"></section>
+        </div>
         <input type="hidden" name="result_type" id="result-type" value=""></div>
         <input type="hidden" name="result_data" id="result-data" value=""></div>
     </form>
@@ -33,18 +32,22 @@
     const shippings = {!! $shippings !!};
     let totalPrice;
 
-    function getOrder() {
+    function createOrder() {
         const submitButton = document.querySelector('button[type="submit"]')
         const spinner = document.querySelector('div[role="status"]');
+        const selectedShipping = document.querySelector('input[type="radio"][name="shippings"]:checked');
+        const selectedShippingValue = selectedShipping ? selectedShipping.value : '';
         
         submitButton.disabled = true;
         if(spinner) {
             spinner.classList.toggle('hidden');
         }
 
-        let url = '{{ route('checkout.getOrder', [$order->id]) }}';
+        let url = '{{ route('checkout.createOrder', ['::SHIPPING::']) }}';
+        url = url.replace('::SHIPPING::', selectedShippingValue);
+
         customFetch(url, {
-            method: 'GET',
+            method: 'POST',
         }).then(response => {
             let order = response.data;
             if(order.length === 0) {
@@ -68,12 +71,6 @@
         const shippingButtons = document.querySelectorAll('input[type="radio"][name="shippings"]');
         shippingButtons.forEach(button => {
             button.addEventListener('click', function () {
-                let shippingUrl = '{{ route('checkout.updateShipping', [$order->id, '::SHIPPING_SERIAL::']) }}';
-                shippingUrl = shippingUrl.replace('::SHIPPING_SERIAL::', this.value);
-                customFetch(shippingUrl, {
-                    method: 'POST',
-                });
-
                 let shipping = document.querySelector('#shipping-fee');
                 shippingFee = shippings.find(s => s.shipping_serial_code === this.value)['fee'];
                 shipping.textContent = shippingFee;
@@ -126,8 +123,9 @@
             .replace('::QUANTITY::', summary.quantity ?? '-');
         
         summaryContainer.insertAdjacentHTML('beforeend', card);
-        document.querySelector('#pay-btn').addEventListener('click', function() {
-            getOrder();
+        document.querySelector('#pay-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            createOrder();
         });
 
         totalPrice = parseFloat(summary.total.replaceAll('.', ''));

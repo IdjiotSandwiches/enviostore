@@ -32,7 +32,7 @@ Route::prefix('cart')
     ->controller(CartController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/cart-items/{shipping?}', 'getCartItems')->name('getCartItems');
+        Route::get('/cart-items', 'getCartItems')->name('getCartItems');
         Route::post('/add-to-cart', 'addToCart')->name('addToCart');
         Route::delete('/delete/{id}', 'delete')->name('deleteItem');
         Route::post('/', 'checkout')->name('checkout');
@@ -43,7 +43,6 @@ Route::prefix('checkout')
     ->controller(CheckoutController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/order/{id}', 'getOrder')->name('getOrder');
-        Route::post('/{id}', 'pay')->name('pay');
-        Route::post('/order/{id}/{shipping}', 'updateShipping')->name('updateShipping');
+        Route::post('/pay/{id}', 'pay')->name('pay');
+        Route::post('/create/{shipping?}', 'createOrder')->name('createOrder');
     });

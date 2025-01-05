@@ -53,6 +53,41 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         ], Response::HTTP_OK);
     }
 
+    public function createOrder($shipping = null)
+    {
+        if (!$shipping) {
+            return response()->json([
+                'status' => self::STATUS_WARNING,
+                'message' => __('message.shipping_not_selected'),
+                'data' => [],
+            ], Response::HTTP_OK);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $order = $this->checkoutService->createOrderFromCart($shipping);
+            
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $this->errorUtility->errorLog($e->getMessage());
+
+            return response()->json([
+                'status' => self::STATUS_ERROR,
+                'message' => '',
+                'data' => $order,
+            ], Response::HTTP_OK);
+        }
+
+        return response()->json([
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Order Retrieved!',
+            'data' => $order,
+        ], Response::HTTP_OK);
+    }
+
     /**
      * Summary of index
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
@@ -62,8 +97,8 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         try {
             DB::beginTransaction();
 
+            $this->checkoutService->isAcceptable();
             $shippings = $this->checkoutService->getCheckoutCredentials();
-            $order = $this->checkoutService->createOrderFromCart();
             $address = $this->checkoutService->getUserAddress();
 
             DB::commit();
@@ -80,58 +115,20 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
             return back()->withInput()->with($response);
         }
 
-        return view('checkout.index', compact('shippings', 'order', 'address'));
-    }
-
-    /**
-     * Summary of updateShipping
-     * @param int $id
-     * @param string $shipping
-     * @return mixed|\Illuminate\Http\JsonResponse
-     */
-    public function updateShipping($id, $shipping)
-    {
-        if (!request()->ajax()) abort(404);
-
-        try {
-            DB::beginTransaction();
-
-            $this->checkoutService->updateShipping($id, $shipping);
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            $this->errorUtility->errorLog($e->getMessage());
-
-            return response()->json([
-                'status' => self::STATUS_ERROR,
-                'message' => $e->getMessage(),
-                'data' => [],
-            ], Response::HTTP_OK);
-        }
-
-        return response()->json([
-            'status' => self::STATUS_SUCCESS,
-            'message' => 'Update Shipping Success',
-            'data' => [],
-        ], Response::HTTP_OK);
+        return view('checkout.index', compact('shippings', 'address'));
     }
 
     /**
      * Summary of pay
      * @param \App\Http\Requests\PaymentRequest $paymentRequest
-     * @param int $id
-     * @return void
+     * @return Order|\Illuminate\Database\Eloquent\Model
      */
-    public function pay(PaymentRequest $paymentRequest, $id)
+    public function pay(PaymentRequest $paymentRequest)
     {
         try {
             DB::beginTransaction();
 
-            $order = Order::find($id);
-            $order->payment_status = $paymentRequest->result_type;
-            $order->save();
+            $order = $this->checkoutService->createOrderFromCart($paymentRequest->shipping);
             
             DB::commit();
         } catch (\Exception $e) {
@@ -139,5 +136,7 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
 
             $this->errorUtility->errorLog($e->getMessage());
         }
+
+        return $order;
     }
 }
