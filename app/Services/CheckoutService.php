@@ -10,14 +10,12 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\Models\User;
-use App\Utilities\CartUtility;
 use App\Utilities\ProductsUtility;
 use Midtrans\Config;
 use Midtrans\Snap;
 
 class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterface
 {
-    private $cartUtility;
     private $productsUtility;
 
     /**
@@ -30,7 +28,6 @@ class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterf
         Config::$isSanitized = config('midtrans.is_sanitized');
         Config::$is3ds = config('midtrans.is_3ds');
 
-        $this->cartUtility = new CartUtility();
         $this->productsUtility = new ProductsUtility();
     }
 

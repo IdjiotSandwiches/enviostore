@@ -28,6 +28,35 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         $this->errorUtility = new ErrorUtility();
     }
 
+    /**
+     * Summary of index
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     */
+    public function index()
+    {
+        try {
+            DB::beginTransaction();
+
+            $this->checkoutService->isAcceptable();
+            $shippings = $this->checkoutService->getCheckoutCredentials();
+            $address = $this->checkoutService->getUserAddress();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $this->errorUtility->errorLog($e->getMessage());
+
+            $response = [
+                'status' => self::STATUS_ERROR,
+                'message' => $e->getMessage(),
+            ];
+
+            return back()->withInput()->with($response);
+        }
+
+        return view('checkout.index', compact('shippings', 'address'));
+    }
 
     public function createOrder(ShippingRequest $shippingRequest)
     {
@@ -62,7 +91,7 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
 
             return response()->json([
                 'status' => self::STATUS_ERROR,
-                'message' => '',
+                'message' => __('message.invalid'),
                 'data' => $order,
             ], Response::HTTP_OK);
         }
@@ -74,47 +103,19 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         ], Response::HTTP_OK);
     }
 
-    /**
-     * Summary of index
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
-     */
-    public function index()
-    {
-        try {
-            DB::beginTransaction();
-
-            $this->checkoutService->isAcceptable();
-            $shippings = $this->checkoutService->getCheckoutCredentials();
-            $address = $this->checkoutService->getUserAddress();
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            $this->errorUtility->errorLog($e->getMessage());
-
-            $response = [
-                'status' => self::STATUS_ERROR,
-                'message' => $e->getMessage(),
-            ];
-
-            return back()->withInput()->with($response);
-        }
-
-        return view('checkout.index', compact('shippings', 'address'));
-    }
-
-    /**
-     * Summary of pay
-     * @param \App\Http\Requests\PaymentRequest $paymentRequest
-     * @return Order|\Illuminate\Database\Eloquent\Model
-     */
+    
     public function pay(PaymentRequest $paymentRequest)
     {
+        $validated = $paymentRequest->validated();
+        
         try {
             DB::beginTransaction();
 
-            $order = $this->checkoutService->createOrderFromCart($paymentRequest->shipping);
+            $order = Order::find($validated['order_id']);
+            $paymentResult = json_decode($validated['result_data']);
+            
+            $order->payment_status = $paymentResult->transaction_status;
+            $order->save();
             
             DB::commit();
         } catch (\Exception $e) {
@@ -123,6 +124,6 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
             $this->errorUtility->errorLog($e->getMessage());
         }
 
-        return $order;
+        // return $order;
     }
 }

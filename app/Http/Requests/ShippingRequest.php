@@ -22,7 +22,7 @@ class ShippingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'shippings' => 'in:SHIPPING_001,SHIPPING_002,SHIPPING_003',
+            'shippings' => 'nullable|in:SHIPPING_001,SHIPPING_002,SHIPPING_003',
         ];
     }
 }

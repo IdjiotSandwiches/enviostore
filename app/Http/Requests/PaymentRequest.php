@@ -22,7 +22,7 @@ class PaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'result_type' => 'required',
+            'order_id' => 'required',
             'result_data' => 'required',
         ];
     }

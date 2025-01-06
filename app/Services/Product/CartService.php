@@ -109,9 +109,7 @@ class CartService implements SessionKeyInterface, FeeInterface
 
         $product = Product::where('product_serial_code', $item['product_serial'])->first();
 
-        if (!$product) {
-            throw new \Exception(__('message.invalid'));
-        }
+        if (!$product) throw new \Exception(__('message.invalid'));
 
         $cart = Cart::firstOrNew([
             'product_id' => $product->id,
@@ -121,26 +119,10 @@ class CartService implements SessionKeyInterface, FeeInterface
         $cart->quantity = ($cart->exists() ? $cart->quantity : 0) + $item['quantity'];
         
         $currentStock = $product->stocks;
-        if (!$this->isAvailable($currentStock, $cart->quantity)) {
-            throw new \Exception(__('exceeded_stock'));
-        }
+        $isAvailable = $this->productsUtility->isAvailable($currentStock, $cart->quantity);
+        if (!$isAvailable) throw new \Exception(__('exceeded_stock'));
 
         $cart->save();
-    }
-
-    /**
-     * Summary of isAvailable
-     * @param int $currentStock
-     * @param int $quantity
-     * @return bool
-     */
-    public function isAvailable($currentStock, $quantity)
-    {
-        if ($currentStock < $quantity) {
-            return false;
-        }
-
-        return true;
     }
 
     /**

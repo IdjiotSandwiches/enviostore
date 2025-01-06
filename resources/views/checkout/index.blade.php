@@ -3,7 +3,7 @@
 
 @section('content')
 <section class="max-w-screen-xl px-4 py-8 md:mx-auto">
-    <form id="payment-form" method="POST" action="" class="grid gap-4">
+    <form id="payment-form" method="POST" action="{{ route('checkout.pay') }}" class="grid gap-4">
         @csrf
         @method('POST')
         <h1 class="font-bold text-3xl">Checkout</h1>
@@ -15,8 +15,8 @@
             </section>
             <section id="summaryContainer" class="lg:w-1/3 xl:w-1/4"></section>
         </div>
-        <input type="hidden" name="result_type" id="result-type" value=""></div>
         <input type="hidden" name="result_data" id="result-data" value=""></div>
+        <input type="hidden" name="order_id" id="order-id" value=""></div>
     </form>
 </section>
 @endsection
@@ -43,10 +43,13 @@
             spinner.classList.toggle('hidden');
         }
 
-        let url = '{{ route('checkout.createOrder') }}';
+        const url = '{{ route('checkout.createOrder') }}';
+        const data = new FormData();
+        data.append('shippings', selectedShippingValue);
+
         customFetch(url, {
             method: 'POST',
-            body: JSON.stringify({ 'shippings': selectedShippingValue }),
+            body: data,
         }).then(response => {
             let order = response.data;
             if(order.length === 0) {
@@ -135,9 +138,9 @@
         shippingContainer.insertAdjacentHTML('beforeend', card);
     }
 
-    function changeResult(type, data) {
-        document.querySelector('#result-type').value = type;
+    function changeResult(data, id) {
         document.querySelector('#result-data').value = JSON.stringify(data);
+        document.querySelector('#order-id').value = id;
     }
 
     function midtransSnap(order) {
@@ -145,15 +148,15 @@
 
         snap.pay(order.snap_token, {
             onSuccess: function (result) {
-                changeResult('success', result);
+                changeResult(result, order.id);
                 form.submit();
             },
             onPending: function (result) {
-                changeResult('pending', result);
+                changeResult(result, order.id);
                 form.submit();
             },
             onError: function (result) {
-                changeResult('error', result);
+                changeResult(result, order.id);
                 form.submit();
             }
         });
