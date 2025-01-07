@@ -23,7 +23,7 @@ class RedirectIfCheckout implements SessionKeyInterface
 
         if (Route::is('checkout.*') && !session(self::SESSION_CHECKOUT_PERMISSION)) {
             abort(404);
-        } elseif (!Route::is('checkout.*') && !Route::is('cart.*')) {
+        } elseif (!Route::is('checkout.*')) {
             session()->forget(self::SESSION_CHECKOUT_PERMISSION);
         }
         
