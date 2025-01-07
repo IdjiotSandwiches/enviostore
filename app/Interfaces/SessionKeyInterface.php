@@ -7,5 +7,5 @@ interface SessionKeyInterface
     public const SESSION_IDENTITY = 'identity';
     public const SESSION_IS_ADMIN = 'is_admin';
     public const SESSION_IS_LOGGED_IN = 'is_logged_in';
-    public const SESSION_CHECKOUT = 'checkout';
+    public const SESSION_CHECKOUT_PERMISSION = 'checkout_permission';
 }

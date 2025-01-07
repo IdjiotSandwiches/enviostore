@@ -92,14 +92,13 @@ class CheckoutService implements
                 ];
             });
 
-        $subtotal = $cartItems->sum('subtotal');
-
         $shipping = Shipping::where('shipping_serial_code', $shipping)->first();
 
         $order = Order::create([
+            'unique_id' => 'ORDER_' . time() . '-' . random_int(100,999),
             'user_id' => $user->id,
             'address' => $user->address,
-            'amount' => $subtotal,
+            'amount' => $cartItems->sum('subtotal'),
             'transaction_fee' => self::TRANSACTION_FEE,
             'payment_status' => 'pending',
             'shipping' => $shipping->name,
@@ -111,7 +110,7 @@ class CheckoutService implements
 
         $params = [
             'transaction_details' => [
-                'order_id' => 'ORDER_' . rand(),
+                'order_id' => $order->unique_id,
                 'gross_amount' => $order->amount + $shipping->fee + self::TRANSACTION_FEE,
             ],
             'customer_details' => [

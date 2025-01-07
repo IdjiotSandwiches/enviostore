@@ -9,7 +9,6 @@ use App\Services\Product\CartService;
 use App\Utilities\ErrorUtility;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\StatusInterface;
-use App\Models\ErrorLog;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -130,6 +129,7 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
      */
     public function checkout()
     {
+        session([self::SESSION_CHECKOUT_PERMISSION => true]);
         return to_route('checkout.index');
     }
 }

@@ -25,6 +25,8 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
     {
         $this->checkoutService = new CheckoutService();
         $this->errorUtility = new ErrorUtility();
+
+        // $this->middleware(['checkout.permission']);
     }
 
     /**
@@ -33,12 +35,7 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
      */
     public function index()
     {
-        if (!$this->checkoutService->hasCart()) {
-            return back()->with([
-                'status' => self::STATUS_ERROR,
-                'message' => __('message.empty_cart'),
-            ]);
-        }
+        if (!$this->checkoutService->hasCart()) return back();
 
         try {
             DB::beginTransaction();
@@ -95,12 +92,29 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
             ]);
         }
 
-        return to_route('checkout.payment', $order->id);
+        return to_route('checkout.payment', base64_encode($order->unique_id));
     }
 
     public function paymentPage($id)
     {
-        $order = Order::find($id);
+        try {
+            $id = base64_decode($id);
+        } catch (\Exception $e) {
+            $this->errorUtility->errorLog($e->getMessage());
+
+            return back()->with([
+                'status' => self::STATUS_ERROR,
+                'message' => $e->getMessage(),
+            ]);
+        }
+
+        $order = Order::where('unique_id', $id)
+            ->first(['unique_id', 'snap_token']);
+        $order = (object) [
+            'unique_id' => base64_encode($order->unique_id),
+            'snap_token' => $order->snap_token,
+        ];
+        
         return view('payment', compact('order'));
     }
     
@@ -116,7 +130,8 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         try {
             DB::beginTransaction();
 
-            $order = Order::find($validated['order_id']);
+            $id = base64_decode($validated['order_id']);
+            $order = Order::where('unique_id', $id)->first();
             $paymentResult = json_decode($validated['result_data']);
             
             $order->payment_status = $paymentResult->transaction_status;

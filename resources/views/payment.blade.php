@@ -15,7 +15,7 @@
 @section('extra-js')
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
 <script>
-    const orderId = {{ $order->id }};
+    const orderId = '{{ $order->unique_id }}';
     const snapToken = '{{ $order->snap_token }}';
 
     function changeResult(data, id) {
@@ -24,7 +24,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        console.log(orderId, snapToken)
         const form = document.querySelector('#payment-form');
         snap.pay(snapToken, {
             onSuccess: function (result) {
