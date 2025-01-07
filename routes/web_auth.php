@@ -43,6 +43,7 @@ Route::prefix('checkout')
     ->controller(CheckoutController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::post('/pay', 'pay')->name('pay');
+        Route::get('/pay/{id}', 'paymentPage')->name('payment');
+        Route::post('/update', 'update')->name('update');
         Route::post('/create', 'createOrder')->name('createOrder');
     });

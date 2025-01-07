@@ -22,7 +22,19 @@ class ShippingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'shippings' => 'nullable|in:SHIPPING_001,SHIPPING_002,SHIPPING_003',
+            'shippings' => 'required|in:SHIPPING_001,SHIPPING_002,SHIPPING_003',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'shippings.required' => __('message.shipping_not_selected'),
         ];
     }
 }

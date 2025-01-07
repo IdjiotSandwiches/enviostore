@@ -25,4 +25,5 @@ return [
     'change_password_success' => 'Kata sandi berhasil diubah.',
     'remove_unavailable' => 'Anda harus menghapus barang yang tidak tersedia.',
     'insert_address' => 'Anda harus mengisi alamat pengiriman.',
+    'empty_cart' => 'Keranjang anda kosong',
 ];

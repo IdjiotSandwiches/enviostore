@@ -1,6 +1,12 @@
 <h1 class="font-bold text-3xl">{{ __('header.shipping') }}</h1>
+@error('shippings')
+    <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
+@enderror
 @foreach ($shippings as $shipping)
-    <div class="flex items-center ps-4 bg-primary rounded px-4">
+    <div @class([
+        "flex items-center ps-4 bg-primary rounded px-4",
+        "border-red-500" => $errors->has('shippings')
+    ])>
         <input type="radio" value="{{ $shipping->shipping_serial_code }}" id="{{ $shipping->shipping_serial_code }}"
             name="shippings" class="w-4 h-4 text-black bg-gray-100 border-black focus:ring-black">
         <label for="{{ $shipping->shipping_serial_code }}"

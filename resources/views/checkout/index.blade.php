@@ -2,8 +2,8 @@
 @section('title', 'Checkout')
 
 @section('content')
-<section class="max-w-screen-xl px-4 py-8 md:mx-auto">
-    <form id="payment-form" method="POST" action="{{ route('checkout.pay') }}" class="grid gap-4">
+<section class="max-w-screen-xl px-4 py-8 md:mx-auto" id="container">
+    <form id="payment-form" method="POST" action="{{ route('checkout.createOrder') }}" class="grid gap-4">
         @csrf
         @method('POST')
         <h1 class="font-bold text-3xl">Checkout</h1>
@@ -15,15 +15,12 @@
             </section>
             <section id="summaryContainer" class="lg:w-1/3 xl:w-1/4"></section>
         </div>
-        <input type="hidden" name="result_data" id="result-data" value=""></div>
-        <input type="hidden" name="order_id" id="order-id" value=""></div>
     </form>
 </section>
 @endsection
 
 @section('extra-js')
 @include('component.js.__card-replace-summary')
-<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
 <script>
     const cartContainer = document.querySelector('#cartContainer');
     const summaryContainer = document.querySelector('#summaryContainer');
@@ -31,43 +28,6 @@
     const addressContainer = document.querySelector('#addressContainer');
     const shippings = {!! $shippings !!};
     let totalPrice;
-
-    function createOrder() {
-        const submitButton = document.querySelector('button[type="submit"]')
-        const spinner = document.querySelector('div[role="status"]');
-        const selectedShipping = document.querySelector('input[type="radio"][name="shippings"]:checked');
-        const selectedShippingValue = selectedShipping ? selectedShipping.value : '';
-        
-        submitButton.disabled = true;
-        if(spinner) {
-            spinner.classList.toggle('hidden');
-        }
-
-        const url = '{{ route('checkout.createOrder') }}';
-        const data = new FormData();
-        data.append('shippings', selectedShippingValue);
-
-        customFetch(url, {
-            method: 'POST',
-            body: data,
-        }).then(response => {
-            let order = response.data;
-            if(order.length === 0) {
-                warningToast.fire({
-                    icon: response.status,
-                    titleText: response.message,
-                });
-            }
-            else {
-                midtransSnap(order);
-            }
-        }).finally(() => {
-            submitButton.disabled = false;
-            if(spinner) {
-                spinner.classList.toggle('hidden');
-            }
-        });
-    }
 
     function radioInputListener() {
         const shippingButtons = document.querySelectorAll('input[type="radio"][name="shippings"]');
@@ -125,41 +85,12 @@
             .replace('::QUANTITY::', summary.quantity ?? '-');
         
         summaryContainer.insertAdjacentHTML('beforeend', card);
-        document.querySelector('#pay-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            createOrder();
-        });
-
         totalPrice = parseFloat(summary.total.replaceAll('.', ''));
     }
 
     function insertShippingRadio() {
         let card = `{!! view('checkout.component.__shipping', ['shippings' => $shippings])->render() !!}`;
         shippingContainer.insertAdjacentHTML('beforeend', card);
-    }
-
-    function changeResult(data, id) {
-        document.querySelector('#result-data').value = JSON.stringify(data);
-        document.querySelector('#order-id').value = id;
-    }
-
-    function midtransSnap(order) {
-        const form = document.querySelector('#payment-form');
-
-        snap.pay(order.snap_token, {
-            onSuccess: function (result) {
-                changeResult(result, order.id);
-                form.submit();
-            },
-            onPending: function (result) {
-                changeResult(result, order.id);
-                form.submit();
-            },
-            onError: function (result) {
-                changeResult(result, order.id);
-                form.submit();
-            }
-        });
     }
 
     document.addEventListener('DOMContentLoaded', function () {

@@ -12,7 +12,6 @@ use App\Utilities\ErrorUtility;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Response;
 
 class CheckoutController extends Controller implements SessionKeyInterface, StatusInterface
 {
@@ -34,6 +33,13 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
      */
     public function index()
     {
+        if (!$this->checkoutService->hasCart()) {
+            return back()->with([
+                'status' => self::STATUS_ERROR,
+                'message' => __('message.empty_cart'),
+            ]);
+        }
+
         try {
             DB::beginTransaction();
 
@@ -47,35 +53,29 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
 
             $this->errorUtility->errorLog($e->getMessage());
 
-            $response = [
+            return back()->withInput()->with([
                 'status' => self::STATUS_ERROR,
                 'message' => $e->getMessage(),
-            ];
-
-            return back()->withInput()->with($response);
+            ]);
         }
 
         return view('checkout.index', compact('shippings', 'address'));
     }
 
+    /**
+     * Summary of createOrder
+     * @param \App\Http\Requests\ShippingRequest $shippingRequest
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function createOrder(ShippingRequest $shippingRequest)
     {
         $validated = $shippingRequest->validated();
 
         if (!$this->checkoutService->hasAddress()) {
-            return response()->json([
+            return back()->with([
                 'status' => self::STATUS_WARNING,
                 'message' => __('message.insert_address'),
-                'data' => [],
-            ], Response::HTTP_OK);
-        }
-
-        if (!isset($validated['shippings'])) {
-            return response()->json([
-                'status' => self::STATUS_WARNING,
-                'message' => __('message.shipping_not_selected'),
-                'data' => [],
-            ], Response::HTTP_OK);
+            ]);
         }
 
         try {
@@ -89,22 +89,27 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
 
             $this->errorUtility->errorLog($e->getMessage());
 
-            return response()->json([
+            return back()->with([
                 'status' => self::STATUS_ERROR,
-                'message' => __('message.invalid'),
-                'data' => $order,
-            ], Response::HTTP_OK);
+                'message' => $e->getMessage(),
+            ]);
         }
 
-        return response()->json([
-            'status' => self::STATUS_SUCCESS,
-            'message' => 'Order Retrieved!',
-            'data' => $order,
-        ], Response::HTTP_OK);
+        return to_route('checkout.payment', $order->id);
     }
 
+    public function paymentPage($id)
+    {
+        $order = Order::find($id);
+        return view('payment', compact('order'));
+    }
     
-    public function pay(PaymentRequest $paymentRequest)
+    /**
+     * Summary of update
+     * @param \App\Http\Requests\PaymentRequest $paymentRequest
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(PaymentRequest $paymentRequest)
     {
         $validated = $paymentRequest->validated();
         
@@ -122,8 +127,13 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
             DB::rollBack();
 
             $this->errorUtility->errorLog($e->getMessage());
+
+            return back()->with([
+                'status' => self::STATUS_ERROR,
+                'message' => __('message.invalid'),
+            ]);
         }
 
-        // return $order;
+        return to_route('profile.index');
     }
 }

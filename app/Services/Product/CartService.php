@@ -135,9 +135,7 @@ class CartService implements SessionKeyInterface, FeeInterface
     {
         $cart = Cart::find($id);
 
-        if (!$cart) {
-            throw new \Exception(__('message.invalid'));
-        }
+        if (!$cart) throw new \Exception(__('message.invalid'));
 
         $cart->delete();
     }

@@ -6,6 +6,7 @@ use App\Helpers\StringHelper;
 use App\Interfaces\FeeInterface;
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
+use App\Interfaces\StocksUpdateInterface;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Shipping;
@@ -14,7 +15,11 @@ use App\Utilities\ProductsUtility;
 use Midtrans\Config;
 use Midtrans\Snap;
 
-class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterface
+class CheckoutService implements 
+    SessionKeyInterface, 
+    FeeInterface, 
+    StatusInterface, 
+    StocksUpdateInterface
 {
     private $productsUtility;
 
@@ -131,6 +136,18 @@ class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterf
         $order->snap_token = $snapToken;
         $order->save();
 
+        $cart = Cart::where('user_id', $user->id);
+        $items = (clone $cart)->get();
+        if ($items->isEmpty()) throw new \Exception(__('message.invalid'));
+        
+        foreach ($items as $item) {
+            $item->order_id = $order->id;
+            $item->save();
+        }
+        
+        $cart->delete();
+        $this->updateStocks($order->id, self::IS_SUBTRACT);
+
         return $order;
     }
 
@@ -227,22 +244,53 @@ class CheckoutService implements SessionKeyInterface, FeeInterface, StatusInterf
 
     /**
      * Summary of updateStocks
-     * @param \App\Models\Product $product
-     * @param int $quantity
-     * @throws \Exception
+     * @param int $id
+     * @param bool $isSubtract
      * @return void
      */
-    // Dipake pas bayar
-    // public function updateStocks($product, $quantity)
-    // {
-    //     $currentStock = $product->stocks;
+    public function updateStocks($id, $isSubtract)
+    {
+        Cart::with('product')->onlyTrashed()
+            ->where('order_id', $id)
+            ->get()
+            ->each(function ($item) use ($isSubtract) {
+                $item->product->stocks = $isSubtract ? $this->subtractStocks($item) : $this->addStocks($item);
+                $item->product->save();
+            });
+    }
 
-        // if (!$this->isAvailable($currentStock, $quantity)) {
-        //     throw new \Exception(__('message.invalid'));
-        // }
+    /**
+     * Summary of subtractStocks
+     * @param \Illuminate\Support\Collection $item
+     * @return float|int
+     */
+    public function subtractStocks($item)
+    {
+        return $item->product->stocks - $item->quantity;
+    }
 
-    //     $updatedStock = $currentStock - $quantity;
-    //     $product->stocks = $updatedStock;
-    //     $product->save();
-    // }
+    /**
+     * Summary of subtractStocks
+     * @param \Illuminate\Support\Collection $item
+     * @return float|int
+     */
+    public function addStocks($item)
+    {
+        return $item->product->stocks + $item->quantity;
+    }
+
+    /**
+     * Summary of hasCart
+     * @return bool
+     */
+    public function hasCart()
+    {
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = session(self::SESSION_IDENTITY);
+        $cart = Cart::where('user_id', $user->id)->get();
+
+        return $cart->isNotEmpty();
+    }
 }

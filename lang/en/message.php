@@ -24,5 +24,6 @@ return [
     'same_password' => 'New password cannot be same as current password.',
     'change_password_success' => 'Password changed successfully.',
     'remove_unavailable' => 'You need to remove unavailable items.',
-    'insert_address' => 'You need to fill your address.'
+    'insert_address' => 'You need to fill your address.',
+    'empty_cart' => 'Your cart is empty.',
 ];
