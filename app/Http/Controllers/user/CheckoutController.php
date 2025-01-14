@@ -134,7 +134,12 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
             $order = Order::where('unique_id', $id)->first();
             $paymentResult = json_decode($validated['result_data']);
             
-            $order->payment_status = $paymentResult->transaction_status;
+            if ($paymentRequest->status_code == 200) {
+                $order->payment_status = $paymentResult->transaction_status;
+            } elseif ($paymentRequest->status_code == 407) {
+                $order->payment_status = 'expire';
+            }
+
             $order->save();
             
             DB::commit();

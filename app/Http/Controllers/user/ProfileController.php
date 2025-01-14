@@ -4,6 +4,7 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Requests\ChangePasswordRequest;
 use App\Models\ErrorLog;
+use App\Models\Order;
 use App\Services\ProfileService;
 use App\Utilities\ErrorUtility;
 use Illuminate\Support\Facades\DB;
@@ -34,8 +35,24 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
     public function index()
     {
         $user = $this->profileService->getUser();
+        $orders = Order::where('user_id', $user->id)->get()
+            ->map(function ($order) {
+                $order->unique_id = base64_encode($order->unique_id);
+                return $order;
+            })
+            ->groupBy(function ($order) {
+                if ($order->payment_status === 'pending') return 'pending';
+                elseif ($order->payment_status === 'cancel' || $order->payment_status === 'expire') return 'cancel';
+                else return 'complete';
+            });
 
-        return view('profile.index', compact('user'));
+        $orders = (object) [
+            'pending' => $orders['pending'] ?? collect(),
+            'complete' => $orders['complete'] ?? collect(),
+            'cancel' => $orders['cancel'] ?? collect(),
+        ];
+
+        return view('profile.index', compact('user', 'orders'));
     }
 
     public function getProfilePicture()
@@ -49,7 +66,7 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
 
             return response()->json([
                 'status' => self::STATUS_ERROR,
-                'message' => 'Invalid operation.',
+                'message' => __('message.invalid'),
                 'data' => [],
             ], Response::HTTP_OK);
         }

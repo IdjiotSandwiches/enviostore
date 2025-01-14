@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
-use App\Models\ErrorLog;
 use App\Models\User;
 use App\Utilities\GoogleDriveUtility;
 use Illuminate\Support\Facades\Hash;

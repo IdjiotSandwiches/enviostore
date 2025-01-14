@@ -117,7 +117,7 @@ class CheckoutService implements
                 'first_name' => $user->username,
                 'email' => $user->email,
                 'phone' => $user->phone_number,
-                'billing_adress' => [
+                'billing_address' => [
                     'first_name' => $user->username,
                     'phone' => $user->phone_number,
                     'address' => $user->address,
@@ -129,6 +129,7 @@ class CheckoutService implements
                 ],
             ],
             'item_details' => $items,
+            'return_url' => route('profile.index'),
         ];
 
         $snapToken = Snap::getSnapToken($params);
