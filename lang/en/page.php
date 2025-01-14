@@ -37,4 +37,8 @@ return [
     'profile.edit_information' => 'Edit Information',
     'profile.upload_image' => 'Upload New Image',
     'profile.save_changes' => 'Save Changes',
+    'profile.pending' => 'Pending',
+    'profile.completed' => 'Completed',
+    'profile.cancelled' => 'Cancelled',
+    'profile.created_at' => 'Created at: ',
 ];

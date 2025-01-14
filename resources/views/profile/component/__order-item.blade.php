@@ -1,9 +1,9 @@
 @props(['order'])
 
-<div class="w-full h-fit flex justify-between items-center bg-accent/10 shadow rounded-lg p-4">
+<div class="w-full h-fit flex justify-between items-center gap-2 bg-accent/10 shadow rounded-lg p-4">
     <div class="text-accent">
         <h3 class="font-semibold">{{ $order->unique_id }}</h3>
-        <p>Created at: {{ $order->created_at }}</p>
+        <p>{{ __('page.profile.created_at') }} {{ $order->created_at }}</p>
     </div>
     @if (!collect([
         \App\Interfaces\PaymentStatusInterface::STATUS_COMPLETE, 

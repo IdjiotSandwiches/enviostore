@@ -16,19 +16,19 @@
             <div class="divide-y-[1px]">
                 <div class="flex justify-between py-4">
                     <p class="text-sm text-accent w-1/2">{{ __('page.profile.name') }}</p>
-                    <p class="font-semibold flex-1 truncate text-right">{{ $user->username ?? '-' }}</p>
+                    <p class="font-semibold text-accent flex-1 truncate text-right">{{ $user->username ?? '-' }}</p>
                 </div>
                 <div class="flex justify-between py-4">
                     <p class="text-sm text-accent w-1/2">{{ __('page.profile.address') }}</p>
-                    <p class="font-semibold flex-1 truncate text-right">{{ $user->address ?? '-' }}</p>
+                    <p class="font-semibold text-accent flex-1 truncate text-right">{{ $user->address ?? '-' }}</p>
                 </div>
                 <div class="flex justify-between py-4">
                     <p class="text-sm text-accent w-1/2">Email</p>
-                    <p class="font-semibold flex-1 truncate text-right">{{ $user->email ?? '-' }}</p>
+                    <p class="font-semibold text-accent flex-1 truncate text-right">{{ $user->email ?? '-' }}</p>
                 </div>
                 <div class="flex justify-between py-4">
                     <p class="text-sm text-accent w-1/2">{{ __('page.profile.phone_number') }}</p>
-                    <p class="font-semibold flex-1 truncate text-right">{{ $user->phone_number ?? '-' }}</p>
+                    <p class="font-semibold text-accent flex-1 truncate text-right">{{ $user->phone_number ?? '-' }}</p>
                 </div>
             </div>
             <div class="grid text-center gap-2">
@@ -53,38 +53,38 @@
                     <li class="me-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 rounded-t-lg" id="pending-tab"
                             data-tabs-target="#pending" type="button" role="tab" aria-controls="pending"
-                            aria-selected="false">Pending</button>
+                            aria-selected="false">{{ __('page.profile.pending') }}</button>
                     </li>
                     <li class="me-2" role="presentation">
                         <button
                             class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300"
                             id="completed-tab" data-tabs-target="#completed" type="button" role="tab"
-                            aria-controls="completed" aria-selected="false">Completed</button>
+                            aria-controls="completed" aria-selected="false">{{ __('page.profile.completed') }}</button>
                     </li>
                     <li role="presentation">
                         <button
                             class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300"
                             id="cancelled-tab" data-tabs-target="#cancelled" type="button" role="tab"
-                            aria-controls="cancelled" aria-selected="false">Cancelled</button>
+                            aria-controls="cancelled" aria-selected="false">{{ __('page.profile.cancelled') }}</button>
                     </li>
                 </ul>
             </div>
             <div id="default-tab-content" class="overflow-y-auto max-h-60">
-                <div class="hidden px-4" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+                <div class="hidden" id="pending" role="tabpanel" aria-labelledby="pending-tab">
                     <div class="grid gap-4">
                         @foreach ($orders->pending as $order)
                             @include('profile.component.__order-item', ['order' => $order])
                         @endforeach
                     </div>
                 </div>
-                <div class="hidden px-4" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+                <div class="hidden" id="completed" role="tabpanel" aria-labelledby="completed-tab">
                     <div class="grid gap-4">
                         @foreach ($orders->complete as $order)
                             @include('profile.component.__order-item', ['order' => $order])
                         @endforeach
                     </div>
                 </div>
-                <div class="hidden px-4" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
+                <div class="hidden" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
                     <div class="grid gap-4">
                         @foreach ($orders->cancel as $order)
                             @include('profile.component.__order-item', ['order' => $order])

@@ -37,4 +37,8 @@ return [
     'profile.edit_information' => 'Edit Informasi',
     'profile.upload_image' => 'Unggah Gambar Baru',
     'profile.save_changes' => 'Simpan Perubahan',
+    'profile.pending' => 'Menunggu',
+    'profile.completed' => 'Selesai',
+    'profile.cancelled' => 'Dibatalkan',
+    'profile.created_at' => 'Dibuat pada: ',
 ];
