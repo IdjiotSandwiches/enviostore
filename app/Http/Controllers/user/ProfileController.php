@@ -35,22 +35,7 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
     public function index()
     {
         $user = $this->profileService->getUser();
-        $orders = Order::where('user_id', $user->id)->get()
-            ->map(function ($order) {
-                $order->order_id = base64_encode($order->unique_id);
-                return $order;
-            })
-            ->groupBy(function ($order) {
-                if ($order->payment_status === 'pending') return 'pending';
-                elseif ($order->payment_status === 'cancel' || $order->payment_status === 'expire') return 'cancel';
-                else return 'complete';
-            });
-
-        $orders = (object) [
-            'pending' => $orders['pending'] ?? collect(),
-            'complete' => $orders['complete'] ?? collect(),
-            'cancel' => $orders['cancel'] ?? collect(),
-        ];
+        $orders = $this->profileService->getOrders($user->id);
 
         return view('profile.index', compact('user', 'orders'));
     }
@@ -172,13 +157,5 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
         ];
 
         return back()->with($response);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
