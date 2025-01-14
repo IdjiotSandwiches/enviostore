@@ -37,7 +37,7 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
         $user = $this->profileService->getUser();
         $orders = Order::where('user_id', $user->id)->get()
             ->map(function ($order) {
-                $order->unique_id = base64_encode($order->unique_id);
+                $order->order_id = base64_encode($order->unique_id);
                 return $order;
             })
             ->groupBy(function ($order) {

@@ -129,7 +129,6 @@ class CheckoutService implements
                 ],
             ],
             'item_details' => $items,
-            'return_url' => route('profile.index'),
         ];
 
         $snapToken = Snap::getSnapToken($params);

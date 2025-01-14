@@ -87,7 +87,7 @@
                 <div class="hidden px-4" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
                     <div class="grid gap-4">
                         @foreach ($orders->cancel as $order)
-
+                            @include('profile.component.__order-item', ['order' => $order])
                         @endforeach
                     </div>
                 </div>

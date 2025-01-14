@@ -4,6 +4,7 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Requests\PaymentRequest;
 use App\Http\Requests\ShippingRequest;
+use App\Interfaces\PaymentStatusInterface;
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
 use App\Models\Order;
@@ -13,7 +14,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-class CheckoutController extends Controller implements SessionKeyInterface, StatusInterface
+class CheckoutController extends Controller implements SessionKeyInterface, StatusInterface, PaymentStatusInterface
 {
     private $checkoutService;
     private $errorUtility;
@@ -129,17 +130,22 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         
         try {
             DB::beginTransaction();
-
+            
             $id = base64_decode($validated['order_id']);
             $order = Order::where('unique_id', $id)->first();
             $paymentResult = json_decode($validated['result_data']);
-            
-            if ($paymentRequest->status_code == 200) {
-                $order->payment_status = $paymentResult->transaction_status;
-            } elseif ($paymentRequest->status_code == 407) {
-                $order->payment_status = 'expire';
-            }
 
+            switch ($paymentResult->status_code) {
+                case 200:
+                    $order->payment_status = $paymentResult->transaction_status;
+                    break;
+                case 407:
+                    $order->payment_status = self::STATUS_CANCEL;
+                    break;
+                default:
+                    break;
+            }
+            
             $order->save();
             
             DB::commit();
