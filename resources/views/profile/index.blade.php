@@ -72,23 +72,17 @@
             <div id="default-tab-content" class="overflow-y-auto max-h-60">
                 <div class="hidden" id="pending" role="tabpanel" aria-labelledby="pending-tab">
                     <div class="grid gap-4">
-                        @foreach ($orders->pending as $order)
-                            @include('profile.component.__order-item', ['order' => $order])
-                        @endforeach
+                        @include('profile.component.__order-item', ['orderStatus' => $orders->pending, 'render' => true])
                     </div>
                 </div>
                 <div class="hidden" id="completed" role="tabpanel" aria-labelledby="completed-tab">
                     <div class="grid gap-4">
-                        @foreach ($orders->complete as $order)
-                            @include('profile.component.__order-item', ['order' => $order])
-                        @endforeach
+                        @include('profile.component.__order-item', ['orderStatus' => $orders->complete, 'render' => false])
                     </div>
                 </div>
                 <div class="hidden" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
                     <div class="grid gap-4">
-                        @foreach ($orders->cancel as $order)
-                            @include('profile.component.__order-item', ['order' => $order])
-                        @endforeach
+                        @include('profile.component.__order-item', ['orderStatus' => $orders->cancel, 'render' => false])
                     </div>
                 </div>
             </div>
