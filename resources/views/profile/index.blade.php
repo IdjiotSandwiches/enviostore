@@ -69,7 +69,7 @@
                     </li>
                 </ul>
             </div>
-            <div id="default-tab-content" class="overflow-y-scroll max-h-60">
+            <div id="default-tab-content" class="overflow-y-auto max-h-60">
                 <div class="hidden px-4" id="pending" role="tabpanel" aria-labelledby="pending-tab">
                     <div class="grid gap-4">
                         @foreach ($orders->pending as $order)

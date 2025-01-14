@@ -26,8 +26,6 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
     {
         $this->checkoutService = new CheckoutService();
         $this->errorUtility = new ErrorUtility();
-
-        // $this->middleware(['checkout.permission']);
     }
 
     /**
@@ -132,21 +130,7 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
             DB::beginTransaction();
             
             $id = base64_decode($validated['order_id']);
-            $order = Order::where('unique_id', $id)->first();
-            $paymentResult = json_decode($validated['result_data']);
-
-            switch ($paymentResult->status_code) {
-                case 200:
-                    $order->payment_status = $paymentResult->transaction_status;
-                    break;
-                case 407:
-                    $order->payment_status = self::STATUS_CANCEL;
-                    break;
-                default:
-                    break;
-            }
-            
-            $order->save();
+            $this->checkoutService->update($id, $validated['result_data']);
             
             DB::commit();
         } catch (\Exception $e) {

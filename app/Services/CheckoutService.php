@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Helpers\StringHelper;
 use App\Interfaces\FeeInterface;
+use App\Interfaces\PaymentStatusInterface;
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
 use App\Interfaces\StocksUpdateInterface;
@@ -15,11 +16,12 @@ use App\Utilities\ProductsUtility;
 use Midtrans\Config;
 use Midtrans\Snap;
 
-class CheckoutService implements 
-    SessionKeyInterface, 
-    FeeInterface, 
-    StatusInterface, 
-    StocksUpdateInterface
+class CheckoutService implements
+    SessionKeyInterface,
+    FeeInterface,
+    StatusInterface,
+    StocksUpdateInterface,
+    PaymentStatusInterface
 {
     private $productsUtility;
 
@@ -84,7 +86,8 @@ class CheckoutService implements
                 $isAvailable = $this->productsUtility->isAvailable($item->product->stocks, $item->quantity);
                 $subtotal = $item->quantity * $item->product->price;
 
-                if (!$isAvailable) throw new \Exception(__('message.remove_unavailable'));
+                if (!$isAvailable)
+                    throw new \Exception(__('message.remove_unavailable'));
 
                 return (object) [
                     'quantity' => $item->quantity,
@@ -95,7 +98,7 @@ class CheckoutService implements
         $shipping = Shipping::where('shipping_serial_code', $shipping)->first();
 
         $order = Order::create([
-            'unique_id' => 'ORDER_' . time() . '-' . random_int(100,999),
+            'unique_id' => 'ORDER_' . time() . '-' . random_int(100, 999),
             'user_id' => $user->id,
             'address' => $user->address,
             'amount' => $cartItems->sum('subtotal'),
@@ -137,13 +140,14 @@ class CheckoutService implements
 
         $cart = Cart::where('user_id', $user->id);
         $items = (clone $cart)->get();
-        if ($items->isEmpty()) throw new \Exception(__('message.invalid'));
-        
+        if ($items->isEmpty())
+            throw new \Exception(__('message.invalid'));
+
         foreach ($items as $item) {
             $item->order_id = $order->id;
             $item->save();
         }
-        
+
         $cart->delete();
         $this->updateStocks($order->id, self::IS_SUBTRACT);
 
@@ -223,7 +227,8 @@ class CheckoutService implements
             ->get()
             ->each(function ($item) {
                 $isAvailable = $this->productsUtility->isAvailable($item->product->stocks, $item->quantity);
-                if (!$isAvailable) throw new \Exception(__('message.remove_unavailable'));
+                if (!$isAvailable)
+                    throw new \Exception(__('message.remove_unavailable'));
             });
     }
 
@@ -239,6 +244,32 @@ class CheckoutService implements
         $user = session(self::SESSION_IDENTITY);
         $user = User::find($user->id);
         return $user->address;
+    }
+
+    /**
+     * Summary of update
+     * @param int $id
+     * @param string $resultData
+     * @return void
+     */
+    public function update($id, $resultData)
+    {
+        $order = Order::where('unique_id', $id)->first();
+        $paymentResult = json_decode($resultData);
+
+        switch ($paymentResult->status_code) {
+            case 200:
+                $order->payment_status = $paymentResult->transaction_status;
+                break;
+            case 407:
+                $order->payment_status = self::STATUS_CANCEL;
+                $this->updateStocks($order->id, !self::IS_SUBTRACT);
+                break;
+            default:
+                break;
+        }
+
+        $order->save();
     }
 
     /**
