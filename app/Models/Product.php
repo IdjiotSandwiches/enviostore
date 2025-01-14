@@ -21,6 +21,12 @@ class Product extends Model
         return $this->getLangVariant('name');
     }
 
+    protected $fillable = [
+        'name_en', 'name_id', 'description_en', 'description_id', 
+        'price', 'stocks', 'category_id', 'sustainability_score', 
+        'product_serial_code',  
+    ];
+
     /**
      * Summary of getProductDescription
      * @return string

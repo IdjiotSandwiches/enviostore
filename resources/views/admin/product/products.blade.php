@@ -54,8 +54,12 @@
                                 {{ $product->price }}
                             </td>
                             <td class="py-4">
-                                {{-- <a href="{{ route('products.remove', $product->id) }}" class="font-medium text-red-600 hover:underline mr-4">Remove</a>
-                                <a href="{{ route('products.edit', $product->id) }}" class="font-medium text-red-600 hover:underline">Edit</a> --}}
+                                <form action="{{ route('admin.deleteProduct', $product->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="font-medium text-red-600 hover:underline mr-4">Remove</button>
+                                </form>
+                                <a href="{{ route('admin.editProduct', $product->id) }}" class="font-medium text-blue-600 hover:underline">Edit</a>
                             </td>
                         </tr>
                     @endforeach

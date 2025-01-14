@@ -10,7 +10,6 @@
             <div class="bg-primary rounded-lg shadow border border-gray-200 p-4 sm:p-6 md:p-8">
                 <div class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Product Name (English) -->
                         <div>
                             <label for="name_en"
                                 class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.admin.product.name_en') }}</label>
@@ -23,8 +22,7 @@
                                 <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
                             @enderror
                         </div>
-    
-                        <!-- Product Name (Indonesian) -->
+ 
                         <div>
                             <label for="name_id"
                                 class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.admin.product.name_id') }}</label>
@@ -38,7 +36,6 @@
                             @enderror
                         </div>
     
-                        <!-- Description (English) -->
                         <div class="md:col-span-2">
                             <label for="description_en"
                                 class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.admin.product.description_en') }}</label>
@@ -50,8 +47,7 @@
                                 <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
                             @enderror
                         </div>
-    
-                        <!-- Description (Indonesian) -->
+                        
                         <div class="md:col-span-2">
                             <label for="description_id"
                                 class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.admin.product.description_id') }}</label>
@@ -64,7 +60,6 @@
                             @enderror
                         </div>
     
-                        <!-- Price -->
                         <div>
                             <label for="price"
                                 class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.admin.product.price') }}</label>
@@ -78,7 +73,6 @@
                             @enderror
                         </div>
     
-                        <!-- Stocks -->
                         <div>
                             <label for="stocks"
                                 class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.admin.product.stocks') }}</label>
@@ -91,8 +85,7 @@
                                 <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
                             @enderror
                         </div>
-    
-                        <!-- Category -->
+
                         <div>
                             <label for="category_id"
                                 class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.admin.product.category') }}</label>
@@ -112,7 +105,6 @@
                             @enderror
                         </div>
     
-                        <!-- Sustainability Score -->
                         <div>
                             <label for="sustainability_score"
                                 class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.admin.product.sustainability_score') }}</label>
@@ -125,22 +117,20 @@
                                 <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
                             @enderror
                         </div>
-    
-                        <!-- Product Image -->
+                        
                         <div class="md:col-span-2">
-                            <label for="product_image"
+                            <label for="product_images"
                                 class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.admin.product.image') }}</label>
-                            <input type="file" name="product_image" id="product_image" accept="image/*" @class([
+                            <input type="file" name="product_images" id="product_images" accept="image/*" @class([
                                 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5',
-                                'border-red-500' => $errors->has('product_image'),
-                            ]) />
-                            @error('product_image')
+                                'border-red-500' => $errors->has('product_images'),
+                            ]) multiple />
+                            @error('product_images')
                                 <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
-    
-                    <!-- Submit Button -->
+
                     <div class="text-center mt-4">
                         <button type="submit"
                             class="text-sm text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg px-4 md:px-5 py-1.5 md:py-2 text-nowrap">
