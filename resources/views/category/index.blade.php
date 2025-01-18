@@ -53,6 +53,12 @@
                 .replaceAll('::NAME::', product.name)
                 .replace('::PRICE::', product.price);
 
+            item = product.isAvailable ? 
+                item.replaceAll('::OPACITY::', '')
+                    .replace('::HIDDEN::', 'hidden') : 
+                item.replaceAll('::OPACITY::', 'opacity-30')
+                    .replace('::HIDDEN::', '');
+
             productContainer.insertAdjacentHTML('beforeend', item);
         });
 
