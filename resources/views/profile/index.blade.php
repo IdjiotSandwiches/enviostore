@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="grid mt-4 gap-4 md:grid-cols-2">
-        <div class="bg-primary grid gap-4 border border-gray-200 rounded-lg shadow p-4">
+        <div class="bg-primary grid gap-4 border border-gray-200 rounded-lg shadow-sm p-4">
             <h1 class="text-3xl font-semibold text-center">{{ __('page.profile.user_information') }}</h1>
             <div class="divide-y-[1px]">
                 <div class="flex justify-between py-4">
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <div class="bg-primary border border-gray-200 rounded-lg shadow p-4">
+        <div class="bg-primary border border-gray-200 rounded-lg shadow-sm p-4">
             <h1 class="text-3xl font-semibold text-center h-fit pb-4">Orders</h1>
             <div class="mb-4 border-b border-gray-200" data-tabs-toggle="#default-styled-tab-content"
                 data-tabs-active-classes="text-font_primary hover:text-font_primary border-font_primary"
