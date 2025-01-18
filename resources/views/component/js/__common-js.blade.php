@@ -1,27 +1,22 @@
 <script>
-    let successToast;
-    let errorToast;
-    let infoToast;
-    let warningToast;
-
-    function customFetch(url, options = {}) {
+    async function customFetch(url, options = {}) {
         options.headers = {
             ...options.headers,
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         }
 
-        return fetch(url, options)
-            .then(response => {
-                if(!response.ok) throw new Error();
-                return response.json();
-            }).catch(error => {
-                let section = document.querySelector('section');
-                let item = `{!! view('component.__fetch-failed')->render() !!}`;
-                
-                section.replaceChildren();
-                section.insertAdjacentHTML('beforeend', item);
-            });
+        try {
+            const response = await fetch(url, options);
+            if(!response.ok) throw new Error();
+            return await response.json();
+        } catch (error) {
+            let section = document.querySelector('section');
+            let item = `{!! view('component.__fetch-failed')->render() !!}`;
+            
+            section.replaceChildren();
+            section.insertAdjacentHTML('beforeend', item);
+        }
     }
 
     function checkPlaceholder(placeholder) {
@@ -58,19 +53,19 @@
             }
         });
 
-        successToast = baseToast.mixin({
+        const successToast = baseToast.mixin({
             background: '#22c55e',
         });
 
-        errorToast = baseToast.mixin({
+        const errorToast = baseToast.mixin({
             background: '#ef4444',
         });
 
-        infoToast = baseToast.mixin({
+        const infoToast = baseToast.mixin({
             background: '#3b82f6',
         });
 
-        warningToast = baseToast.mixin({
+        const warningToast = baseToast.mixin({
             background: '#eab308',
         });
 

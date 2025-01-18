@@ -55,12 +55,10 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
 
             $this->errorUtility->errorLog($e->getMessage());
 
-            $response = [
+            return back()->withInput()->with([
                 'status' => self::STATUS_ERROR,
                 'message' => $e->getMessage(),
-            ];
-
-            return back()->withInput()->with($response);
+            ]);
         }
 
         session($sessionData->all());
@@ -95,11 +93,9 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        $response = [
+        return to_route('home')->with([
             'status' => self::STATUS_SUCCESS,
             'message' => __('message.logout'),
-        ];
-
-        return to_route('home')->with($response);
+        ]);
     }
 }

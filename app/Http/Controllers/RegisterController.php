@@ -53,14 +53,11 @@ class RegisterController extends Controller implements StatusInterface
             DB::rollBack();
 
             $this->errorUtility->errorLog($e->getMessage());
-
-
-            $response = [
+            
+            return back()->withInput()->with([
                 'status' => self::STATUS_ERROR,
                 'message' => __('message.invalid'),
-            ];
-
-            return back()->withInput()->with($response);
+            ]);
         }
 
         event(new Registered($user));

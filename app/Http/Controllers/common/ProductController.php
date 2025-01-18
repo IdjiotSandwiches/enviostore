@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\common;
 
-use App\Models\ErrorLog;
 use App\Models\Category;
 use App\Services\Product\ProductService;
+use App\Utilities\ErrorUtility;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Utilities\ProductsUtility;
@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 class ProductController extends Controller implements StatusInterface
 {
     private $productUtility;
+    private $errorUtility;
 
     /**
      * Summary of __construct
@@ -21,6 +22,7 @@ class ProductController extends Controller implements StatusInterface
     public function __construct()
     {
         $this->productUtility = new ProductsUtility();
+        $this->errorUtility = new ErrorUtility();
     }
 
     /**
@@ -33,9 +35,7 @@ class ProductController extends Controller implements StatusInterface
         try {
             $product_serial = base64_decode($product_serial);
         } catch (\Exception $e) {
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
+            $this->errorUtility->errorLog($e->getMessage());
 
             abort(404);
         }
