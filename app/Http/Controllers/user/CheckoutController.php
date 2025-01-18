@@ -94,6 +94,11 @@ class CheckoutController extends Controller implements SessionKeyInterface, Stat
         return to_route('checkout.payment', base64_encode($order->unique_id));
     }
 
+    /**
+     * Summary of paymentPage
+     * @param string $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function paymentPage($id)
     {
         try {
