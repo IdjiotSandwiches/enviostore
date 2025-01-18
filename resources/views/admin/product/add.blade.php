@@ -121,10 +121,11 @@
                         <div class="md:col-span-2">
                             <label for="product_images"
                                 class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.admin.product.image') }}</label>
-                            <input type="file" name="product_images" id="product_images" accept="image/*" @class([
-                                'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5',
-                                'border-red-500' => $errors->has('product_images'),
-                            ]) multiple />
+                            <input type="file" name="product_images[]" id="product_images" accept="image/*" multiple
+                                @class([
+                                    'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5',
+                                    'border-red-500' => $errors->has('product_images'),
+                                ]) />
                             @error('product_images')
                                 <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
                             @enderror

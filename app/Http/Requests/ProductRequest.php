@@ -22,15 +22,15 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_en' => 'required|string|max:255',
-            'name_id' => 'required|string|max:255',
+            'name_en' => 'nullable|string|max:255',
+            'name_id' => 'nullable|string|max:255',
             'description_en' => 'nullable|string',
             'description_id' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'stocks' => 'required|integer|min:0',
-            'category_id' => 'required|exists:categories,id',
+            'price' => 'nullable|numeric|min:0',
+            'stocks' => 'nullable|integer|min:0',
+            'category_id' => 'nullable|exists:categories,id',
             'sustainability_score' => 'nullable|numeric|between:0,100',
-            'product_images' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'product_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }

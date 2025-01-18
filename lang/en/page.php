@@ -27,4 +27,9 @@ return [
     'admin.product.sustainability_score' => 'Sustainability Score',
     'admin.product.image' => 'Upload Image',
     'admin.product.submit_changes' => 'Add Product',
+
+    'admin.category.name_en' => 'Category Name',
+    'admin.category.name_id' => 'Category Name(ID)',
+    'admin.category.image' => 'Upload Image',
+    'admin.category.submit' => 'Add Category',
 ];

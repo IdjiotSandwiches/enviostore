@@ -27,4 +27,9 @@ return [
     'admin.product.sustainability_score' => 'Nilai Sustainability',
     'admin.product.image' => 'Unggah Gambar',
     'admin.product.submit_changes' => 'Tambahkan Product',
+
+    'admin.category.name_en' => 'Nama Category(EN)',
+    'admin.category.name_id' => 'Nama Category',
+    'admin.category.image' => 'Unggah Gambar',
+    'admin.category.submit' => 'Tambahkan Category',
 ];

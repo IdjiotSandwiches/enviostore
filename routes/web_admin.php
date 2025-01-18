@@ -1,8 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\ProductController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AdminController::class)
     ->group(function () {
         Route::get('/', 'index')->name('home');
-        Route::get('/categories', 'categoryIndex')->name('categories'); 
     });
 
 Route::controller(ProductController::class)
@@ -27,6 +27,18 @@ Route::controller(ProductController::class)
         Route::get('/products/add', 'addProductIndex')->name('addProductIndex');
         Route::get('/products/{id}/edit', 'editProductIndex')->name('editProduct');
         Route::post('/products/add', 'addProduct')->name('addProduct');
+        Route::post('/products/add/images/{id}', 'addProductImages')->name('addProductImage');
         Route::put('/products/{id}', 'updateProduct')->name('updateProduct');
-        Route::delete('/products/{id}', 'deleteProduct')->name('deleteProduct');        
+        Route::delete('/products/{id}', 'deleteProduct')->name('deleteProduct');
+        Route::delete('/product/image/{id}', 'deleteProductImage')->name('deleteProductImage'); 
+    });
+
+Route::controller(CategoryController::class)
+    ->group(function(){
+        Route::get('/categories', 'categoryIndex')->name('categories');
+        Route::get('/categories/add', 'addCategoryIndex')->name('addCategoryIndex');
+        Route::get('/categories/{id}/edit', 'editCategoryIndex')->name('editCategory');
+        Route::post('/categories/add', 'addCategory')->name('addCategory');
+        Route::put('/categories/{id}','updateCategory')->name('updateCategory');
+        Route::delete('/categories/{id}', 'deleteCategory')->name('deleteCategory');
     });

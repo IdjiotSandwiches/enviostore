@@ -79,16 +79,18 @@ class ProductController extends Controller implements StatusInterface
     
             $newProduct->save();
 
-            if (isset($validate['product_images'])) {
-                $fileExtension = $validate['product_images']->getClientOriginalExtension();
-                $fileName = 'product_images/' . uniqid('product_') . '.' . $fileExtension;
-    
-                $this->googleDriveUtility->storeFile($fileName, $validate['product_images']);
-    
-                $productImage = new ProductImage();
-                $productImage->url = $fileName;
-                $productImage->product_id = $newProduct->id;
-                $productImage->save();
+            if (isset($validate['product_images']) && is_array($validate['product_images'])) {
+                foreach ($validate['product_images'] as $file) {
+                    $fileExtension = $file->getClientOriginalExtension();
+                    $fileName = 'product_images/' . uniqid('product_') . '.' . $fileExtension;
+            
+                    $this->googleDriveUtility->storeFile($fileName, $file);
+            
+                    $productImage = new ProductImage();
+                    $productImage->url = $fileName;
+                    $productImage->product_id = $newProduct->id;
+                    $productImage->save();
+                }
             }
     
             DB::commit();
@@ -105,41 +107,85 @@ class ProductController extends Controller implements StatusInterface
         }
     }
     
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function deleteProductImage($id)
     {
-        //
+        $image = ProductImage::find($id);
+
+        if (!$image) {
+            return back()->with('error', 'Image not found.');
+        }
+
+        try {
+            $this->googleDriveUtility->deleteFile($image->url);
+
+            $image->delete();
+
+            return back()->with('success', 'Image deleted successfully.');
+        } catch (Exception $e) {
+            return back()->with('error', 'Failed to delete image: ' . $e->getMessage());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function addProductImages(ProductRequest $request, $id)
     {
-        //
+        try{      
+            $product = Product::find($id);
+    
+            $validate = $request->validated();
+    
+            if (isset($validate['product_images']) && is_array($validate['product_images'])) {
+                foreach ($validate['product_images'] as $file) {
+                    $fileExtension = $file->getClientOriginalExtension();
+                    $fileName = 'product_images/' . uniqid('product_') . '.' . $fileExtension;
+            
+                    $this->googleDriveUtility->storeFile($fileName, $file);
+            
+                    $productImage = new ProductImage();
+                    $productImage->url = $fileName;
+                    $productImage->product_id = $product->id;
+                    $productImage->save();
+                }
+            }
+            return redirect()->route('admin.editProduct', $product->id)->with('success', 'Images uploaded successfully.');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+    
+            return back()->with('error', 'Failed to add product images: ' . $e->getMessage());
+        }
     }
+
 
     /**
      * Show the form for editing the specified resource.
      */
     public function editProductIndex($id)
     {
-        $product = Product::find($id);
+        $product = Product::with('productImage')->find($id);
         if (!$product) {
-            return redirect()->route('admin.product.list')->with('error', 'Product not found.');
+            return back()->with('error', 'Product not found.');
         }
 
-        $categories = Category::all(); // Assuming categories are needed for the dropdown.
-        return view('admin.product.edit', compact('product', 'categories'));
+        $productImages = $product->productImage->map(function ($image) {
+
+            $image->converted_url = $this->googleDriveUtility->getFile($image->url);
+
+            return $image;
+
+        });
+
+        // dd($productImages);
+        $categories = Category::all();
+        return view('admin.product.edit', compact('product', 'productImages', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function updateProduct(EditProductRequest $request, $id)
+    public function updateProduct(ProductRequest $request, $id)
     {
         $validated = $request->validated();
 
@@ -160,19 +206,11 @@ class ProductController extends Controller implements StatusInterface
             $product->category_id = $validated['category_id'];
             $product->sustainability_score = $validated['sustainability_score'];
 
-            if ($request->hasFile('product_images')) {
-                $fileExtension = $validated['product_images']->getClientOriginalExtension();
-                $fileName = 'product_images/' . uniqid('product_') . '.' . $fileExtension;
-
-                $this->googleDriveUtility->storeFile($fileName, $validated['product_images']);
-                $product->image_url = $fileName; // Assuming your `products` table has an `image_url` column.
-            }
-
             $product->save();
 
             DB::commit();
 
-            return redirect()->route('admin.product.list')->with('success', 'Product updated successfully.');
+            return back()->with('success', 'Product update successfully.');
         } catch (Exception $e) {
             DB::rollBack();
 
@@ -194,10 +232,15 @@ class ProductController extends Controller implements StatusInterface
             
             $id = $request->id;
             
-            $product = Product::find($id);
+            $product = Product::with('productImage')->find($id);
     
             if (!$product) {
                 throw new Exception(__('message.invalid'));
+            }
+
+            foreach ($product->productImage as $image) {
+                $this->googleDriveUtility->deleteFile($image->url); 
+                $image->delete(); 
             }
     
             $product->delete();
