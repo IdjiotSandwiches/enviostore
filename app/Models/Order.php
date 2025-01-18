@@ -4,18 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Cart extends Model
+class Order extends Model
 {
-    use SoftDeletes;
-    
     protected $guarded = ['id'];
-
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
 
     public function user()
     {
@@ -24,6 +16,6 @@ class Cart extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->hasMany(Cart::class);
     }
 }

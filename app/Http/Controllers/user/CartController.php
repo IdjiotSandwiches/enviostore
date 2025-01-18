@@ -9,7 +9,6 @@ use App\Services\Product\CartService;
 use App\Utilities\ErrorUtility;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\StatusInterface;
-use App\Models\ErrorLog;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -46,7 +45,7 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
         try {
             DB::beginTransaction();
 
-            $this->cartService->delete($request);
+            $this->cartService->delete($request->id);
 
             DB::commit();
         } catch (\Exception $e) {
@@ -83,7 +82,7 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
 
         return response()->json([
             'status' => self::STATUS_SUCCESS,
-            'message' => '',
+            'message' => 'Fetch Data Success!',
             'data' => $cart,
         ], Response::HTTP_OK);
     }
@@ -124,10 +123,13 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
         return back()->with($response);
     }
 
+    /**
+     * Summary of checkout
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function checkout()
     {
-        $cart = route('cart.getCartItems');
-        
-        return view('checkout.index')->with(['items' => $cart]);
+        session([self::SESSION_CHECKOUT_PERMISSION => true]);
+        return to_route('checkout.index');
     }
 }

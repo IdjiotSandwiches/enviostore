@@ -18,8 +18,12 @@ return [
     'exceeded_stock' => 'Your product amounts exceeded our stocks.',
     'remove_item' => 'Item removed.',
     'not_found_title' => 'Not Found',
+    'shipping_not_selected' => 'You must select shipping courier!',
     'profile_update_success' => 'Profile updated successfully.',
     'wrong_password' => 'Current password does not match our records.',
     'same_password' => 'New password cannot be same as current password.',
     'change_password_success' => 'Password changed successfully.',
+    'remove_unavailable' => 'You need to remove unavailable items.',
+    'insert_address' => 'You need to fill your address.',
+    'empty_cart' => 'Your cart is empty.',
 ];

@@ -18,8 +18,12 @@ return [
     'exceeded_stock' => 'Jumlah produk anda melebihi stok kami.',
     'remove_item' => 'Barang dihapus',
     'not_found_title' => 'Tidak Ditemukan',
+    'shipping_not_selected' => 'Anda harus memilih kurir pengiriman!',
     'profile_update_success' => 'Profil sukses diupadate',
     'wrong_password' => 'Kata sandi saat ini tidak cocok dengan data kami.',
     'same_password' => 'Kata sandi baru tidak boleh sama dengan kata sandi saat ini.',
     'change_password_success' => 'Kata sandi berhasil diubah.',
+    'remove_unavailable' => 'Anda harus menghapus barang yang tidak tersedia.',
+    'insert_address' => 'Anda harus mengisi alamat pengiriman.',
+    'empty_cart' => 'Keranjang anda kosong',
 ];

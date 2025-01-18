@@ -16,6 +16,15 @@ return [
     'cart.summary' => 'Rincian',
     'cart.total_items' => 'Total Barang',
     'cart.quantity' => 'Jumlah',
+    'cart.empty' => 'Keranjang anda kosong.',
+    'cart.button' => 'Telusuri produk kami',
+    'cart.out_of_stock' => 'Stok Habis',
+
+    'checkout.pay' => 'Bayar',
+    'checkout.transaction_fee' => 'Biaya Transaksi',
+    'checkout.shipping_fee' => 'Biaya Pengiriman',
+    'checkout.address' => 'Dikirim ke',
+    'checkout.add_address' => 'Tambahkan Alamat',
 
     'profile.user_information' => 'Informasi Pengguna',
     'profile.name' => 'Nama',
@@ -28,4 +37,8 @@ return [
     'profile.edit_information' => 'Edit Informasi',
     'profile.upload_image' => 'Unggah Gambar Baru',
     'profile.save_changes' => 'Simpan Perubahan',
+    'profile.pending' => 'Menunggu',
+    'profile.completed' => 'Selesai',
+    'profile.cancelled' => 'Dibatalkan',
+    'profile.created_at' => 'Dibuat pada: ',
 ];

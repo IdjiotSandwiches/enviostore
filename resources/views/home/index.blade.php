@@ -11,7 +11,7 @@
     </div>
     <div class="grid gap-4">
         <h1 class="text-4xl md:text-5xl text-center font-secondary">{{ __('header.recommended') }}</h1>
-        <div id="productContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+        <div id="productContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4"></div>
     </div>
 </section>
 @endsection

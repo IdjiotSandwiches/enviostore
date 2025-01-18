@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Interfaces\SessionKeyInterface;
 use App\Interfaces\StatusInterface;
-use App\Models\ErrorLog;
+use App\Models\Order;
 use App\Models\User;
 use App\Utilities\GoogleDriveUtility;
 use Illuminate\Support\Facades\Hash;
@@ -97,5 +97,32 @@ class ProfileService implements SessionKeyInterface, StatusInterface
 
         $user->password = Hash::make($validated['password']);
         $user->save();
+    }
+
+    /**
+     * Summary of getOrders
+     * @param int $id
+     * @return object
+     */
+    public function getOrders($id)
+    {
+        $orders = Order::where('user_id', $id)->get()
+            ->map(function ($order) {
+                $order->order_id = base64_encode($order->unique_id);
+                return $order;
+            })
+            ->groupBy(function ($order) {
+                if ($order->payment_status === 'pending') return 'pending';
+                elseif ($order->payment_status === 'cancel' || $order->payment_status === 'expire') return 'cancel';
+                else return 'complete';
+            });
+
+        $orders = (object) [
+            'pending' => $orders['pending'] ?? collect(),
+            'complete' => $orders['complete'] ?? collect(),
+            'cancel' => $orders['cancel'] ?? collect(),
+        ];
+
+        return $orders;
     }
 }

@@ -3,7 +3,7 @@
 <form action="{{ route('cart.checkout') }}" method="POST">
     @csrf
     @method('POST')
-    <div class="divide-y bg-white h-fit rounded-lg">
+    <div class="divide-y bg-white h-fit rounded-lg shadow-sm">
         <div class="p-4">
             <h2 class="text-xl font-bold">{{ __('page.cart.summary') }}</h2>
         </div>

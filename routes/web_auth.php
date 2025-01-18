@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProfilePictureController;
 use App\Http\Controllers\user\CartController;
 use App\Http\Controllers\user\CheckoutController;
 use App\Http\Controllers\user\ProfileController;
@@ -36,12 +35,15 @@ Route::prefix('cart')
         Route::get('/cart-items', 'getCartItems')->name('getCartItems');
         Route::post('/add-to-cart', 'addToCart')->name('addToCart');
         Route::delete('/delete/{id}', 'delete')->name('deleteItem');
-        Route::post('/checkout', 'checkout')->name('checkout');
+        Route::post('/', 'checkout')->name('checkout');
     });
 
 Route::prefix('checkout')
     ->name('checkout.')
     ->controller(CheckoutController::class)
     ->group(function () {
-        
+        Route::get('/', 'index')->name('index');
+        Route::get('/pay/{id}', 'paymentPage')->name('payment');
+        Route::post('/update', 'update')->name('update');
+        Route::post('/create', 'createOrder')->name('createOrder');
     });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Requests\ChangePasswordRequest;
 use App\Models\ErrorLog;
+use App\Models\Order;
 use App\Services\ProfileService;
 use App\Utilities\ErrorUtility;
 use Illuminate\Support\Facades\DB;
@@ -34,10 +35,15 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
     public function index()
     {
         $user = $this->profileService->getUser();
+        $orders = $this->profileService->getOrders($user->id);
 
-        return view('profile.index', compact('user'));
+        return view('profile.index', compact('user', 'orders'));
     }
 
+    /**
+     * Summary of getProfilePicture
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function getProfilePicture()
     {
         if (!request()->ajax()) abort(404);
@@ -49,7 +55,7 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
 
             return response()->json([
                 'status' => self::STATUS_ERROR,
-                'message' => 'Invalid operation.',
+                'message' => __('message.invalid'),
                 'data' => [],
             ], Response::HTTP_OK);
         }
@@ -155,13 +161,5 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
         ];
 
         return back()->with($response);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
