@@ -41,6 +41,26 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
     }
 
     /**
+     * Summary of edit
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function edit()
+    {
+        $user = $this->profileService->getUser();
+
+        return view('profile.edit', compact('user'));
+    }
+
+    /**
+     * Summary of changePassword
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function changePassword()
+    {
+        return view('profile.change-password');
+    }
+
+    /**
      * Summary of getProfilePicture
      * @return mixed|\Illuminate\Http\JsonResponse
      */
@@ -68,17 +88,6 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
     }
 
     /**
-     * Summary of edit
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function edit()
-    {
-        $user = $this->profileService->getUser();
-
-        return view('profile.edit', compact('user'));
-    }
-
-    /**
      * Summary of update
      * @param \App\Http\Requests\ProfileRequest $profileRequest
      * @return \Illuminate\Http\RedirectResponse
@@ -96,33 +105,18 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
         } catch (\Exception $e) {
             DB::rollBack();
 
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
+            $this->errorUtility->errorLog($e->getMessage());
 
-            $response = [
+            return back()->with([
                 'status' => self::STATUS_ERROR,
                 'message' => $e->getMessage(),
-            ];
-
-            return back()->with($response);
+            ]);
         }
 
-        $response = [
+        return back()->with([
             'status' => self::STATUS_SUCCESS,
             'message' => __('message.profile_update_success'),
-        ];
-
-        return back()->with($response);
-    }
-
-    /**
-     * Summary of changePassword
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function changePassword()
-    {
-        return view('profile.change-password');
+        ]);
     }
 
     /**
@@ -143,23 +137,17 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
         } catch (\Exception $e) {
             DB::rollBack();
 
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
+            $this->errorUtility->errorLog($e->getMessage());
 
-            $response = [
+            return back()->with([
                 'status' => self::STATUS_ERROR,
                 'message' => $e->getMessage(),
-            ];
-
-            return back()->with($response);
+            ]);
         }
 
-        $response = [
+        return back()->with([
             'status' => self::STATUS_SUCCESS,
             'message' => __('message.change_password_success'),
-        ];
-
-        return back()->with($response);
+        ]);
     }
 }
