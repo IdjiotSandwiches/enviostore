@@ -1,6 +1,6 @@
 @props(['link', 'image', 'name', 'price', 'quantity', 'category', 'delete'])
 
-<div class="w-full h-fit flex bg-white rounded-lg">
+<div class="w-full h-fit flex bg-white rounded-lg shadow-sm">
     <a href="{{ $link }}" class="flex justify-center items-center rounded-l-lg aspect-square object-contain max-w-[8rem] md:max-w-[10rem]">
         <img class="w-full aspect-square object-contain p-2 ::OPACITY::" src="{{ $image }}" alt="{{ $name }}" />
         <p class="absolute text-lg ::HIDDEN::">{{ __('page.cart.out_of_stock') }}</p>

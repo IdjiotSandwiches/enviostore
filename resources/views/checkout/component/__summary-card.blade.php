@@ -1,6 +1,6 @@
 @props(['subtotal', 'quantity', 'transaction', 'shipping', 'total'])
 
-<div class="divide-y bg-white h-fit rounded-lg">
+<div class="divide-y bg-white h-fit rounded-lg shadow-sm">
     <div class="p-4">
         <h2 class="text-xl font-bold">{{ __('page.cart.summary') }}</h2>
     </div>

@@ -4,7 +4,7 @@
 @enderror
 @foreach ($shippings as $shipping)
     <div @class([
-        "flex items-center ps-4 bg-primary rounded px-4",
+        "flex items-center ps-4 bg-primary rounded px-4 shadow-sm",
         "border-red-500" => $errors->has('shippings')
     ])>
         <input type="radio" value="{{ $shipping->shipping_serial_code }}" id="{{ $shipping->shipping_serial_code }}"

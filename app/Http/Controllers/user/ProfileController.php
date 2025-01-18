@@ -40,6 +40,10 @@ class ProfileController extends Controller implements StatusInterface, SessionKe
         return view('profile.index', compact('user', 'orders'));
     }
 
+    /**
+     * Summary of getProfilePicture
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function getProfilePicture()
     {
         if (!request()->ajax()) abort(404);
