@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProfilePictureController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\CategoryController;
 
