@@ -9,5 +9,6 @@ return [
     'addProduct' => 'Add Product',
     'editProduct' => 'Edit Product',
     'addCategory' => 'Add Category',
-    'editCategory' => 'Edit Category'
+    'editCategory' => 'Edit Category',
+    'editCategoryImage' => 'Add & Delete Product Images'
 ];

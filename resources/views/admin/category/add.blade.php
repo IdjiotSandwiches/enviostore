@@ -51,7 +51,7 @@
 
                 <div class="text-center mt-4">
                     <button type="submit"
-                        class="text-sm text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg px-4 md:px-5 py-1.5 md:py-2 text-nowrap">
+                        class="w-full text-sm text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg px-4 md:px-5 py-1.5 md:py-2 text-nowrap">
                         {{ __('page.admin.category.submit') }}
                     </button>
                 </div>

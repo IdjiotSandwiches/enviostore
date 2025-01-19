@@ -35,18 +35,36 @@ class ProductController extends Controller implements StatusInterface
     public function productIndex()
     {
         $products = Product::with('productImage', 'category')
-            ->get()
-            ->map(function($product) {
-                return $this->productsUtility->convertAdminItem($product);
-            });
+        ->get()
+        ->map(function($product) {
+            return $this->productsUtility->convertAdminItem($product);
+        });
         
         return view('admin.product.products', compact('products'));
     }
-
+    
     public function addProductIndex()
     {
         $categories = Category::all();
         return view('admin.product.add', compact('categories'));
+    }
+    
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function editProductIndex($id)
+    {
+        $product = Product::with('productImage')->find($id);
+        if (!$product) {
+            return back()->with('error', 'Product not found.');
+        }
+        $productImages = $product->productImage->map(function ($image) {
+            $image->converted_url = $this->googleDriveUtility->getFile($image->url);
+            return $image;
+        });
+
+        $categories = Category::all();
+        return view('admin.product.edit', compact('product', 'productImages', 'categories'));
     }
 
     public function addProduct(ProductRequest $request)
@@ -56,7 +74,7 @@ class ProductController extends Controller implements StatusInterface
         try {
             DB::beginTransaction();
 
-            $lastProduct = Product::latest()->first();
+            $lastProduct = Product::orderBy('id', 'desc')->first();
             $lastSerialNumber = 0;
     
             if ($lastProduct && preg_match('/PRODUCT_(\d+)/', $lastProduct->product_serial_code, $matches)) {
@@ -107,6 +125,79 @@ class ProductController extends Controller implements StatusInterface
         }
     }
     
+    public function addProductImages(ProductRequest $request, $id)
+    {
+        try{      
+            $product = Product::find($id);
+            
+            $validate = $request->validated();
+            
+            if (isset($validate['product_images']) && is_array($validate['product_images'])) {
+                foreach ($validate['product_images'] as $file) {
+                    $fileExtension = $file->getClientOriginalExtension();
+                    $fileName = 'product_images/' . uniqid('product_') . '.' . $fileExtension;
+                    
+                    $this->googleDriveUtility->storeFile($fileName, $file);
+                    
+                    $productImage = new ProductImage();
+                    $productImage->url = $fileName;
+                    $productImage->product_id = $product->id;
+                    $productImage->save();
+                }
+            }
+            return redirect()->route('admin.editProduct', $product->id)->with('success', 'Images uploaded successfully.');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+            
+            return back()->with('error', 'Failed to add product images: ' . $e->getMessage());
+        }
+    }
+    
+    
+    
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateProduct(ProductRequest $request, $id)
+    {
+        $validated = $request->validated();
+        
+        try {
+            DB::beginTransaction();
+            
+            $product = Product::find($id);
+            if (!$product) {
+                throw new Exception('Product not found.');
+            }
+            
+            $product->name_en = $validated['name_en'];
+            $product->name_id = $validated['name_id'];
+            $product->description_en = $validated['description_en'];
+            $product->description_id = $validated['description_id'];
+            $product->price = $validated['price'];
+            $product->stocks = $validated['stocks'];
+            $product->category_id = $validated['category_id'];
+            $product->sustainability_score = $validated['sustainability_score'];
+            
+            $product->save();
+            
+            DB::commit();
+            
+            return back()->with('success', 'Product update successfully.');
+        } catch (Exception $e) {
+            DB::rollBack();
+            
+            $errorLog = new ErrorLog();
+            $errorLog->error = $e->getMessage();
+            $errorLog->save();
+            
+            return back()->with('error', 'Failed to update product: ' . $e->getMessage());
+        }
+    }
     public function deleteProductImage($id)
     {
         $image = ProductImage::find($id);
@@ -125,102 +216,7 @@ class ProductController extends Controller implements StatusInterface
             return back()->with('error', 'Failed to delete image: ' . $e->getMessage());
         }
     }
-
-    public function addProductImages(ProductRequest $request, $id)
-    {
-        try{      
-            $product = Product::find($id);
     
-            $validate = $request->validated();
-    
-            if (isset($validate['product_images']) && is_array($validate['product_images'])) {
-                foreach ($validate['product_images'] as $file) {
-                    $fileExtension = $file->getClientOriginalExtension();
-                    $fileName = 'product_images/' . uniqid('product_') . '.' . $fileExtension;
-            
-                    $this->googleDriveUtility->storeFile($fileName, $file);
-            
-                    $productImage = new ProductImage();
-                    $productImage->url = $fileName;
-                    $productImage->product_id = $product->id;
-                    $productImage->save();
-                }
-            }
-            return redirect()->route('admin.editProduct', $product->id)->with('success', 'Images uploaded successfully.');
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
-    
-            return back()->with('error', 'Failed to add product images: ' . $e->getMessage());
-        }
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function editProductIndex($id)
-    {
-        $product = Product::with('productImage')->find($id);
-        if (!$product) {
-            return back()->with('error', 'Product not found.');
-        }
-
-        $productImages = $product->productImage->map(function ($image) {
-
-            $image->converted_url = $this->googleDriveUtility->getFile($image->url);
-
-            return $image;
-
-        });
-
-        $categories = Category::all();
-        return view('admin.product.edit', compact('product', 'productImages', 'categories'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function updateProduct(ProductRequest $request, $id)
-    {
-        $validated = $request->validated();
-
-        try {
-            DB::beginTransaction();
-
-            $product = Product::find($id);
-            if (!$product) {
-                throw new Exception('Product not found.');
-            }
-
-            $product->name_en = $validated['name_en'];
-            $product->name_id = $validated['name_id'];
-            $product->description_en = $validated['description_en'];
-            $product->description_id = $validated['description_id'];
-            $product->price = $validated['price'];
-            $product->stocks = $validated['stocks'];
-            $product->category_id = $validated['category_id'];
-            $product->sustainability_score = $validated['sustainability_score'];
-
-            $product->save();
-
-            DB::commit();
-
-            return back()->with('success', 'Product update successfully.');
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
-
-            return back()->with('error', 'Failed to update product: ' . $e->getMessage());
-        }
-    }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -261,5 +257,4 @@ class ProductController extends Controller implements StatusInterface
 
         return back()->with($response);
     }
-    
 }

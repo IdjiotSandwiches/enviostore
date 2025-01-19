@@ -5,9 +5,10 @@ return [
     'recommended' => 'Rekomendasi Produk',
     'cart' => 'Keranjang Anda',
     'welcome' => 'Selamat datang,',
-    'productManagement' => 'Pengaturan Product',
-    'addProduct' => 'Tambah Product',
-    'editProduct' => 'Ubah Product',
+    'productManagement' => 'Pengaturan Produk',
+    'addProduct' => 'Tambah Produk',
+    'editProduct' => 'Ubah Produk',
     'addCategory' => 'Tambah Kategori',
     'editCategory' => 'Ubah Kategori',
+    'editCategoryImage' => 'Tambah & Hapus Gambar Produk',
 ];
