@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Requests\ChangePasswordRequest;
-use App\Models\ErrorLog;
-use App\Models\Order;
 use App\Services\ProfileService;
 use App\Utilities\ErrorUtility;
 use Illuminate\Support\Facades\DB;
