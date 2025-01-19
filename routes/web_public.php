@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\common\ProductController;
@@ -32,6 +33,10 @@ Route::middleware(['guest:admin'])->group(function () {
 
     Route::controller(CategoryController::class)->group(function () {
         Route::get('/category/{category_serial}', 'index')->name('categoryPage');
+    });
+
+    Route::controller(SearchController::class)->group(function () {
+        Route::get('/search', 'index')->name('search');
     });
 });
 
