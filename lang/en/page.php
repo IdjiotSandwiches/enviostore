@@ -42,4 +42,38 @@ return [
     'profile.completed' => 'Completed',
     'profile.cancelled' => 'Cancelled',
     'profile.created_at' => 'Created at: ',
+
+    'admin.add_product' => 'Add Product',
+    'admin.add_category' => 'Add Category',
+    'admin.product' => 'Product',
+    'admin.category' => 'Category',
+    'admin.stocks' => 'Stocks',
+    'admin.price' =>  'Price',
+    'admin.action' => 'Action',
+    'admin.edit' => 'Edit',
+    'admin.delete' => 'Delete',
+
+    'admin.product.name_en' => 'Product Name',
+    'admin.product.name_id' => 'Product Name(ID)',
+    'admin.product.description_en' => 'Product Description',
+    'admin.product.description_id' => 'Product Description(ID)',
+    'admin.product.price' => 'Price',
+    'admin.product.stocks' => 'Stocks',
+    'admin.product.category' => 'Category',
+    'admin.product.sustainability_score' => 'Sustainability Score',
+    'admin.product.image' => 'Upload Image',
+    'admin.product.submit_changes' => 'Add Product',
+
+    'admin.category.name_en' => 'Category Name',
+    'admin.category.name_id' => 'Category Name(ID)',
+    'admin.category.image' => 'Upload Image',
+    'admin.category.submit' => 'Add Category',
+    'admin.category.update' => 'Save Changes',
+
+    'admin.product.edit.select' => 'Select a category',
+    'admin.product.edit.update' => 'Update Product Details',
+    'admin.product.edit.add' => 'Add New Images',
+    'admin.product.edit.current' => 'Current Image',
+    'admin.product.edit.upload' => 'Upload New Images',
+    
 ];

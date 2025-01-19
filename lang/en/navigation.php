@@ -4,6 +4,8 @@ return [
     'profile' => 'Profile',
     'logout' => 'Logout',
     'settings' => 'Settings',
+    'products' => 'Products',
+    'categories' => 'Categories',
 
     'resources' => 'Resources',
     'resources.goals' => 'Sustainable Development Goals',

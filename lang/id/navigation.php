@@ -4,6 +4,8 @@ return [
     'profile' => 'Profil',
     'logout' => 'Keluar',
     'settings' => 'Pengaturan',
+    'products' => 'Produk',
+    'categories' => 'Kategori',
 
     'resources' => 'Sumber',
     'resources.goals' => 'Tujuan Pembangunan Berkelanjutan',

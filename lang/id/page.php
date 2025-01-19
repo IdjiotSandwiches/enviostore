@@ -42,4 +42,38 @@ return [
     'profile.completed' => 'Selesai',
     'profile.cancelled' => 'Dibatalkan',
     'profile.created_at' => 'Dibuat pada: ',
+
+    'admin.add_product' => 'Tambah Produk',
+    'admin.add_category' => 'Tambah Kategori',
+    'admin.product' => 'Produk',
+    'admin.category' => 'Kategori',
+    'admin.stocks' => 'Stok',
+    'admin.price' =>  'Harga',
+    'admin.action' => 'Aksi',
+    'admin.edit' => 'Ubah',
+    'admin.delete' => 'Hapus',
+
+    'admin.product.name_en' => 'Nama Produk(EN)',
+    'admin.product.name_id' => 'Name Produk',
+    'admin.product.description_en' => 'Deskripsi Produk(EN)',
+    'admin.product.description_id' => 'Deskripsi Produk',
+    'admin.product.price' => 'Harga',
+    'admin.product.stocks' => 'Stocks',
+    'admin.product.category' => 'Kategori',
+    'admin.product.sustainability_score' => 'Nilai Sustainability',
+    'admin.product.image' => 'Unggah Gambar',
+    'admin.product.submit_changes' => 'Tambahkan Product',
+
+    'admin.category.name_en' => 'Nama Kategori(EN)',
+    'admin.category.name_id' => 'Nama Kategori',
+    'admin.category.image' => 'Unggah Gambar',
+    'admin.category.submit' => 'Tambahkan Kategori',
+    'admin.category.update' => 'Simpan Perubahan',
+
+    'admin.product.edit.select' => 'Pilih kategori',
+    'admin.product.edit.update' => 'Perbaharui Rincian Produk',
+    'admin.product.edit.add' => 'Tambah Gambar Baru',
+    'admin.product.edit.current' => 'Gambar Saat Ini',
+    'admin.product.edit.upload' => 'Unggah Gambar Baru',
+
 ];
