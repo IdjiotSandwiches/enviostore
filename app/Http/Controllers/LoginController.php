@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Interfaces\SessionKeyInterface;
 use App\Models\ErrorLog;
 use App\Services\Login\LoginService;
+use App\Utilities\ErrorUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
@@ -13,6 +14,16 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller implements StatusInterface, SessionKeyInterface
 {
+    private $errorUtility;
+
+    /**
+     * Summary of __construct
+     */
+    public function __construct()
+    {
+        $this->errorUtility = new ErrorUtility();
+    }
+
     /**
      * Return Login View
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -42,16 +53,12 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
         } catch (\Exception $e) {
             DB::rollBack();
 
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
+            $this->errorUtility->errorLog($e->getMessage());
 
-            $response = [
+            return back()->withInput()->with([
                 'status' => self::STATUS_ERROR,
                 'message' => $e->getMessage(),
-            ];
-
-            return back()->withInput()->with($response);
+            ]);
         }
 
         session($sessionData->all());
@@ -86,11 +93,9 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        $response = [
+        return to_route('home')->with([
             'status' => self::STATUS_SUCCESS,
             'message' => __('message.logout'),
-        ];
-
-        return to_route('home')->with($response);
+        ]);
     }
 }

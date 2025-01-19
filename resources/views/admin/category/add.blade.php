@@ -1,13 +1,13 @@
 @extends('layout.layout')
-@section('title', 'Add Category')
+@section('title', __('title.add_category'))
 
 @section('content')
 <section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
-    <h1 class="font-bold text-3xl">{{ __('header.addCategory') }}</h1>
+    <h1 class="font-bold text-3xl">{{ __('header.add_category') }}</h1>
     <form action="{{ route('admin.categories.addCategory') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('POST')
-        <div class="bg-primary rounded-lg shadow border border-gray-200 p-4 sm:p-6 md:p-8">
+        <div class="bg-primary rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 md:p-8">
             <div class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>

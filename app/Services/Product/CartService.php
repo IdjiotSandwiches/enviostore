@@ -3,18 +3,22 @@
 namespace App\Services\Product;
 
 use App\Helpers\StringHelper;
+use App\Interfaces\FeeInterface;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Interfaces\SessionKeyInterface;
 use App\Utilities\GoogleDriveUtility;
+use App\Utilities\ProductsUtility;
 
-class CartService implements SessionKeyInterface
+class CartService implements SessionKeyInterface, FeeInterface
 {
     private $googleDriveUtility;
+    private $productsUtility;
 
     public function __construct()
     {
         $this->googleDriveUtility = new GoogleDriveUtility();
+        $this->productsUtility = new ProductsUtility();
     }
 
     /**
@@ -32,15 +36,17 @@ class CartService implements SessionKeyInterface
             ->where('user_id', $user->id)
             ->get()
             ->map(function ($item) {
+                $isAvailable = $this->productsUtility->isAvailable($item->product->stocks, $item->quantity);
                 $img = $item->product->productImage->first();
                 $img = $this->googleDriveUtility->getFile($img->url);
                 $price = $item->quantity * $item->product->price;
 
                 return (object) [
+                    'isAvailable' => $isAvailable,
                     'productName' => $item->product->name,
                     'quantity' => $item->quantity,
                     'price' => StringHelper::parseNumberFormat($price),
-                    'categoryName' => $item->product->category->name,
+                    'categoryName' => ucwords($item->product->category->name),
                     'img' => $img,
                     'link' => route('getProduct', base64_encode($item->product->product_serial_code)),
                     'delete' => route('cart.deleteItem', $item->id),
@@ -65,23 +71,22 @@ class CartService implements SessionKeyInterface
             ->where('user_id', $user->id)
             ->get()
             ->map(function ($item) {
+                $isAvailable = $this->productsUtility->isAvailable($item->product->stocks, $item->quantity);
                 $subtotal = $item->quantity * $item->product->price;
 
                 return (object) [
-                    'quantity' => $item->quantity,
-                    'subtotal' => $subtotal,
+                    'quantity' => $isAvailable ? $item->quantity : 0,
+                    'subtotal' => $isAvailable ? $subtotal : 0,
                 ];
             });
 
-        $shippingFee = 5000;
-        $adminFee = 2000;
+        $adminFee = self::TRANSACTION_FEE;
         $subtotal = $items->sum('subtotal');
-        $total = $shippingFee + $adminFee + $subtotal;
+        $total = $adminFee + $subtotal;
 
         $summary = (object) [
             'subtotal' => StringHelper::parseNumberFormat($subtotal),
             'quantity' => $items->sum('quantity'),
-            'shippingFee' => StringHelper::parseNumberFormat($shippingFee),
             'adminFee' => StringHelper::parseNumberFormat($adminFee),
             'total' => StringHelper::parseNumberFormat($total),
         ];
@@ -104,57 +109,20 @@ class CartService implements SessionKeyInterface
 
         $product = Product::where('product_serial_code', $item['product_serial'])->first();
 
-        if (!$product) {
-            throw new \Exception(__('message.invalid'));
-        }
+        if (!$product) throw new \Exception(__('message.invalid'));
 
-        $cart = Cart::firstOrNew(['product_id' => $product->id]);
-        $cart->user_id = $user->id;
+        $cart = Cart::firstOrNew([
+            'product_id' => $product->id,
+            'user_id' => $user->id,
+        ]);
         $cart->product_id = $product->id;
         $cart->quantity = ($cart->exists() ? $cart->quantity : 0) + $item['quantity'];
         
         $currentStock = $product->stocks;
-        if (!$this->isAvailable($currentStock, $cart->quantity)) {
-            throw new \Exception(__('exceeded_stock'));
-        }
+        $isAvailable = $this->productsUtility->isAvailable($currentStock, $cart->quantity);
+        if (!$isAvailable) throw new \Exception(__('exceeded_stock'));
 
         $cart->save();
-    }
-
-    /**
-     * Summary of updateStocks
-     * @param \App\Models\Product $product
-     * @param int $quantity
-     * @throws \Exception
-     * @return void
-     */
-    // Dipake pas bayar
-    // public function updateStocks($product, $quantity)
-    // {
-    //     $currentStock = $product->stocks;
-
-        // if (!$this->isAvailable($currentStock, $quantity)) {
-        //     throw new \Exception(__('message.invalid'));
-        // }
-
-    //     $updatedStock = $currentStock - $quantity;
-    //     $product->stocks = $updatedStock;
-    //     $product->save();
-    // }
-
-    /**
-     * Summary of isAvailable
-     * @param int $currentStock
-     * @param int $quantity
-     * @return bool
-     */
-    public function isAvailable($currentStock, $quantity)
-    {
-        if ($currentStock < $quantity) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -163,14 +131,11 @@ class CartService implements SessionKeyInterface
      * @throws \Exception
      * @return void
      */
-    public function delete($request)
+    public function delete($id)
     {
-        $id = $request->id;
         $cart = Cart::find($id);
 
-        if (!$cart) {
-            throw new \Exception(__('message.invalid'));
-        }
+        if (!$cart) throw new \Exception(__('message.invalid'));
 
         $cart->delete();
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ErrorLog;
 use App\Services\Login\LoginService;
 use App\Services\Register\RegisterService;
+use App\Utilities\ErrorUtility;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\StatusInterface;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,16 @@ use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller implements StatusInterface
 {
+    private $errorUtility;
+
+    /**
+     * Summary of __construct
+     */
+    public function __construct()
+    {
+        $this->errorUtility = new ErrorUtility();
+    }
+    
     /**
      * Return Register View
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -41,16 +52,12 @@ class RegisterController extends Controller implements StatusInterface
         } catch (\Exception $e) {
             DB::rollBack();
 
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
-
-            $response = [
+            $this->errorUtility->errorLog($e->getMessage());
+            
+            return back()->withInput()->with([
                 'status' => self::STATUS_ERROR,
                 'message' => __('message.invalid'),
-            ];
-
-            return back()->withInput()->with($response);
+            ]);
         }
 
         event(new Registered($user));

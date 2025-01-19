@@ -73,8 +73,20 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
         $img = $product->productImage->first();
         $img = $this->googleDriveUtility->getFile($img->url);
         $link = route('getProduct', base64_encode($product->product_serial_code));
+        $isAvailable = $product->stocks > 0;
 
-        return (object) compact('name', 'rating', 'price', 'img', 'link');
+        return (object) compact('name', 'rating', 'price', 'img', 'link', 'isAvailable');
+    }
+
+    /**
+     * Summary of isAvailable
+     * @param int $currentStock
+     * @param int $quantity
+     * @return bool
+     */
+    public function isAvailable($currentStock, $quantity)
+    {
+        return $currentStock >= $quantity;
     }
     
     /**

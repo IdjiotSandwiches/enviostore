@@ -2,8 +2,9 @@
 
 <div class="max-w-sm bg-white rounded-lg shadow-sm">
     <a href="{{ $link }}">
-        <div>
-            <img class="rounded-t-lg aspect-square object-contain" src="{{ $image }}" alt="{{ $name }}" />
+        <div class="flex justify-center items-center">
+            <img class="rounded-t-lg aspect-square object-contain ::OPACITY::" src="{{ $image }}" alt="{{ $name }}" />
+            <p class="absolute font-semibold text-lg ::HIDDEN::">{{ __('page.cart.out_of_stock') }}</p>
         </div>
         <div class="p-5 flex flex-col gap-2">
             <div>

@@ -30,13 +30,11 @@ class EmailVerificationController extends Controller implements StatusInterface
     public function verifyEmail(EmailVerificationRequest $request)
     {
         $request->fulfill();
-        
-        $response = [
+
+        return to_route('home')->with([
             'status' => self::STATUS_SUCCESS,
             'message' => __('message.verified'),
-        ];
-
-        return to_route('home')->with($response);
+        ]);
     }
 
     /**

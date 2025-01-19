@@ -5,10 +5,12 @@ return [
     'recommended' => 'Recommended Product',
     'cart' => 'Your Cart',
     'welcome' => 'Welcome,',
-    'productManagement' => 'Manage Product',
-    'addProduct' => 'Add Product',
-    'editProduct' => 'Edit Product',
-    'addCategory' => 'Add Category',
-    'editCategory' => 'Edit Category',
-    'editCategoryImage' => 'Add & Delete Product Images'
+    'product_management' => 'Manage Product',
+    'add_product' => 'Add Product',
+    'edit_product' => 'Edit Product',
+    'add_category' => 'Add Category',
+    'edit_category' => 'Edit Category',
+    'edit_category_image' => 'Add & Delete Product Images',
+    'shipping' => 'Shipping',
+    'payment' => 'Payment',
 ];

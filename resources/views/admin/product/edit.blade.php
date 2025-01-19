@@ -1,13 +1,13 @@
 @extends('layout.layout')
-@section('title', 'Edit Products')
+@section('title', __('title.edit_products'))
 
 @section('content')
     <section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
-        <h1 class="font-bold text-3xl">{{ __('header.editProduct') }}</h1>
+        <h1 class="font-bold text-3xl">{{ __('header.edit_product') }}</h1>
         <form action="{{ route('admin.product.updateProduct', $product->id) }}" method="POST">
             @csrf
             @method('PUT')
-            <div class="bg-primary rounded-lg shadow border border-gray-200 p-4 sm:p-6 md:p-8">
+            <div class="bg-primary rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 md:p-8">
                 <div class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -87,7 +87,7 @@
                                     'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5',
                                     'border-red-500' => $errors->has('category_id'),
                                 ])>
-                                <option value="">Select a category</option>
+                                <option value="" disabled>{{ __('page.admin.product.edit.select') }}</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
                                         {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
@@ -119,15 +119,15 @@
                 <div class="text-center mt-4">
                     <button type="submit"
                         class="w-full text-sm text-white bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg px-4 md:px-5 py-1.5 md:py-2">
-                        Update Product Details
+                        {{ __('page.admin.product.edit.update') }}
                     </button>
                 </div>
             </div>
         </form>
 
-        <h1 class="font-bold text-3xl mt-8">{{ __('header.editCategoryImage') }}</h1>
+        <h1 class="font-bold text-3xl mt-8">{{ __('header.edit_category_image') }}</h1>
         <div class="bg-primary rounded-lg shadow border border-gray-200 p-4 sm:p-6 md:p-8">
-            <label class="block mb-2 text-sm font-medium text-font_primary">Current Images</label>
+            <label class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.admin.product.edit.current') }}</label>
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 @foreach ($productImages as $image)
                     <div class="group relative border p-2 rounded shadow-lg">
@@ -135,7 +135,7 @@
                             class="w-full h-32 object-cover rounded">
                         <div
                             class="absolute inset-0 bg-black bg-opacity-50 items-center justify-center rounded hidden group-hover:flex">
-                            <form action="{{ route('admin.deleteProductImage', $image->id) }}" method="POST">
+                            <form action="{{ route('admin.product.deleteProductImage', $image->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
@@ -149,19 +149,20 @@
             </div>
             
             <div class="mt-8">
-                <form action="{{ route('admin.addProductImage', $product->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.product.addProductImage', $product->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('POST')
                     <div>
-                        <label for="product_images" class="block mb-2 text-sm font-medium text-font_primary">Add New
-                            Images</label>
-                            <input type="file" name="product_images[]" id="product_images" accept="image/*" multiple
+                        <label for="product_images" class="block mb-2 text-sm font-medium text-font_primary">
+                            {{ __('page.admin.product.edit.add') }}
+                        </label>
+                        <input type="file" name="product_images[]" id="product_images" accept="image/*" multiple
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5" />
-                        </div>
-                        <div class="text-center mt-4">
-                            <button type="submit"
+                    </div>
+                    <div class="text-center mt-4">
+                        <button type="submit"
                             class="w-full text-sm text-white bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg px-4 md:px-5 py-1.5 md:py-2">
-                            Upload New Images
+                            {{ __('page.admin.product.edit.upload') }}
                         </button>
                     </div>
                 </form>

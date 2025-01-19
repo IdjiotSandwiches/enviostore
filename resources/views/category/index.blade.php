@@ -23,7 +23,7 @@
     </div>
 
     <div class="grid gap-4">
-        <div id="productContainer" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+        <div id="productContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4"></div>
         <div id="pagination" class="flex items-center md:justify-between"></div>
     </div>
 </section>
@@ -31,9 +31,10 @@
 
 @section('extra-js')
 <script>
+    const productContainer = document.querySelector('#productContainer');
+    
     function replaceProducts(response) {
         let data = response.data;
-        let productContainer = document.querySelector('#productContainer');
         productContainer.replaceChildren();
 
         let products = data.products;
@@ -51,6 +52,12 @@
                 .replace('::IMAGE::', product.img)
                 .replaceAll('::NAME::', product.name)
                 .replace('::PRICE::', product.price);
+
+            item = product.isAvailable ? 
+                item.replaceAll('::OPACITY::', '')
+                    .replace('::HIDDEN::', 'hidden') : 
+                item.replaceAll('::OPACITY::', 'opacity-30')
+                    .replace('::HIDDEN::', '');
 
             productContainer.insertAdjacentHTML('beforeend', item);
         });
@@ -87,11 +94,10 @@
     }
 
     function fetchRequest(url) {
-        let productContainer = document.querySelector('#productContainer');
         productContainer.replaceChildren();
 
         setTimeout(function() {
-            if(productContainer.textContent !== '') return;
+            if(checkPlaceholder(productContainer)) return;
 
             for (let i = 0; i < 8; i++) {
                 let item = `{!! view('component.__skeleton-card')->render() !!}`;
@@ -102,20 +108,8 @@
         customFetch(url, {
             method: 'GET',
         }).then(response => {
-            if(!response.ok) {
-                throw new Error();
-            }
-
             productContainer.replaceChildren();
-            return response.json();
-        }).then(response => {
             replaceProducts(response);
-        }).catch(error => {
-            let section = document.querySelector('section');
-            let item = `{!! view('component.__fetch-failed')->render() !!}`;
-            
-            section.replaceChildren();
-            section.insertAdjacentHTML('beforeend', item);
         });
     }
 

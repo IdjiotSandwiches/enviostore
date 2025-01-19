@@ -1,13 +1,13 @@
 @extends('layout.layout')
-@section('title', 'Add Products')
+@section('title', __('title.add_products'))
 
 @section('content')
     <section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
-        <h1 class="font-bold text-3xl">{{ __('header.addProduct') }}</h1>
+        <h1 class="font-bold text-3xl">{{ __('header.add_product') }}</h1>
         <form action="{{ route('admin.product.addProduct') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('POST')
-            <div class="bg-primary rounded-lg shadow border border-gray-200 p-4 sm:p-6 md:p-8">
+            <div class="bg-primary rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 md:p-8">
                 <div class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -93,7 +93,7 @@
                                 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-button focus:border-button block w-full p-2.5',
                                 'border-red-500' => $errors->has('category_id'),
                             ])>
-                                <option value="">Select a category</option>
+                                <option value="" disabled>{{ __('page.admin.product.edit.select') }}</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}

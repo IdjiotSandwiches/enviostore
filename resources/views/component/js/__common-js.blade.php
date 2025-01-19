@@ -1,12 +1,26 @@
 <script>
-    function customFetch(url, options = {}) {
+    async function customFetch(url, options = {}) {
         options.headers = {
             ...options.headers,
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         }
 
-        return fetch(url, options);
+        try {
+            const response = await fetch(url, options);
+            if(!response.ok) throw new Error();
+            return await response.json();
+        } catch (error) {
+            let section = document.querySelector('section');
+            let item = `{!! view('component.__fetch-failed')->render() !!}`;
+            
+            section.replaceChildren();
+            section.insertAdjacentHTML('beforeend', item);
+        }
+    }
+
+    function checkPlaceholder(placeholder) {
+        return placeholder.hasChildNodes();
     }
 
     document.addEventListener('DOMContentLoaded', function() {

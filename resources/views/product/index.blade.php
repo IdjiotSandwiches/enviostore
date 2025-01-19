@@ -90,41 +90,34 @@
                         <span class="font-bold">{{ __('page.product.unavailable') }}</span>
                     </div>
                 @else
-                    <div class="grid gap-4">
-                        <button type="submit"
-                            class="flex items-center justify-center gap-2 text-center py-2 px-5 text-lg font-medium text-gray-900 focus:outline-none rounded-lg border border-button hover:bg-accent/10 hover:text-button focus:z-10 focus:ring-4 focus:ring-button/15">
-                            <svg class="w-8 h-8 text-gray-800" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5"
-                                    d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
-                            </svg>
-                            + {{ __('page.product.add') }}
-                        </button>
-                        <a href="/"
-                            class="text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg text-lg px-4 md:px-5 py-1.5 md:py-2 text-nowrap">{{ __('page.product.buy') }}</a>
-                    </div>
+                    <button type="submit"
+                        class="flex items-center justify-center gap-2 text-center py-2 px-5 text-lg font-medium text-white rounded-lg bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15">
+                        <svg class="w-8 h-8" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                        </svg>
+                        + {{ __('page.product.add') }}
+                    </button>
                 @endif
             </form>
         </div>
     </section>
     <section class="p-4 md:p-0 md:pt-10">
-        <div id="accordion-collapse" data-accordion="collapse" data-active-classes="text-font_primary"
-            data-inactive-classes="text-font_primary">
-            <h2 id="accordion-collapse-heading-1">
+        <div id="accordion-open" data-accordion="open" data-active-classes="text-font_primary" data-inactive-classes="text-font_primary">
+            <h2 id="accordion-open-heading-1" class="bg-primary shadow-sm rounded-t-lg">
                 <button type="button"
-                    class="flex items-center justify-between w-full p-5 font-bold rtl:text-right text-font_primary border-b border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 gap-3"
-                    data-accordion-target="#accordion-collapse-body-1" aria-expanded="false"
-                    aria-controls="accordion-collapse-body-1">
+                        class="flex items-center justify-between w-full p-5 font-bold rtl:text-right text-font_primary border-b border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 gap-3"
+                        data-accordion-target="#accordion-open-body-1" aria-expanded="true"
+                        aria-controls="accordion-open-body-1">
                     <span>{{ __('page.product.about') }}</span>
-                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 5 5 1 1 5" />
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
                     </svg>
                 </button>
             </h2>
-            <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
+            <div id="accordion-open-body-1" class="hidden" aria-labelledby="accordion-open-heading-1">
                 <div class="p-5 border border-t-0 rounded-b-xl bg-primary">
                     <p>{{ $product->description }}</p>
                 </div>
