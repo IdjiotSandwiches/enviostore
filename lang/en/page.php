@@ -17,6 +17,16 @@ return [
     'cart.total_items' => 'Total Items',
     'cart.quantity' => 'Quantity',
 
+    'admin.addProduct' => 'Add Product',
+    'admin.addCategory' => 'Add Category',
+    'admin.product' => 'Product',
+    'admin.category' => 'Category',
+    'admin.stocks' => 'Stocks',
+    'admin.price' =>  'Price',
+    'admin.action' => 'Action',
+    'admin.edit' => 'Edit',
+    'admin.delete' => 'Delete',
+
     'admin.product.name_en' => 'Product Name',
     'admin.product.name_id' => 'Product Name(ID)',
     'admin.product.description_en' => 'Product Description',
@@ -32,4 +42,5 @@ return [
     'admin.category.name_id' => 'Category Name(ID)',
     'admin.category.image' => 'Upload Image',
     'admin.category.submit' => 'Add Category',
+    'admin.category.update' => 'Save Changes',
 ];

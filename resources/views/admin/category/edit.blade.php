@@ -3,8 +3,8 @@
 
 @section('content')
 <section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
-    <h1 class="font-bold text-3xl">{{ __('header.updateCategory') }}</h1>
-    <form action="{{ route('admin.updateCategory', $category->id) }}" method="POST" enctype="multipart/form-data">
+    <h1 class="font-bold text-3xl">{{ __('header.editCategory') }}</h1>
+    <form action="{{ route('admin.editCategory', $category->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="bg-primary rounded-lg shadow border border-gray-200 p-4 sm:p-6 md:p-8">
@@ -40,6 +40,9 @@
                 </div>
 
                 <div class="md:col-span-2">
+                    <div class="mt-2">
+                        <img src="{{ $categoryImage }}" alt="Current Category Image" class="h-32 w-32 object-cover rounded">
+                    </div>
                     <label for="category_image"
                         class="block mb-2 text-sm font-medium text-font_primary">{{ __('page.admin.category.image') }}</label>
                     <input type="file" name="category_image" id="category_image" accept="image/*" @class([
@@ -49,13 +52,7 @@
                     @error('category_image')
                         <p class="text-red-500 text-sm first-letter:uppercase">{{ $message }}</p>
                     @enderror
-                    <div class="mt-2">
-                        @if ($category->url)
-                            <img src="{{ $category->url }}" alt="Current Category Image" class="h-20 w-20 object-cover rounded-lg">
-                        @endif
-                    </div>
                 </div>
-
                 <div class="text-center mt-4">
                     <button type="submit"
                         class="text-sm text-white text-center bg-button hover:bg-button/80 focus:ring-4 focus:outline-none focus:ring-button/15 font-medium rounded-lg px-4 md:px-5 py-1.5 md:py-2 text-nowrap">

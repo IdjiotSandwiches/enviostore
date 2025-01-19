@@ -6,4 +6,6 @@ return [
     'login' => 'Masuk',
     'register' => 'Daftar',
     'profile' => 'Profil',
+    'dashboard' => 'Dasbor',
+    'productManagement' => 'Manangemen Produk'
 ];

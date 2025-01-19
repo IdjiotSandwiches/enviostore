@@ -62,8 +62,10 @@ class CategoryController extends Controller implements StatusInterface
     public function editCategoryIndex($id)
     {
         $category = Category::find($id);
+        $categoryImage = $this->googleDriveUtility->getFile($category->url);
 
-        return view('admin.category.edit', compact('category'));
+        // dd($categoryImage);
+        return view('admin.category.edit', compact('category', 'categoryImage'));
     }
 
     /**

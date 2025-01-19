@@ -177,7 +177,6 @@ class ProductController extends Controller implements StatusInterface
 
         });
 
-        // dd($productImages);
         $categories = Category::all();
         return view('admin.product.edit', compact('product', 'productImages', 'categories'));
     }

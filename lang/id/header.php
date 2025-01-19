@@ -9,5 +9,5 @@ return [
     'addProduct' => 'Tambah Product',
     'editProduct' => 'Ubah Product',
     'addCategory' => 'Tambah Kategori',
-    'editCategory' => 'Ubah Kategori'
+    'editCategory' => 'Ubah Kategori',
 ];
