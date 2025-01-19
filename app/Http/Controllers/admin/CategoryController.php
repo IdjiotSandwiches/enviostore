@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
-use Exception;
+use App\Services\Admin\CategoryService;
 use App\Models\Category;
 use App\Models\ErrorLog;
+use App\Utilities\ErrorUtility;
 use Illuminate\Http\Request;
 use App\Utilities\ProductsUtility;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,9 @@ class CategoryController extends Controller implements StatusInterface
 {
     private $googleDriveUtility;
     private $productsUtility;
+    private $categoryService;
+    private $errorUtility;
+
     /**
      * Summary of __construct
      */
@@ -24,6 +28,8 @@ class CategoryController extends Controller implements StatusInterface
     {
         $this->googleDriveUtility = new GoogleDriveUtility();
         $this->productsUtility = new ProductsUtility();
+        $this->categoryService = new CategoryService();
+        $this->errorUtility = new ErrorUtility();
     }
 
     /**
@@ -41,7 +47,6 @@ class CategoryController extends Controller implements StatusInterface
             return (object) compact('id', 'name', 'image');
         });
 
-        // dd($categories); 
         return view('admin.category.categories', compact('categories'));
     }
 
@@ -56,7 +61,7 @@ class CategoryController extends Controller implements StatusInterface
 
     /**
      * Summary of editCategoryIndex
-     * @param mixed $id
+     * @param int $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function editCategoryIndex($id)
@@ -64,7 +69,6 @@ class CategoryController extends Controller implements StatusInterface
         $category = Category::find($id);
         $categoryImage = $this->googleDriveUtility->getFile($category->url);
 
-        // dd($categoryImage);
         return view('admin.category.edit', compact('category', 'categoryImage'));
     }
 
@@ -75,94 +79,65 @@ class CategoryController extends Controller implements StatusInterface
      */
     public function addCategory(CategoryRequest $request)
     {
-        $validate = $request->validated();
+        $validated = $request->validated();
 
         try {
             DB::beginTransaction();
 
-            $lastCategory = Category::orderBy('id', 'desc')->first();
-            $lastSerialNumber = 0;
-
-            if ($lastCategory && preg_match('/CATEGORY_(\d+)/', $lastCategory->category_serial_code, $matches)) {
-                $lastSerialNumber = (int) $matches[1];
-            }
-
-            $newSerialNumber = $lastSerialNumber + 1;
-            $newCategorySerialCode = 'CATEGORY_' . str_pad($newSerialNumber, 3, '0', STR_PAD_LEFT);
-
-            $newCategory = new Category();
-            $newCategory->name_en = $validate['name_en'];
-            $newCategory->name_id = $validate['name_id'];
-            $newCategory->category_serial_code = $newCategorySerialCode;
-
-            if ($request->hasFile('category_image')) {
-                $file = $request->file('category_image');
-                $fileExtension = $file->getClientOriginalExtension();
-                $fileName = 'category_images/' . uniqid('category_') . '.' . $fileExtension;
-
-                $this->googleDriveUtility->storeFile($fileName, $file);
-
-                $newCategory->url = $fileName;
-            }
-
-            $newCategory->save();
+            $this->categoryService->addCategory($validated);
 
             DB::commit();
 
-            return to_route('admin.addCategoryIndex')->with('success', 'Category added successfully.');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
-
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
-
-            return back()->with('error', 'Failed to add category: ' . $e->getMessage());
+            
+            $this->errorUtility->errorLog($e->getMessage());
+            
+            return back()->with([
+                'status' => self::STATUS_ERROR,
+                'message' => 'Failed to update category',
+            ]);
         }
+
+        return to_route('admin.category.index')->with([
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Category added successfully.',
+        ]);
     }
 
-
+    /**
+     * Summary of updateCategory
+     * @param \App\Http\Requests\CategoryRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateCategory(CategoryRequest $request, $id)
     {
-        $validate = $request->validated();
+        $validated = $request->validated();
 
         try {
             DB::beginTransaction();
 
-            $category = Category::find($id);
-
-            $category->name_en = $validate['name_en'];
-            $category->name_id = $validate['name_id'];
-
-            if ($request->hasFile('category_image')) {
-                if ($category->url) {
-                    $this->googleDriveUtility->deleteFile($category->url);
-                }
-
-                $file = $validate['category_image'];
-                $fileExtension = $file->getClientOriginalExtension();
-                $fileName = 'category_images/' . uniqid('category_') . '.' . $fileExtension;
-
-                $this->googleDriveUtility->storeFile($fileName, $file);
-                $category->url = $fileName;
-            }
-
-            $category->save();
+            $this->categoryService->updateCategory($id, $validated);
 
             DB::commit();
 
-            return to_route('admin.editCategory', $id)->with('success', 'Category updated successfully.');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
-
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
-
-            return back()->with('error', 'Failed to update category: ' . $e->getMessage());
+            
+            $this->errorUtility->errorLog($e->getMessage());
+            
+            return back()->with([
+                'status' => self::STATUS_ERROR,
+                'message' => 'Failed to update category',
+            ]);
         }
-    }
 
+        return to_route('admin.category.index')->with([
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Category updated successfully.',
+        ]);
+    }
 
     /**
      * Summary of deleteCategory
@@ -175,33 +150,23 @@ class CategoryController extends Controller implements StatusInterface
         try {
             DB::beginTransaction();
 
-            $id = $request->id;
-
-            $category = Category::find($id);
-
-            if (!$category) {
-                throw new Exception(__('message.invalid'));
-            }
-
-            $this->googleDriveUtility->deleteFile($category->url);
-
-            $category->delete();
+            $this->categoryService->deleteCategory($request->id);
 
             DB::commit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
 
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
+            $this->errorUtility->errorLog($e->getMessage());
 
-            return back()->with('error', 'Failed to delete product: ' . $e->getMessage());
+            return back()->with([
+                'status' => self::STATUS_ERROR,
+                'message' => 'Failed to update category',
+            ]);
         }
-        $response = [
+
+        return back()->with([
             'status' => self::STATUS_SUCCESS,
             'message' => __('message.remove_item'),
-        ];
-
-        return back()->with($response);
+        ]);
     }
 }
