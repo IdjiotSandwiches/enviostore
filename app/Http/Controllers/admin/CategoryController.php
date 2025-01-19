@@ -4,7 +4,6 @@ namespace App\Http\Controllers\admin;
 
 use App\Services\Admin\CategoryService;
 use App\Models\Category;
-use App\Models\ErrorLog;
 use App\Utilities\ErrorUtility;
 use Illuminate\Http\Request;
 use App\Utilities\ProductsUtility;
@@ -17,7 +16,6 @@ use App\Http\Requests\CategoryRequest;
 class CategoryController extends Controller implements StatusInterface
 {
     private $googleDriveUtility;
-    private $productsUtility;
     private $categoryService;
     private $errorUtility;
 
@@ -27,7 +25,6 @@ class CategoryController extends Controller implements StatusInterface
     public function __construct()
     {
         $this->googleDriveUtility = new GoogleDriveUtility();
-        $this->productsUtility = new ProductsUtility();
         $this->categoryService = new CategoryService();
         $this->errorUtility = new ErrorUtility();
     }
@@ -95,7 +92,7 @@ class CategoryController extends Controller implements StatusInterface
             
             return back()->with([
                 'status' => self::STATUS_ERROR,
-                'message' => 'Failed to update category',
+                'message' => 'Failed to add category',
             ]);
         }
 

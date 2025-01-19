@@ -6,21 +6,23 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\ErrorLog;
 use App\Models\ProductImage;
+use App\Services\Admin\ProductService;
+use App\Utilities\ErrorUtility;
 use Illuminate\Http\Request;
 use App\Utilities\ProductsUtility;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EditProductRequest;
 use App\Http\Requests\ProductRequest;
 use App\Interfaces\StatusInterface;
 use App\Utilities\GoogleDriveUtility;
-use Exception;
 
 class ProductController extends Controller implements StatusInterface
 {
     private $googleDriveUtility;
     private $productsUtility;
+    private $productService;
+    private $errorUtility;
+
     /**
      * Summary of __construct
      */
@@ -28,29 +30,39 @@ class ProductController extends Controller implements StatusInterface
     {
         $this->googleDriveUtility = new GoogleDriveUtility();
         $this->productsUtility = new ProductsUtility();
+        $this->productService = new ProductService();
+        $this->errorUtility = new ErrorUtility();
     }
+
     /**
-     * Display a listing of the resource.
+     * Summary of productIndex
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function productIndex()
     {
         $products = Product::with('productImage', 'category')
-        ->get()
-        ->map(function($product) {
-            return $this->productsUtility->convertAdminItem($product);
-        });
-        
+            ->get()
+            ->map(function ($product) {
+                return $this->productsUtility->convertAdminItem($product);
+            });
+
         return view('admin.product.products', compact('products'));
     }
-    
+
+    /**
+     * Summary of addProductIndex
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function addProductIndex()
     {
         $categories = Category::all();
         return view('admin.product.add', compact('categories'));
     }
-    
+
     /**
-     * Show the form for editing the specified resource.
+     * Summary of editProductIndex
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
     public function editProductIndex($id)
     {
@@ -67,194 +79,174 @@ class ProductController extends Controller implements StatusInterface
         return view('admin.product.edit', compact('product', 'productImages', 'categories'));
     }
 
+    /**
+     * Summary of addProduct
+     * @param \App\Http\Requests\ProductRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function addProduct(ProductRequest $request)
     {
-        $validate = $request->validated();
-    
+        $validated = $request->validated();
+
         try {
             DB::beginTransaction();
 
-            $lastProduct = Product::orderBy('id', 'desc')->first();
-            $lastSerialNumber = 0;
-    
-            if ($lastProduct && preg_match('/PRODUCT_(\d+)/', $lastProduct->product_serial_code, $matches)) {
-                $lastSerialNumber = (int)$matches[1];
-            }
-    
-            $newSerialNumber = $lastSerialNumber + 1;
-            $newProductSerialCode = 'PRODUCT_' . str_pad($newSerialNumber, 3, '0', STR_PAD_LEFT);
-    
-            $newProduct = new Product();
-            $newProduct->name_en = $validate['name_en'];
-            $newProduct->name_id = $validate['name_id'];
-            $newProduct->description_en = $validate['description_en'];
-            $newProduct->description_id = $validate['description_id'];
-            $newProduct->price = $validate['price'];
-            $newProduct->stocks = $validate['stocks'];
-            $newProduct->category_id = $validate['category_id'];
-            $newProduct->sustainability_score = $validate['sustainability_score'];
-            $newProduct->product_serial_code = $newProductSerialCode;
-    
-            $newProduct->save();
+            $this->productService->addProduct($validated);
 
-            if (isset($validate['product_images']) && is_array($validate['product_images'])) {
-                foreach ($validate['product_images'] as $file) {
-                    $fileExtension = $file->getClientOriginalExtension();
-                    $fileName = 'product_images/' . uniqid('product_') . '.' . $fileExtension;
-            
-                    $this->googleDriveUtility->storeFile($fileName, $file);
-            
-                    $productImage = new ProductImage();
-                    $productImage->url = $fileName;
-                    $productImage->product_id = $newProduct->id;
-                    $productImage->save();
-                }
-            }
-    
             DB::commit();
-    
-            return to_route('admin.addProductIndex')->with('success', 'Product added successfully.');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
 
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
-    
-            return back()->with('error', 'Failed to add product: ' . $e->getMessage());
+            $this->errorUtility->errorLog($e->getMessage());
+
+            return back()->with([
+                'status' => self::STATUS_ERROR,
+                'message' => 'Failed to add product',
+            ]);
         }
+
+        return to_route('admin.product.index')->with([
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Product added successfully.',
+        ]);
     }
-    
+
+    /**
+     * Summary of addProductImages
+     * @param \App\Http\Requests\ProductRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function addProductImages(ProductRequest $request, $id)
     {
-        try{      
-            $product = Product::find($id);
-            
-            $validate = $request->validated();
-            
-            if (isset($validate['product_images']) && is_array($validate['product_images'])) {
-                foreach ($validate['product_images'] as $file) {
-                    $fileExtension = $file->getClientOriginalExtension();
-                    $fileName = 'product_images/' . uniqid('product_') . '.' . $fileExtension;
-                    
-                    $this->googleDriveUtility->storeFile($fileName, $file);
-                    
-                    $productImage = new ProductImage();
-                    $productImage->url = $fileName;
-                    $productImage->product_id = $product->id;
-                    $productImage->save();
-                }
-            }
-            return redirect()->route('admin.editProduct', $product->id)->with('success', 'Images uploaded successfully.');
-        } catch (Exception $e) {
+        try {
+            DB::beginTransaction();
+
+            $validated = $request->validated();
+
+            $this->productService->addProductImages($id, $validated);
+
+            DB::commit();
+        } catch (\Exception $e) {
             DB::rollBack();
 
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
-            
-            return back()->with('error', 'Failed to add product images: ' . $e->getMessage());
+            $this->errorUtility->errorLog($e->getMessage());
+
+            return back()->with([
+                'status' => self::STATUS_ERROR,
+                'message' => 'Failed to add product images',
+            ]);
         }
+
+        return to_route('admin.product.index')->with([
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Images uploaded successfully.',
+        ]);
     }
-    
-    
-    
+
     /**
-     * Update the specified resource in storage.
+     * Summary of updateProduct
+     * @param \App\Http\Requests\ProductRequest $request
+     * @param int $id
+     * @throws \Exception
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function updateProduct(ProductRequest $request, $id)
     {
         $validated = $request->validated();
-        
+
         try {
             DB::beginTransaction();
-            
-            $product = Product::find($id);
-            if (!$product) {
-                throw new Exception('Product not found.');
-            }
-            
-            $product->name_en = $validated['name_en'];
-            $product->name_id = $validated['name_id'];
-            $product->description_en = $validated['description_en'];
-            $product->description_id = $validated['description_id'];
-            $product->price = $validated['price'];
-            $product->stocks = $validated['stocks'];
-            $product->category_id = $validated['category_id'];
-            $product->sustainability_score = $validated['sustainability_score'];
-            
-            $product->save();
-            
+
+            $this->productService->updateProduct($id, $validated);
+
             DB::commit();
-            
-            return back()->with('success', 'Product update successfully.');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
             
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
+            $this->errorUtility->errorLog($e->getMessage());
             
-            return back()->with('error', 'Failed to update product: ' . $e->getMessage());
+            return back()->with([
+                'status' => self::STATUS_ERROR,
+                'message' => 'Failed to update product',
+            ]);
         }
+
+        return to_route('admin.product.index')->with([
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Product update successfully.',
+        ]);
     }
+
+    /**
+     * Summary of deleteProductImage
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function deleteProductImage($id)
     {
         $image = ProductImage::find($id);
 
         if (!$image) {
-            return back()->with('error', 'Image not found.');
+            return back()->with([
+                'status' => self::STATUS_SUCCESS,
+                'message' => 'Image not found.',
+            ]);
         }
 
         try {
+            DB::beginTransaction();
+
             $this->googleDriveUtility->deleteFile($image->url);
 
             $image->delete();
 
-            return back()->with('success', 'Image deleted successfully.');
-        } catch (Exception $e) {
-            return back()->with('error', 'Failed to delete image: ' . $e->getMessage());
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            $this->errorUtility->errorLog($e->getMessage());
+            
+            return back()->with([
+                'status' => self::STATUS_ERROR,
+                'message' => 'Failed to delete image',
+            ]);
         }
+
+        return to_route('admin.product.index')->with([
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Image deleted successfully.',
+        ]);
     }
-    
+
     /**
-     * Remove the specified resource from storage.
+     * Summary of deleteProduct
+     * @param \Illuminate\Http\Request $request
+     * @throws \Exception
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteProduct(Request $request)
     {
         try {
             DB::beginTransaction();
-            
-            $id = $request->id;
-            
-            $product = Product::with('productImage')->find($id);
-    
-            if (!$product) {
-                throw new Exception(__('message.invalid'));
-            }
 
-            foreach ($product->productImage as $image) {
-                $this->googleDriveUtility->deleteFile($image->url); 
-                $image->delete(); 
-            }
-    
-            $product->delete();
-    
+            $this->productService->deleteProduct($request->id);
+
             DB::commit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
-    
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
-    
-            return back()->with('error', 'Failed to delete product: ' . $e->getMessage());
+
+            $this->errorUtility->errorLog($e->getMessage());
+            
+            return back()->with([
+                'status' => self::STATUS_ERROR,
+                'message' => 'Failed to delete product',
+            ]);
         }
-        $response = [
+
+        return back()->with([
             'status' => self::STATUS_SUCCESS,
             'message' => __('message.remove_item'),
-        ];
-
-        return back()->with($response);
+        ]);
     }
 }
