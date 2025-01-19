@@ -71,7 +71,7 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
         ];
 
         if ($sessionData['is_admin']) {
-            return to_route('admin.home')->with($response);
+            return to_route('admin.product.index')->with($response);
         }
 
         return to_route('home')->with($response);
