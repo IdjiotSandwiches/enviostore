@@ -21,6 +21,7 @@ class AdminFactory extends Factory
         return [
             'uuid' => Str::uuid(),
             'username' => 'admin',
+            'profile_picture' => 'avatars/default_user.png',
             'email' => 'admin@email.com',
             'password' => Hash::make('123456'),
         ];

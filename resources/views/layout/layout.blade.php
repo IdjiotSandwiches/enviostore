@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-@include('component.head')
+@include('component.__head')
 <body class="bg-background font-primary">
     @include('component.navigation.navbar')
     @yield('content')
-    @include('component.footer')
-    @include('component.common-js')
+    @include('component.__footer')
+    @include('component.js.__common-js')
     @yield('extra-js')
 </body>
 </html>

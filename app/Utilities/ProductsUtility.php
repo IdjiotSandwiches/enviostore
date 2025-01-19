@@ -27,9 +27,17 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
      * @param int $sort
      * @return object
      */
-    public function getProducts($category = null, $sort = self::NEWEST, $perPage = 20)
+    public function getProducts($params, $perPage = 20)
     {
+        $category = $params->category;
+        $sort = $params->sort;
+        $keyword = $params->keyword;
+
         $products = Product::with('productImage')
+            ->when($keyword, function ($query) use ($keyword) {
+                return $query->where('name_en', 'LIKE', "%{$keyword}%")
+                    ->orWhere('name_id', 'LIKE', "%{$keyword}%");
+            })
             ->when($category, function ($query) use ($category) {
                 return $query->where('category_id', $category);
             })
@@ -71,8 +79,39 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
         $rating = $product->sustainability_score;
         $img = $product->productImage->first();
         $img = $this->googleDriveUtility->getFile($img->url);
-        $link = route('getProduct', base64_encode("$name-$product->id"));
+        $link = route('getProduct', base64_encode($product->product_serial_code));
+        $isAvailable = $product->stocks > 0;
 
-        return (object) compact('name', 'rating', 'price', 'img', 'link');
+        return (object) compact('name', 'rating', 'price', 'img', 'link', 'isAvailable');
+    }
+
+    /**
+     * Summary of isAvailable
+     * @param int $currentStock
+     * @param int $quantity
+     * @return bool
+     */
+    public function isAvailable($currentStock, $quantity)
+    {
+        return $currentStock >= $quantity;
+    }
+    
+    /**
+     * Summary of convertAdminItem
+     * @param mixed $product
+     * @return object
+     */
+    public function convertAdminItem($product)
+    {
+        $id = $product->id;
+        $name = $product->name;
+        $price = StringHelper::parseNumberFormat($product->price);
+        $rating = $product->sustainability_score;
+        $img = $product->productImage->first();
+        $img = $this->googleDriveUtility->getFile($img->url);
+        $stocks = $product->stocks;
+        $category_name = $product->category ? $product->category->name : 'Unknown'; 
+
+        return (object) compact('id','name', 'rating', 'price', 'img', 'stocks', 'category_name');
     }
 }

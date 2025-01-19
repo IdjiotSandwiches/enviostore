@@ -2,18 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\ErrorLog;
-use Illuminate\Support\Str;
+use App\Services\Login\LoginService;
+use App\Services\Register\RegisterService;
+use App\Utilities\ErrorUtility;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\StatusInterface;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller implements StatusInterface
 {
+    private $errorUtility;
+
+    /**
+     * Summary of __construct
+     */
+    public function __construct()
+    {
+        $this->errorUtility = new ErrorUtility();
+    }
+    
     /**
      * Return Register View
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -24,48 +34,40 @@ class RegisterController extends Controller implements StatusInterface
     }
 
     /**
-     * Register Attempt
+     * Summary of register
      * @param \App\Http\Requests\RegisterRequest $registerRequest
-     * @return mixed|\Illuminate\Http\RedirectResponse
+     * @param \App\Services\Register\RegisterService $registerService
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function register(RegisterRequest $registerRequest)
+    public function register(RegisterRequest $registerRequest, RegisterService $registerService, LoginService $loginService)
     {
         $validated = $registerRequest->validated();
 
         try {
             DB::beginTransaction();
 
-            $user = new User();
-            $user->uuid = Str::uuid();
-            $user->username = $validated['username'];
-            $user->email = $validated['email'];
-            $user->password = Hash::make($validated['password']);
-            $user->phone_number = $validated['phone_number'];
-            $user->save();
+            $user = $registerService->register($validated);
 
             DB::commit();
-            $response = [
-                'status' => self::STATUS_SUCCESS,
-                'message' => 'Account successfully created.',
-            ];
         } catch (\Exception $e) {
             DB::rollBack();
 
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
-
-            $response = [
+            $this->errorUtility->errorLog($e->getMessage());
+            
+            return back()->withInput()->with([
                 'status' => self::STATUS_ERROR,
-                'message' => 'Invalid operation.',
-            ];
-
-            return back()->with($response);
+                'message' => __('message.invalid'),
+            ]);
         }
 
         event(new Registered($user));
-        Auth::login($user);
 
-        return redirect()->route('verification.notice');
+        [$user, $isAdmin] = $loginService->login($validated['email'], $validated['password']);
+        $sessionData = $loginService->setSessionData($user, $isAdmin);
+        session($sessionData->all());
+        Auth::guard($sessionData['identity']->auth)->login($user);
+        $registerRequest->session()->regenerate();
+
+        return to_route('verification.notice');
     }
 }

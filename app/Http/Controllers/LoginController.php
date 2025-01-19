@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Admin;
+use App\Interfaces\SessionKeyInterface;
 use App\Models\ErrorLog;
-use App\Providers\RouteServiceProvider;
+use App\Services\Login\LoginService;
+use App\Utilities\ErrorUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
 use App\Interfaces\StatusInterface;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
-class LoginController extends Controller implements StatusInterface
+class LoginController extends Controller implements StatusInterface, SessionKeyInterface
 {
+    private $errorUtility;
+
+    /**
+     * Summary of __construct
+     */
+    public function __construct()
+    {
+        $this->errorUtility = new ErrorUtility();
+    }
+
     /**
      * Return Login View
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -25,58 +34,47 @@ class LoginController extends Controller implements StatusInterface
     }
 
     /**
-     * Login Attempt
+     * Summary of login
      * @param \App\Http\Requests\LoginRequest $loginRequest
+     * @param \App\Services\Login\LoginService $loginService
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function login(LoginRequest $loginRequest)
+    public function login(LoginRequest $loginRequest, LoginService $loginService)
     {
         $validated = $loginRequest->validated();
-
+        
         try {
             DB::beginTransaction();
 
-            $user = User::where('email', $validated['email'])->first() ??
-                Admin::where('email', $validated['email'])->first();
-
-            if ($user && Hash::check($validated['password'], $user->password)) {
-                $isAdmin = $user instanceof Admin ? 'admin' : 'web';
-            }
-            else {
-                DB::rollBack();
-                $response = [
-                    'status' => self::STATUS_ERROR,
-                    'message' => 'E-mail or password invalid.'
-                ];
-
-                return back()->with($response);
-            }
+            [$user, $isAdmin] = $loginService->login($validated['email'], $validated['password']);
+            $sessionData = $loginService->setSessionData($user, $isAdmin);
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
 
-            $errorLog = new ErrorLog();
-            $errorLog->error = $e->getMessage();
-            $errorLog->save();
+            $this->errorUtility->errorLog($e->getMessage());
 
-            $response = [
+            return back()->withInput()->with([
                 'status' => self::STATUS_ERROR,
-                'message' => 'Invalid operation.',
-            ];
-
-            return back()->with($response);
+                'message' => $e->getMessage(),
+            ]);
         }
 
-        Auth::guard($isAdmin)->login($user);
+        session($sessionData->all());
+        Auth::guard($sessionData['identity']->auth)->login($user);
         $loginRequest->session()->regenerate();
+
         $response = [
             'status' => self::STATUS_SUCCESS,
-            'message' => 'Logged In.'
+            'message' => __('message.login'),
         ];
 
-        return redirect($isAdmin === 'admin' ? RouteServiceProvider::ADMIN_HOME : RouteServiceProvider::HOME)
-            ->with($response);
+        if ($sessionData['is_admin']) {
+            return to_route('admin.product.index')->with($response);
+        }
+
+        return to_route('home')->with($response);
     }
 
     /**
@@ -86,16 +84,19 @@ class LoginController extends Controller implements StatusInterface
      */
     public function logout(Request $request)
     {
-        Auth::logout();
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = session(self::SESSION_IDENTITY);
+        
+        Auth::guard($user->auth)->logout();
         $request->session()->invalidate();
+        $request->session()->flush();
         $request->session()->regenerateToken();
 
-        $response = [
+        return to_route('home')->with([
             'status' => self::STATUS_SUCCESS,
-            'message' => 'Logged Out.'
-        ];
-
-        return redirect()->route('home')
-            ->with($response);
+            'message' => __('message.logout'),
+        ]);
     }
 }

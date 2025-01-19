@@ -1,12 +1,14 @@
 <?php
 
+use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\common\ProductController;
+use App\Http\Controllers\user\CategoryController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\user\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,14 +24,19 @@ use App\Http\Controllers\HomeController;
 Route::middleware(['guest:admin'])->group(function () {
     Route::controller(HomeController::class)->group(function(){
         Route::get('/', 'index')->name('home');
+        Route::get('/home-item', 'getHomeItems')->name('getHomeItems');
     });
 
     Route::controller(ProductController::class)->group(function () {
-        Route::get('/products/{id}', 'getProduct')->name('getProduct');
+        Route::get('/products/{product_serial}', 'getProduct')->name('getProduct');
     });
 
     Route::controller(CategoryController::class)->group(function () {
-        Route::get('/category/{category}', 'index')->name('categoryPage');
+        Route::get('/category/{category_serial}', 'index')->name('categoryPage');
+    });
+
+    Route::controller(SearchController::class)->group(function () {
+        Route::get('/search', 'index')->name('search');
     });
 });
 
@@ -45,17 +52,14 @@ Route::middleware(['guest:web,admin'])->group(function () {
     });
 });
 
-Route::middleware(['auth:web,admin'])->group(function () {
-    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-});
+Route::controller(EmailVerificationController::class)->group(function () {
+    Route::get('/email/verify', 'verificationNotice')->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', 'verifyEmail')->middleware(['signed'])->name('verification.verify');
+    Route::post('/email/verification-notification', 'resendVerification')->middleware(['throttle:6,1'])->name('verification.send');
+})->middleware(['auth']);
 
-Route::middleware(['auth'])->group(function () {
-    Route::controller(EmailVerificationController::class)->group(function () {
-        Route::get('/email/verify', 'verificationNotice')->name('verification.notice');
-        Route::get('/email/verify/{id}/{hash}', 'verifyEmail')->middleware(['signed'])->name('verification.verify');
-        Route::post('/email/verification-notification', 'resendVerification')->middleware(['throttle:6,1'])->name('verification.send');
-    });
-});
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout')->middleware(['auth:web,admin']);
+Route::get('/language/{locale}', [LocaleController::class, 'setLocale'])->name('toggleLanguage');
 
 Route::fallback(function () {
     return view('errors.404');

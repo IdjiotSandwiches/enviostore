@@ -25,7 +25,7 @@ class GoogleDriveUtility implements StatusInterface
      * Summary of storeFile
      * @param string $fileName
      * @param array|UploadedFile|null $file
-     * @return string[]|\Illuminate\Http\RedirectResponse
+     * @return void
      */
     public function storeFile($fileName, $file)
     {
@@ -42,20 +42,8 @@ class GoogleDriveUtility implements StatusInterface
             $errorLog->error = $e->getMessage();
             $errorLog->save();
 
-            $response = [
-                'status' => self::STATUS_ERROR,
-                'message' => 'File upload failed!',
-            ];
-
-            return $response;
+            abort(500);
         }
-
-        $response = [
-            'status' => self::STATUS_SUCCESS,
-            'message' => 'File uploaded successfully!',
-        ];
-
-        return $response;
     }
 
     /**
@@ -83,7 +71,7 @@ class GoogleDriveUtility implements StatusInterface
     /**
      * Summary of deleteFile
      * @param string $filePath
-     * @return string[]|\Illuminate\Http\RedirectResponse
+     * @return void
      */
     public function deleteFile($filePath)
     {
@@ -100,20 +88,8 @@ class GoogleDriveUtility implements StatusInterface
             $errorLog->error = $e->getMessage();
             $errorLog->save();
 
-            $response = [
-                'status' => self::STATUS_ERROR,
-                'message' => 'File deletion failed!',
-            ];
-
-            return $response;
+            abort(500);
         }
-
-        $response = [
-            'status' => self::STATUS_SUCCESS,
-            'message' => 'File deleted successfully!',
-        ];
-
-        return $response;
     }
 
     /**
