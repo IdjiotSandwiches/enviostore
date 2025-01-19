@@ -4,7 +4,7 @@
 @section('content')
     <section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
         <h1 class="font-bold text-3xl">{{ __('header.addProduct') }}</h1>
-        <form action="{{ route('admin.addProduct') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.product.addProduct') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('POST')
             <div class="bg-primary rounded-lg shadow border border-gray-200 p-4 sm:p-6 md:p-8">

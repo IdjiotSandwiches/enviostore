@@ -16,29 +16,28 @@ use App\Http\Controllers\admin\CategoryController;
 |
 */
 
-Route::controller(AdminController::class)
+Route::prefix('product')
+    ->name('product.')
+    ->controller(ProductController::class)
     ->group(function () {
-        Route::get('/', 'index')->name('home');
+        Route::get('/', 'productIndex')->name('index');
+        Route::get('/add', 'addProductIndex')->name('addProductIndex');
+        Route::get('/{id}/edit', 'editProductIndex')->name('editProduct');
+        Route::post('/add', 'addProduct')->name('addProduct');
+        Route::post('/add/images/{id}', 'addProductImages')->name('addProductImage');
+        Route::put('/{id}', 'updateProduct')->name('updateProduct');
+        Route::delete('/{id}', 'deleteProduct')->name('deleteProduct');
+        Route::delete('/image/{id}', 'deleteProductImage')->name('deleteProductImage'); 
     });
 
-Route::controller(ProductController::class)
-    ->group(function(){
-        Route::get('/products', 'productIndex')->name('products');
-        Route::get('/products/add', 'addProductIndex')->name('addProductIndex');
-        Route::get('/products/{id}/edit', 'editProductIndex')->name('editProduct');
-        Route::post('/products/add', 'addProduct')->name('addProduct');
-        Route::post('/products/add/images/{id}', 'addProductImages')->name('addProductImage');
-        Route::put('/products/{id}', 'updateProduct')->name('updateProduct');
-        Route::delete('/products/{id}', 'deleteProduct')->name('deleteProduct');
-        Route::delete('/product/image/{id}', 'deleteProductImage')->name('deleteProductImage'); 
-    });
-
-Route::controller(CategoryController::class)
-    ->group(function(){
-        Route::get('/categories', 'categoryIndex')->name('categories');
-        Route::get('/categories/add', 'addCategoryIndex')->name('addCategoryIndex');
-        Route::get('/categories/{id}/edit', 'editCategoryIndex')->name('editCategory');
-        Route::post('/categories/add', 'addCategory')->name('addCategory');
-        Route::put('/categories/{id}','updateCategory')->name('updateCategory');
-        Route::delete('/categories/{id}', 'deleteCategory')->name('deleteCategory');
+Route::prefix('categories')
+    ->name('categories.')
+    ->controller(CategoryController::class)
+    ->group(function () {
+        Route::get('/', 'categoryIndex')->name('index');
+        Route::get('/add', 'addCategoryIndex')->name('addCategoryIndex');
+        Route::get('/{id}/edit', 'editCategoryIndex')->name('editCategory');
+        Route::post('/add', 'addCategory')->name('addCategory');
+        Route::put('/{id}','updateCategory')->name('updateCategory');
+        Route::delete('/{id}', 'deleteCategory')->name('deleteCategory');
     });
