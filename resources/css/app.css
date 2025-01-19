@@ -1,0 +1,20 @@
+@import "@glidejs/glide/dist/css/glide.core.min.css";
+@import "@glidejs/glide/dist/css/glide.theme.min.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ::-webkit-scrollbar {
+    width: 8px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(217 119 6);
+    border-radius: 5px;
+} */
+
+.glide__bullet--active {
+    @apply shadow-md p-0.5;
+}
