@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Interfaces\SessionKeyInterface;
+use App\Models\Admin;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
@@ -86,7 +87,7 @@ class MenuServiceProvider extends ServiceProvider implements SessionKeyInterface
          * @var \App\Models\User $user
          */
         $user = session(self::SESSION_IDENTITY);
-        $user = User::find($user->id);
+        $user = session(self::SESSION_IS_ADMIN) ? Admin::find($user->id) : User::find($user->id);
         $googleDriveUtility = $this->app->make('GoogleDriveUtility');
 
         return (object) [

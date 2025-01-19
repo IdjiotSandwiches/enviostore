@@ -91,6 +91,7 @@ class LoginController extends Controller implements StatusInterface, SessionKeyI
         
         Auth::guard($user->auth)->logout();
         $request->session()->invalidate();
+        $request->session()->flush();
         $request->session()->regenerateToken();
 
         return to_route('home')->with([
