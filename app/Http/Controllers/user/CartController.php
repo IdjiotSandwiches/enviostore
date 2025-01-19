@@ -53,20 +53,16 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
 
             $this->errorUtility->errorLog($e->getMessage());
 
-            $response = [
+            return back()->withInput()->with([
                 'status' => self::STATUS_ERROR,
                 'message' => $e->getMessage(),
-            ];
-
-            return back()->withInput()->with($response);
+            ]);
         }
 
-        $response = [
+        return back()->with([
             'status' => self::STATUS_SUCCESS,
             'message' => __('message.remove_item'),
-        ];
-
-        return back()->with($response);
+        ]);
     }
 
     /**
@@ -107,20 +103,16 @@ class CartController extends Controller implements StatusInterface, SessionKeyIn
 
             $this->errorUtility->errorLog($e->getMessage());
 
-            $response = [
+            return back()->withInput()->with([
                 'status' => self::STATUS_ERROR,
                 'message' => __('message.invalid'),
-            ];
-
-            return back()->withInput()->with($response);
+            ]);
         }
 
-        $response = [
+        return back()->with([
             'status' => self::STATUS_SUCCESS,
             'message' => __('message.add_to_cart'),
-        ];
-
-        return back()->with($response);
+        ]);
     }
 
     /**

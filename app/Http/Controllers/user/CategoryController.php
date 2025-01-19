@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\user;
 
 use App\Models\Category;
-use App\Models\ErrorLog;
 use App\Utilities\ErrorUtility;
 use Illuminate\Http\Request;
 use App\Utilities\ProductsUtility;

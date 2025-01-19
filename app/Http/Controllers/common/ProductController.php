@@ -72,6 +72,7 @@ class ProductController extends Controller implements StatusInterface, SortInter
             $params->sort = (int) $request->sort;
         } else {
             $params->keyword = $request->keyword;
+            $params->sort = (int) $request->sort;
         }
         
         $products = $this->productUtility->getProducts($params);
