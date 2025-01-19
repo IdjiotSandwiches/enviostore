@@ -1,9 +1,12 @@
 @extends('layout.layout')
-@section('title', ucwords($category->name))
+@php
+    $title = isset($category) ? ucwords($category->name) : __('page.category.search') . $keyword;
+@endphp
+@section('title', $title)
 
 @section('content')
 <section class="max-w-screen-xl px-4 py-8 md:mx-auto grid gap-4">
-    <h1 class="font-bold text-3xl">{{ ucfirst($category->name) }}</h1>
+    <h1 class="font-bold text-3xl">{{ $title }}</h1>
     <button id="filterDropdown" data-dropdown-toggle="filterDropdownItems" class="flex gap-2 p-2 rounded-lg max-w-[18rem] justify-center items-center bg-primary text-font_primary border border-font_primary" type="button">
         {{ __('page.category.sort') }}:
         <span class="font-bold">
@@ -117,14 +120,14 @@
         let sortButtons = document.querySelectorAll('#filterDropdownItems ul li');
         let filterDropdown = document.querySelector('#filterDropdown span');
 
-        const URL = '{{ route('sortProducts', ['::CATEGORY::', '::SORT::']) }}';
-        let url = URL.replace('::CATEGORY::', '{{ $category->category_serial_code }}').replace('::SORT::', 1);
+        const URL = '{{ route('sortProducts') }}?{{ isset($category) ? 'category' : 'keyword' }}=::PARAM::&sort=::SORT::';
+        let url = URL.replace('::PARAM::', '{{ isset($category) ? $category->category_serial_code : $keyword }}').replace('::SORT::', 1);
         fetchRequest(url);
 
         sortButtons.forEach(button => {
             button.addEventListener('click', function() {
                 filterDropdown.textContent = this.textContent;
-                let url = URL.replace('::CATEGORY::', '{{ $category->category_serial_code }}').replace('::SORT::', this.value);
+                let url = URL.replace('::PARAM::', '{{ isset($category) ? $category->category_serial_code : $keyword }}').replace('::SORT::', this.value);
                 fetchRequest(url);
             });
         });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\common;
 
+use App\Interfaces\SortInterface;
 use App\Models\Category;
 use App\Services\Product\ProductService;
 use App\Utilities\ErrorUtility;
@@ -11,7 +12,7 @@ use App\Utilities\ProductsUtility;
 use App\Interfaces\StatusInterface;
 use App\Http\Controllers\Controller;
 
-class ProductController extends Controller implements StatusInterface
+class ProductController extends Controller implements StatusInterface, SortInterface
 {
     private $productUtility;
     private $errorUtility;
@@ -52,15 +53,28 @@ class ProductController extends Controller implements StatusInterface
      * @param string $sort
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function sortProducts($category_serial, $sort)
+    public function sortProducts(Request $request)
     {
         if (!request()->ajax()) abort(404);
 
-        $category = Category::where('category_serial_code', $category_serial)->first();
+        $params = (object) [
+            'category' => null,
+            'keyword' => null,
+            'sort' => self::NEWEST,
+        ];
 
-        if (!$category) abort(404);
+        if (isset($request->category)) {
+            $category = Category::where('category_serial_code', $request->category)->first();
+    
+            if (!$category) abort(404);
 
-        $products = $this->productUtility->getProducts($category->id, (int) $sort);
+            $params->category = $category->id;
+            $params->sort = (int) $request->sort;
+        } else {
+            $params->keyword = $request->keyword;
+        }
+        
+        $products = $this->productUtility->getProducts($params);
         
         return response()->json([
             'status' => self::STATUS_SUCCESS,

@@ -8,7 +8,6 @@ use App\Utilities\GoogleDriveUtility;
 use App\Interfaces\SortInterface;
 use App\Interfaces\CategoryInterface;
 use App\Interfaces\SortDirectionInterface;
-use Illuminate\Support\Facades\App;
 
 class ProductsUtility implements SortInterface, SortDirectionInterface, CategoryInterface
 {
@@ -28,9 +27,17 @@ class ProductsUtility implements SortInterface, SortDirectionInterface, Category
      * @param int $sort
      * @return object
      */
-    public function getProducts($category = null, $sort = self::NEWEST, $perPage = 20)
+    public function getProducts($params, $perPage = 20)
     {
+        $category = $params->category;
+        $sort = $params->sort;
+        $keyword = $params->keyword;
+
         $products = Product::with('productImage')
+            ->when($keyword, function ($query) use ($keyword) {
+                return $query->where('name_en', 'LIKE', "%{$keyword}%")
+                    ->orWhere('name_id', 'LIKE', "%{$keyword}%");
+            })
             ->when($category, function ($query) use ($category) {
                 return $query->where('category_id', $category);
             })

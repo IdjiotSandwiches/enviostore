@@ -12,6 +12,7 @@ return [
     'category.newest' => 'Newest First',
     'category.lowest' => 'Lowest Price',
     'category.highest' => 'Highest Price',
+    'category.search' => 'Search Results For: ',
 
     'cart.summary' => 'Summary',
     'cart.total_items' => 'Total Items',

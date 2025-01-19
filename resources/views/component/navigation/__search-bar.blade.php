@@ -8,7 +8,7 @@
     <span class="sr-only">Search icon</span>
 </div>
 
-<form action="" method="GET" id="searchBar" class="relative hidden z-10 w-56">
+<form action="{{ route('search') }}" method="GET" id="searchBar" class="relative hidden z-10 w-56">
     @csrf
     @method('GET')
     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -19,7 +19,7 @@
         </svg>
         <span class="sr-only">Search icon</span>
     </div>
-    <input type="text" id="search-navbar"
+    <input type="text" name="keyword" id="keyword"
         class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-400 rounded-lg bg-gray-50 focus:ring-button/20 focus:border-button/20"
         placeholder="Search...">
 </form>

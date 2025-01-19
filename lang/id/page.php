@@ -12,6 +12,7 @@ return [
     'category.newest' => 'Terbaru',
     'category.lowest' => 'Harga Terendah',
     'category.highest' => 'Harga Tertinggi',
+    'category.search' => 'Hasil Pencarian Untuk: ',
 
     'cart.summary' => 'Rincian',
     'cart.total_items' => 'Total Barang',
